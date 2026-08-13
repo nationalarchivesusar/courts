@@ -1,6 +1,6 @@
 title: USAR Legal Directory
-baseurl: "/legal-directory"
-url: "https://usarscotus.github.io"
+baseurl: "/courts"
+url: "https://nationalarchivesusar.github.io"
 description: A directory of legal resources for the USAR Community on ROBLOX.
 markdown: kramdown
 collections:
