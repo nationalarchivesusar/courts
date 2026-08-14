@@ -145,6 +145,8 @@ JIS must not create a canonical Person based only on a username. A historical re
 
 An Arrest points to either `subject_person_id` or `subject_identity_claim_id`, enforced by a database check constraint requiring exactly one. An arresting officer, when the source identifies one, points to either `arresting_actor_id` or `arresting_identity_claim_id`; both may be null only when the source contains no officer identity. Background checks by Roblox UserId exclude unresolved subject claims. Merging two different Roblox UserIds is prohibited. Correcting an incorrectly attributed subject or officer requires a review decision, a new provenance assertion, and an audit event.
 
+Bulk external identity resolution is neither required nor appropriate for username-only history. Public lookup may surface an otherwise-public historical Arrest under the exact username recorded by its source while the subject or officer claim remains unresolved, provided the response and user interface explicitly identify it as historical username-only data. A current `Person.current_username` match is discovery information only: it does not resolve, merge, or attribute the historical Arrest to that Person. The canonical UserId arrest endpoint must continue to exclude unresolved claims even when names match.
+
 ### 7.3 Username handling
 
 Current username and display name are cacheable mutable fields. Every verified username change adds or closes a `UsernameHistory` interval. Historical source spelling is retained in the source snapshot even when it differs from the verified account name.
@@ -897,8 +899,11 @@ Use cursor pagination ordered by a documented stable tuple such as `(filed_at DE
 | `GET /api/v1/people/{robloxUserId}` | Minimal public identity projection if the Person has public records; otherwise 404 to avoid becoming an account directory. |
 | `GET /api/v1/people/{robloxUserId}/cases` | Public cases for that person. |
 | `GET /api/v1/people/{robloxUserId}/convictions` | Current and historically affected convictions derived only from public case dispositions. Clearly labels vacated/pardoned/reversed status. |
+| `GET /api/v1/people/{robloxUserId}/arrests` | Public Arrest rows actually linked to the canonical Person/UserId; unresolved same-name claims are excluded. Cursor pagination, newest first. |
+| `GET /api/v1/arrests/by-username/{username}` | Case-insensitive exact lookup of public historical Arrest rows whose subject is represented by a source-recorded IdentityClaim. No fuzzy matching, external lookup, or automatic resolution. |
+| `GET /api/v1/records/search?q={query}` | Discovery endpoint returning verified canonical accounts and historical username-only summaries as separate result classes. A name match never merges the classes. |
 
-Public endpoints never return complete arrest history, law-enforcement notes, unresolved identity claims, raw sources, review state, or audit data.
+Public endpoints never return restricted arrest history, law-enforcement notes, IdentityClaim identifiers or review fields, raw sources, provenance, review state, or audit data. The public arrest projection may return only the source-recorded username, an explicit `verified` or `unresolved_username` identity status, and a nullable Roblox UserId that is populated only from an actual verified database relationship. Public responses must repeat the principle **ARREST != CHARGE != CONVICTION**.
 
 ### 22.3 Restricted read endpoint
 
@@ -911,7 +916,7 @@ The aggregation service may be implemented and tested before human login exists,
 3. `otherDispositions` such as dismissal/acquittal;
 4. `arrestHistory` with explicit prosecution links or `no_corresponding_prosecution_located`.
 
-`GET /api/v1/people/{robloxUserId}/arrests` requires `arrests.read`. It supports `agency`, `from`, `to`, and cursor; it must not accept arbitrary query syntax.
+The restricted complete-arrest-history endpoint requires `arrests.read` and must be a distinct authenticated projection or route from the public allowlisted arrest endpoint. It may support `agency`, `from`, `to`, and cursor; it must not accept arbitrary query syntax.
 
 Every successful or denied background-check request produces an AuditEvent. `Cache-Control: no-store` is mandatory for restricted responses.
 
@@ -1141,6 +1146,7 @@ Integration rules:
 - Browser JavaScript calls only public endpoints.
 - No JIS, Trello, Roblox, Discord, or OAuth client secrets appear in static assets.
 - Use an explicit API base URL from public site configuration, not hard-coded throughout scripts.
+- Present canonical UserId results and historical username-only results in separate, plainly labelled sections. The browser never calls Roblox or attempts identity resolution.
 - Preserve progressive enhancement, safe DOM text rendering, validated links, and the `/courts/` base path requirements from `ARCHITECTURE.md`.
 - Public API enables CORS only for approved origins while still treating data as public/cachable.
 - Public responses include freshness/source-health metadata suitable for a quiet “last updated” indicator.
@@ -1173,7 +1179,7 @@ Bot commands must not write tables directly. JIS performs validation, authorizat
 3. Switch the game from direct Discord-only delivery to `Roblox -> JIS -> Discord`, record an exact UTC historical cutoff, and make JIS canonical for all new arrests from that instant.
 4. Monitor and reconcile the live path until every accepted post-cutoff arrest exists in JIS and its Discord notification is delivered or visibly queued/failed.
 5. Export and parse historical Discord records strictly before the cutoff into JSONL without database writes.
-6. Resolve identities/deduplicates, approve the import plan, and backfill historical arrests with provenance.
+6. Review structural errors and duplicates, approve the import plan, and backfill historical arrests with provenance. Username-only subjects and officers remain unresolved IdentityClaims unless individually verified from approved evidence; bulk resolution is not a prerequisite.
 7. Begin Trello case/document synchronization and reconciliation after the foundation is stable; this work may proceed in parallel with live-arrest monitoring and historical backfill.
 8. Mark the historical arrest migration and each Trello source complete only after completeness, idempotency, deduplication, and recovery tests pass.
 
@@ -1258,8 +1264,9 @@ erDiagram
 1. Parser finds subject username `JohnDoe123` and officer username `CoolFBIMan123`, but no UserId for either.
 2. JSONL retains both embed field locators and original values.
 3. Import creates separate `arrest_subject` and `arresting_officer` IdentityClaims and ReviewItems; the row is not included in subject UserId results and no GovernmentActor is invented.
-4. Administrator verifies each Roblox UserId independently using approved evidence and verifies the officer's Agency relationship.
-5. JIS links the imported Arrest to the resolved Person and GovernmentActor and audits both decisions. It does not merge similarly named accounts.
+4. If the Arrest is approved for public access, exact username lookup may display the source-recorded names with `unresolved_username` status and null Roblox UserIds. The same record remains absent from canonical UserId results.
+5. A same-named current Person may appear as a separate verified-account search result, but JIS does not attribute the historical Arrest to that Person.
+6. If approved evidence later establishes identity, an administrator may resolve an individual claim and audit that decision. Resolution is optional and never inferred from a username match.
 
 ### 30.4 Ambiguous court document
 
@@ -1356,11 +1363,11 @@ Explicitly deferred:
 - Trello/document parser code;
 - AI-assisted document extraction;
 - background-check UI;
-- public JIS API implementation;
+- public JIS APIs beyond the allowlisted arrest-record lookup;
 - Court Bot integration;
 - archival object-storage selection;
 - advanced two-person approvals, row-level security, or tamper-evident external audit storage;
-- public release of any arrest-history product.
+- production release of the arrest-history product before disclosure review and controlled deployment validation.
 
 ## 33. Risks / Open Issues
 
@@ -1368,7 +1375,7 @@ These require evidence or policy approval, not foundational redesign:
 
 1. **Trello/document conventions:** Actual criminal cards, labels, attachments, and judgments must be sampled before parser rules are finalized.
 2. **Historical export variance:** The Discord exporter/version and representative HTML must be examined before the JSONL parser is implemented.
-3. **Legacy identity quality:** Many username-only records may remain unresolved; migration completeness must not be overstated.
+3. **Legacy identity quality:** Many username-only records will intentionally remain unresolved. Public exact-name discovery must preserve that uncertainty and must never imply association with a current account.
 4. **Disclosure policy:** The judiciary must approve which cases, party identities, convictions, and documents are public; default remains restricted.
 5. **Retention policy:** Owners must approve retention periods for raw exports, server/job IDs, operational logs, and audit records.
 6. **Roblox API maturity:** OAuth is currently documented as beta and group APIs may evolve. Keep adapters isolated and verify official contracts immediately before implementation.

@@ -430,6 +430,7 @@ a {
 
 .page-standard .content-shell,
 .page-case-search .content-shell,
+.page-records .content-shell,
 .page-search .content-shell,
 .page-documents .content-shell,
 .page-about .content-shell,
@@ -1182,6 +1183,158 @@ h3:hover .heading-anchor,
   border-left: 4px solid var(--gold);
 }
 
+.records-search {
+  max-width: 52rem;
+  padding-bottom: 1.6rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.records-search h2 {
+  margin-top: 0;
+  font-size: 1.25rem;
+}
+
+.records-search form {
+  display: grid;
+  grid-template-columns: minmax(15rem, 1fr) auto;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.records-search button,
+.records-load-more {
+  padding: 0.62rem 0.9rem;
+  border: 1px solid var(--navy-deep);
+  background: var(--navy-deep);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.records-search button:hover,
+.records-load-more:hover {
+  background: var(--navy-mid);
+}
+
+.records-load-more:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.records-legal-notice {
+  max-width: 52rem;
+  padding: 0.25rem 0 0.25rem 1rem;
+  margin: 1.5rem 0;
+  border-left: 4px solid var(--gold);
+  color: var(--muted);
+}
+
+.records-legal-notice strong {
+  color: var(--ink);
+}
+
+.records-status {
+  color: var(--muted);
+}
+
+.records-class {
+  padding-top: 2rem;
+  margin-top: 2rem;
+  border-top: 2px solid var(--navy-mid);
+}
+
+.records-class__label {
+  margin: 0 0 0.35rem;
+  color: var(--navy-mid);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.records-class > h2 {
+  margin: 0 0 0.8rem;
+}
+
+.records-account-identity,
+.public-arrest__details {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.2rem 1rem;
+  margin: 0;
+}
+
+.records-account-identity dt,
+.public-arrest__details dt {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.records-account-identity dd,
+.public-arrest__details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.historical-identity-explanation {
+  max-width: 50rem;
+  color: var(--muted);
+}
+
+.records-subheading {
+  margin: 1.7rem 0 0;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.public-arrest {
+  padding: 1.35rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.public-arrest h3,
+.public-arrest h4 {
+  margin-top: 0;
+}
+
+.public-arrest h3 {
+  margin-bottom: 0.65rem;
+  font-size: 1.25rem;
+}
+
+.public-arrest h4 {
+  margin-bottom: 0.35rem;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+}
+
+.identity-unverified {
+  max-width: 48rem;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--gold);
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.public-arrest__details {
+  margin-bottom: 1rem;
+  font-size: 0.92rem;
+}
+
+.public-arrest__offenses {
+  margin: 0;
+  padding-left: 1.3rem;
+}
+
+.public-arrest__empty,
+.records-empty {
+  color: var(--muted);
+}
+
+.records-load-more {
+  margin-top: 1rem;
+}
+
 .document-controls {
   grid-template-columns: minmax(11rem, 0.35fr) minmax(16rem, 0.65fr);
 }
@@ -1593,6 +1746,7 @@ h3:hover .heading-anchor,
   .about-information > div,
   .resource-directory,
   .case-search-panel form,
+  .records-search form,
   .document-controls {
     grid-template-columns: 1fr;
   }
@@ -1627,6 +1781,17 @@ h3:hover .heading-anchor,
   .court-structure,
   .about-information > div {
     gap: 1.25rem;
+  }
+
+  .records-account-identity,
+  .public-arrest__details {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .records-account-identity dd,
+  .public-arrest__details dd {
+    margin-bottom: 0.45rem;
   }
 }
 
@@ -1673,6 +1838,7 @@ h3:hover .heading-anchor,
   .rules-index,
   .page-standard .content-shell,
   .page-case-search .content-shell,
+  .page-records .content-shell,
   .page-search .content-shell,
   .page-documents .content-shell,
   .page-about .content-shell,

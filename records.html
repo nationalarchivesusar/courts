@@ -1,0 +1,46 @@
+---
+layout: page
+title: Public Records Search
+slug: records
+description: Search public JIS arrest records by Roblox username or UserId.
+permalink: /records/
+show_breadcrumbs: true
+breadcrumb_parent: United States Courts
+breadcrumb_parent_url: /
+---
+
+<header class="page-heading records-heading">
+  <p class="eyebrow">Judicial Information System</p>
+  <h1>Public Records Search</h1>
+  <p>Search public arrest records by Roblox username or UserId. Verified account records and historical username-only records are presented separately.</p>
+</header>
+
+<section class="records-search" aria-labelledby="records-search-heading">
+  <h2 id="records-search-heading">Person lookup</h2>
+  <form id="records-search-form" role="search" novalidate>
+    <div class="form-field">
+      <label for="records-query">Search by Roblox username or UserId</label>
+      <input type="search" id="records-query" name="q" minlength="1" maxlength="64" pattern="[A-Za-z0-9_]+" autocomplete="off" required>
+    </div>
+    <button type="submit">Search records</button>
+  </form>
+  <p class="source-note">Searches use only public JIS records. The Courts website does not query Roblox or attempt to resolve historical usernames.</p>
+</section>
+
+<aside class="records-legal-notice" aria-label="Arrest record notice">
+  <strong>An arrest record is not a conviction.</strong>
+  Arrests, criminal charges, case dispositions, and convictions are distinct records.
+</aside>
+
+<div
+  id="records-experience"
+  data-api-base="{{ site.jis.public_api_base_url | escape }}"
+  data-records-path="{{ '/records/' | relative_url }}"
+>
+  <p id="records-status" class="records-status" role="status" aria-live="polite">Enter a username or UserId above.</p>
+  <div id="records-results" aria-live="polite" aria-busy="false"></div>
+</div>
+
+<noscript><p class="notice">JavaScript is required to search the Judicial Information System.</p></noscript>
+<script src="{{ '/assets/records-model.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/records.js' | relative_url }}" defer></script>

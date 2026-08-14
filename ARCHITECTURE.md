@@ -20,10 +20,12 @@ This repository publishes the Phase I United States Courts website at
   browser.
 - `search.json` is the generated local site index used by
   `assets/site-search.js`.
+- `/records/` is the public JIS records client. Its API origin is configured in
+  `jis.public_api_base_url`; the browser calls JIS only and contains no secret.
 
-## Future route namespaces
+## Records and future route namespaces
 
-Future court-information work should add real, backed services beneath stable
+Court-information work should add real, backed services beneath stable
 namespaces such as `/cases/`, `/dockets/`, `/people/`, `/records/`, `/arrests/`,
 `/judges/`, and `/api/v1/`. Phase I deliberately does not expose empty pages or
 mock APIs for those concepts.
@@ -32,7 +34,10 @@ Data models must preserve the distinction among allegation or arrest, charge,
 conviction, acquittal, dismissal, pardon, vacatur, and other post-judgment
 changes. A Roblox UserId may later serve as a stable person identifier, but
 identity, history, and disposition records require a governed data source
-before they are published.
+before they are published. Historical Discord arrests may be displayed under
+the exact username recorded by the source while their `IdentityClaim` remains
+unresolved. A current account with the same username is a separate result and
+must not be treated as the same person without a verified JIS linkage.
 
 ## Development constraints
 
@@ -43,4 +48,3 @@ before they are published.
   `innerHTML`.
 - Keep the site progressively enhanced and dependency-light. Do not introduce a
   client framework merely to add a records feature.
-

@@ -20,6 +20,10 @@ dockets:
   supreme_court_board: "MMA90mFH"
   district_court_board: "rbISqlOt"
 
+jis:
+  # Set to the deployed public JIS HTTPS origin before publishing Records search.
+  public_api_base_url: ""
+
 collections:
   frap:
     output: true
