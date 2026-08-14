@@ -6,14 +6,13 @@
         <span class="court-brand__text">
           <span class="court-brand__kicker">Federal Judiciary</span>
           <span class="court-brand__title">United States Courts</span>
-          <span class="court-brand__tagline">{{ site.tagline }}</span>
         </span>
       </a>
 
       <div class="masthead__tools">
         <form class="site-search" action="{{ '/search.html' | relative_url }}" method="get" role="search">
           <label class="visually-hidden" for="site-search-query">Search court rules and resources</label>
-          <input id="site-search-query" type="search" name="q" placeholder="Search rules and resources" required>
+          <input id="site-search-query" type="search" name="q" placeholder="Search the Courts" required>
           <button type="submit">Search</button>
         </form>
 
@@ -29,21 +28,19 @@
   <nav class="primary-nav" aria-label="Primary navigation">
     <div class="primary-nav__inner">
       <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Home</a>
-      <a href="{{ '/#current-dockets' | relative_url }}">Dockets</a>
-      <a href="{{ '/case-search.html' | relative_url }}"{% if page.url == '/case-search.html' %} aria-current="page"{% endif %}>Case Search</a>
+      <a href="{{ '/case-search.html' | relative_url }}"{% if page.url == '/case-search.html' %} aria-current="page"{% endif %}>Cases &amp; Dockets</a>
       <details class="nav-menu"{% if page.collection or page.url == '/frap/' or page.url == '/frcp/' or page.url == '/frcmp/' or page.url == '/fre/' or page.url == '/supct/' %} data-current="true"{% endif %}>
-        <summary>Rules &amp; Procedure</summary>
+        <summary>Rules</summary>
         <div class="nav-menu__panel">
-          <a href="{{ '/frap/' | relative_url }}"{% if page.collection == 'frap' or page.url == '/frap/' %} aria-current="page"{% endif %}>Appellate Procedure</a>
           <a href="{{ '/frcp/' | relative_url }}"{% if page.collection == 'frcp' or page.url == '/frcp/' %} aria-current="page"{% endif %}>Civil Procedure</a>
           <a href="{{ '/frcmp/' | relative_url }}"{% if page.collection == 'frcmp' or page.url == '/frcmp/' %} aria-current="page"{% endif %}>Criminal Procedure</a>
           <a href="{{ '/fre/' | relative_url }}"{% if page.collection == 'fre' or page.url == '/fre/' %} aria-current="page"{% endif %}>Rules of Evidence</a>
           <a href="{{ '/supct/' | relative_url }}"{% if page.collection == 'supct' or page.url == '/supct/' %} aria-current="page"{% endif %}>Supreme Court Rules</a>
+          <a class="nav-menu__secondary" href="{{ '/frap/' | relative_url }}"{% if page.collection == 'frap' or page.url == '/frap/' %} aria-current="page"{% endif %}>Appellate Rules Reference</a>
         </div>
       </details>
       <a href="{{ '/docs/' | relative_url }}"{% if page.url == '/docs/' %} aria-current="page"{% endif %}>Documents</a>
-      <a href="{{ '/#legal-resources' | relative_url }}">Legal Resources</a>
-      <a href="{{ site.related_sites.us_code }}" aria-label="U.S. Code, related site">U.S. Code</a>
+      <a class="primary-nav__related" href="{{ site.related_sites.us_code }}" aria-label="U.S. Code, related site">U.S. Code <span aria-hidden="true">↗</span></a>
     </div>
   </nav>
 </header>

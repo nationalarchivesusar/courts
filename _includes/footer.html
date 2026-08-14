@@ -1,42 +1,20 @@
 <footer class="site-footer">
   <div class="site-footer__inner">
-    <div class="footer-links">
-      <section aria-labelledby="footer-courts-heading">
-        <h2 id="footer-courts-heading">United States Courts</h2>
-        <nav aria-label="Courts footer navigation">
-          <a href="{{ '/' | relative_url }}">Home</a>
-          <a href="{{ '/#current-dockets' | relative_url }}">Dockets</a>
-          <a href="{{ '/case-search.html' | relative_url }}">Case Search</a>
-          <a href="{{ '/frcp/' | relative_url }}">Rules</a>
-          <a href="{{ '/docs/' | relative_url }}">Documents</a>
-        </nav>
-      </section>
-      <section aria-labelledby="footer-info-heading">
-        <h2 id="footer-info-heading">Legal Information</h2>
-        <nav aria-label="Legal information links">
-          <a href="{{ site.related_sites.us_code }}">United States Code</a>
-          <a href="{{ site.related_sites.public_laws }}">Public Laws</a>
-          <a href="{{ '/about/' | relative_url }}">About</a>
-          <a href="{{ '/help/' | relative_url }}">Help</a>
-          <a href="{{ '/disclaimer/' | relative_url }}">Disclaimer</a>
-        </nav>
-      </section>
+    <div class="footer-primary">
+      <a class="nara-attribution" href="{{ site.nara.url }}" rel="noopener noreferrer">
+        <img src="{{ '/assets/images/nara.png' | relative_url }}" alt="National Archives and Records Administration">
+        <span>Maintained by the <strong>{{ site.nara.name }}</strong> for the United States Courts.</span>
+      </a>
+
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="{{ '/about/' | relative_url }}">About</a>
+        <a href="{{ '/help/' | relative_url }}">Help</a>
+        <a href="{{ '/disclaimer/' | relative_url }}">Disclaimer</a>
+        <a href="{{ site.related_sites.us_code }}">U.S. Code</a>
+      </nav>
     </div>
 
-    <a class="nara-attribution" href="{{ site.nara.url }}" rel="noopener noreferrer">
-      <img src="{{ '/assets/images/nara.png' | relative_url }}" alt="National Archives and Records Administration">
-      <span>Maintained by the <strong>{{ site.nara.name }}</strong> for the United States Courts.</span>
-    </a>
-
-    <div class="community-links" aria-label="Court and community channels">
-      <span>Court &amp; community channels:</span>
-      <a href="https://discord.gg/5vDcGMzsQg" rel="noopener noreferrer">USAR</a>
-      <a href="https://discord.gg/J8qQA62KZK" rel="noopener noreferrer">Supreme Court</a>
-      <a href="https://discord.gg/54CBUb47d6" rel="noopener noreferrer">District Court</a>
-      <a href="https://discord.gg/fknPvcCfFp" rel="noopener noreferrer">ULPA</a>
-    </div>
-
-    <p class="footer-disclaimer">An independent USAR community resource. This site is not affiliated with the real United States government and does not provide legal advice.</p>
+    <p class="footer-disclaimer">An independent USAR community resource. Not affiliated with the real United States government.</p>
   </div>
 </footer>
 

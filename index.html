@@ -2,51 +2,23 @@
 layout: page
 title: Home
 slug: home
-description: Public access to court information, current dockets, Supreme Court case law, rules of procedure, forms, and legal resources of the USAR federal judiciary.
+description: Public access to federal court cases, dockets, rules, opinions, and judicial records.
 show_breadcrumbs: false
 ---
 
 <section class="institutional-intro" aria-labelledby="intro-heading">
-  <div class="institutional-intro__copy">
-    <p class="eyebrow">Federal Judiciary</p>
-    <h1 id="intro-heading">United States Courts</h1>
-    <p class="intro-lede">Public access to court information, current dockets, Supreme Court case law, rules of procedure, forms, and other resources of the USAR federal judiciary.</p>
-    <p class="intro-note">Phase I preserves the former Legal Directory’s existing materials while establishing a court-wide public information service.</p>
-  </div>
-  <div class="institutional-intro__mark" aria-hidden="true">
-    <img src="{{ '/assets/uscourts-logo.png' | relative_url }}" alt="">
-  </div>
+  <p class="eyebrow">Federal Judiciary</p>
+  <h1 id="intro-heading">United States Courts</h1>
+  <p class="intro-lede">Public access to federal court cases, dockets, rules, opinions, and judicial records.</p>
 </section>
-
-<nav class="primary-actions" aria-label="Primary court resources">
-  <a href="{{ '/case-search.html' | relative_url }}">
-    <span>Search case law</span>
-    <small>Supreme Court scope</small>
-  </a>
-  <a href="#current-dockets">
-    <span>View current dockets</span>
-    <small>Supreme and District Courts</small>
-  </a>
-  <a href="#rules-procedure">
-    <span>Rules &amp; Procedure</span>
-    <small>Federal and Supreme Court rules</small>
-  </a>
-  <a href="{{ '/docs/' | relative_url }}">
-    <span>Document Library</span>
-    <small>Forms and filing templates</small>
-  </a>
-</nav>
 
 <section id="current-dockets" class="section-block docket-section" aria-labelledby="dockets-heading"
   data-docket-supreme="{{ site.dockets.supreme_court_board }}"
   data-docket-district="{{ site.dockets.district_court_board }}"
   data-fallback-url="{{ '/assets/docket-fallback.json' | relative_url }}">
   <header class="section-heading">
-    <div>
-      <p class="eyebrow">Current proceedings</p>
-      <h2 id="dockets-heading">Court dockets</h2>
-    </div>
-    <p>Public summaries drawn from the Courts’ existing docket boards. Open a matter for the authoritative working record.</p>
+    <p class="eyebrow">Current proceedings</p>
+    <h2 id="dockets-heading">Current Dockets</h2>
   </header>
 
   <div class="docket-columns">
@@ -54,7 +26,7 @@ show_breadcrumbs: false
       <header>
         <div>
           <p class="docket-panel__court">Supreme Court of the United States</p>
-          <h3 id="supreme-docket-heading">Supreme Court docket</h3>
+          <h3 id="supreme-docket-heading">Supreme Court</h3>
         </div>
         <span class="docket-status" id="docket-status-supreme" role="status">Loading</span>
       </header>
@@ -71,7 +43,7 @@ show_breadcrumbs: false
       <header>
         <div>
           <p class="docket-panel__court">United States District Court</p>
-          <h3 id="district-docket-heading">District Court docket</h3>
+          <h3 id="district-docket-heading">District Court</h3>
         </div>
         <span class="docket-status" id="docket-status-district" role="status">Loading</span>
       </header>
@@ -86,49 +58,36 @@ show_breadcrumbs: false
   </div>
 </section>
 
-<section id="rules-procedure" class="section-block" aria-labelledby="rules-heading">
+<section class="section-block court-resources" aria-labelledby="resources-heading">
   <header class="section-heading">
-    <div>
-      <p class="eyebrow">Authoritative reference</p>
-      <h2 id="rules-heading">Rules &amp; Procedure</h2>
-    </div>
-    <p>The established Legal Directory collection remains available at its existing routes, with improved reading and citation tools.</p>
+    <p class="eyebrow">Court information</p>
+    <h2 id="resources-heading">Court Resources</h2>
   </header>
-  <div class="rule-set-list">
-    <a href="{{ '/frap/' | relative_url }}"><strong>Appellate Procedure</strong><span>Federal Rules of Appellate Procedure</span></a>
-    <a href="{{ '/frcp/' | relative_url }}"><strong>Civil Procedure</strong><span>Federal Rules of Civil Procedure</span></a>
-    <a href="{{ '/frcmp/' | relative_url }}"><strong>Criminal Procedure</strong><span>Federal Rules of Criminal Procedure</span></a>
-    <a href="{{ '/fre/' | relative_url }}"><strong>Rules of Evidence</strong><span>Federal Rules of Evidence</span></a>
-    <a href="{{ '/supct/' | relative_url }}"><strong>Supreme Court Rules</strong><span>Rules of the Supreme Court</span></a>
-  </div>
-</section>
 
-<section id="legal-resources" class="section-block" aria-labelledby="resources-heading">
-  <header class="section-heading">
-    <div>
-      <p class="eyebrow">Research &amp; filing</p>
-      <h2 id="resources-heading">Legal resources</h2>
-    </div>
-    <p>Courts resources are listed first. External educational references are marked separately.</p>
-  </header>
-  <div class="resource-directory">
-    <section aria-labelledby="internal-resources-heading">
-      <h3 id="internal-resources-heading">Courts &amp; legal information</h3>
-      <ul class="resource-list">
-        <li><a href="{{ site.related_sites.us_code }}"><strong>United States Code</strong><span>Browse and search the USAR legal code.</span></a></li>
-        <li><a href="{{ '/case-search.html' | relative_url }}"><strong>Supreme Court Case Search</strong><span>Search the present CourtListener-backed case-law collection.</span></a></li>
-        <li><a href="{{ '/docs/' | relative_url }}"><strong>Document Library</strong><span>Find briefs, petitions, appendices, and filing templates.</span></a></li>
-        <li><a href="{{ site.related_sites.public_laws }}"><strong>Public Laws</strong><span>Review enacted and repealed public laws in the related Code Library.</span></a></li>
-      </ul>
+  <div class="court-resource-grid">
+    <section class="court-resource">
+      <h3><a href="{{ '/case-search.html' | relative_url }}">Cases &amp; Dockets</a></h3>
+      <p>Search Supreme Court cases and review pending matters.</p>
     </section>
-    <section aria-labelledby="external-resources-heading">
-      <h3 id="external-resources-heading">External educational references</h3>
-      <ul class="external-resource-list">
-        <li><a href="https://www.law.cornell.edu/wex/constitutional_law" rel="noopener noreferrer">Constitutional law — Cornell Wex <span aria-hidden="true">↗</span></a></li>
-        <li><a href="https://www.law.cornell.edu/wex/category/criminal-law-and-procedure" rel="noopener noreferrer">Criminal law and procedure — Cornell Wex <span aria-hidden="true">↗</span></a></li>
-        <li><a href="https://www.law.cornell.edu/wex/category/courts_and_procedure" rel="noopener noreferrer">Courts and procedure — Cornell Wex <span aria-hidden="true">↗</span></a></li>
-        <li><a href="https://www.oyez.org/issues" rel="noopener noreferrer">Supreme Court decisions by topic — Oyez <span aria-hidden="true">↗</span></a></li>
-      </ul>
+
+    <section id="rules-procedure" class="court-resource">
+      <h3>Rules &amp; Procedure</h3>
+      <p class="rule-links">
+        <a href="{{ '/frcp/' | relative_url }}">Civil Procedure</a>
+        <a href="{{ '/frcmp/' | relative_url }}">Criminal Procedure</a>
+        <a href="{{ '/fre/' | relative_url }}">Evidence</a>
+        <a href="{{ '/supct/' | relative_url }}">Supreme Court Rules</a>
+      </p>
+    </section>
+
+    <section class="court-resource">
+      <h3><a href="{{ '/docs/' | relative_url }}">Documents &amp; Forms</a></h3>
+      <p>Court forms, templates, opinions, and filing resources.</p>
+    </section>
+
+    <section class="court-resource">
+      <h3><a href="{{ site.related_sites.us_code }}">United States Code <span aria-hidden="true">↗</span></a></h3>
+      <p>Browse and search federal statutory law.</p>
     </section>
   </div>
 </section>
