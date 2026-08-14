@@ -1,12 +1,16 @@
 (() => {
+  "use strict";
+
   const root = document.querySelector("[data-docket-supreme][data-docket-district]");
-  if (!root) return;
+  const model = window.CourtsDocketModel;
+  if (!root || !model) return;
 
   const docketTypes = {
     supreme: root.dataset.docketSupreme,
     district: root.dataset.docketDistrict,
   };
   const fallbackUrl = root.dataset.fallbackUrl;
+  const maxFallbackAge = 7 * 24 * 60 * 60 * 1000;
   const colorNames = new Set(["blue", "green", "orange", "red", "purple", "yellow", "black", "pink", "sky", "lime", "gray"]);
 
   function safeExternalUrl(value) {
@@ -72,24 +76,13 @@
     return wrapper;
   }
 
-  function eligible(card) {
-    const name = String(card?.name || "").trim();
-    return Boolean(
-      name &&
-      Array.isArray(card.labels) &&
-      card.labels.length &&
-      !["____", "create template"].includes(name.toLowerCase()) &&
-      !/^[-_—]+$/.test(name),
-    );
-  }
-
   function renderCard(card) {
     const article = document.createElement("article");
     article.className = "docket-entry";
     const titleUrl = safeExternalUrl(card.url);
     const title = titleUrl ? document.createElement("a") : document.createElement("span");
     title.className = "docket-entry__title";
-    title.textContent = String(card.name || "Untitled matter").trim();
+    title.textContent = model.cleanCardName(card.name) || "Untitled matter";
     if (titleUrl) {
       title.href = titleUrl;
       title.target = "_blank";
@@ -97,16 +90,18 @@
     }
     article.append(title);
 
-    const labels = document.createElement("div");
-    labels.className = "docket-entry__labels";
-    card.labels.forEach((label) => {
-      const item = document.createElement("span");
-      const color = colorNames.has(label.color) ? label.color : "gray";
-      item.className = `docket-label docket-label--${color}`;
-      item.textContent = String(label.name || "Status");
-      labels.append(item);
-    });
-    article.append(labels);
+    if (Array.isArray(card.labels) && card.labels.length) {
+      const labels = document.createElement("div");
+      labels.className = "docket-entry__labels";
+      card.labels.forEach((label) => {
+        const item = document.createElement("span");
+        const color = colorNames.has(label.color) ? label.color : "gray";
+        item.className = `docket-label docket-label--${color}`;
+        item.textContent = String(label.name || "Status");
+        labels.append(item);
+      });
+      article.append(labels);
+    }
 
     const description = createDescription(descriptionLines(card.desc));
     if (description) article.append(description);
@@ -118,48 +113,75 @@
     if (status) status.textContent = text;
   }
 
-  function render(type, cards, source) {
+  function render(type, docket, source) {
     const container = document.getElementById(`docket-cards-${type}`);
     const error = document.getElementById(`docket-error-${type}`);
     if (!container) return;
     container.replaceChildren();
     if (error) error.hidden = true;
     container.setAttribute("aria-busy", "false");
-    const usableCards = cards.filter(eligible);
 
-    if (!usableCards.length) {
+    const groups = Array.isArray(docket?.groups) ? docket.groups : [];
+    const activeGroups = groups.filter((group) => Array.isArray(group.cards) && group.cards.length);
+    if (!activeGroups.length) {
       const empty = document.createElement("p");
       empty.className = "docket-empty";
-      empty.textContent = "No active matters are listed at this time.";
+      empty.textContent = model.emptyMessage(type, Number(docket?.qualifyingListCount || 0));
       container.append(empty);
-      setStatus(type, source === "fallback" ? "Cached" : "Current");
+      setStatus(type, model.statusLabel(source));
       return;
     }
 
-    usableCards.forEach((card) => container.append(renderCard(card)));
-    setStatus(type, source === "fallback" ? "Cached" : "Current");
+    activeGroups.forEach((group) => {
+      if (type === "district") {
+        const section = document.createElement("section");
+        section.className = "docket-group";
+        const heading = document.createElement("h4");
+        heading.textContent = group.sourceListName;
+        section.append(heading);
+        group.cards.forEach((card) => section.append(renderCard(card)));
+        container.append(section);
+      } else {
+        group.cards.forEach((card) => container.append(renderCard(card)));
+      }
+    });
+    setStatus(type, model.statusLabel(source));
   }
 
-  async function fetchBoard(boardId, signal) {
+  async function fetchBoard(type, boardId, signal) {
     const url = new URL(`https://api.trello.com/1/boards/${encodeURIComponent(boardId)}/lists`);
     url.searchParams.set("cards", "open");
-    url.searchParams.set("card_fields", "name,desc,url,labels");
-    url.searchParams.set("fields", "name");
+    url.searchParams.set("card_fields", "id,name,desc,url,labels,closed");
+    url.searchParams.set("fields", "id,name,closed");
+    url.searchParams.set("filter", "open");
     const response = await fetch(url, { signal, credentials: "omit" });
     if (!response.ok) throw new Error(`Docket request failed (${response.status})`);
     const lists = await response.json();
     if (!Array.isArray(lists)) throw new Error("Unexpected docket response");
-    return lists
-      .filter((list) => String(list.name || "").toLowerCase().includes("docket"))
-      .flatMap((list) => (Array.isArray(list.cards) ? list.cards : []));
+    return model.selectDocketData(type, lists);
   }
 
   async function fetchFallback(boardId) {
-    if (!fallbackUrl) return [];
+    if (!fallbackUrl) return null;
     const response = await fetch(fallbackUrl, { credentials: "same-origin" });
-    if (!response.ok) return [];
+    if (!response.ok) return null;
     const data = await response.json();
-    return Array.isArray(data?.[boardId]) ? data[boardId] : [];
+    if (!model.fallbackIsFresh(data?.generatedAt, Date.now(), maxFallbackAge)) return null;
+    const docket = data?.boards?.[boardId];
+    return docket && Array.isArray(docket.groups) ? docket : null;
+  }
+
+  function showUnavailable(type, container, error) {
+    container.replaceChildren();
+    container.setAttribute("aria-busy", "false");
+    if (error) {
+      const message = error.querySelector("p");
+      if (message) {
+        message.textContent = model.unavailableMessage(type);
+      }
+      error.hidden = false;
+    }
+    setStatus(type, "Unavailable");
   }
 
   async function load(type) {
@@ -180,21 +202,15 @@
     const controller = new AbortController();
     const timeout = window.setTimeout(() => controller.abort(), 10000);
     try {
-      const cards = await fetchBoard(boardId, controller.signal);
-      render(type, cards, "live");
+      const docket = await fetchBoard(type, boardId, controller.signal);
+      render(type, docket, "live");
     } catch {
       try {
         const fallback = await fetchFallback(boardId);
-        if (fallback.length) {
-          render(type, fallback, "fallback");
-        } else {
-          throw new Error("No cached docket data");
-        }
+        if (!fallback) throw new Error("No current cached docket data");
+        render(type, fallback, "fallback");
       } catch {
-        container.replaceChildren();
-        container.setAttribute("aria-busy", "false");
-        if (error) error.hidden = false;
-        setStatus(type, "Unavailable");
+        showUnavailable(type, container, error);
       }
     } finally {
       window.clearTimeout(timeout);
@@ -206,4 +222,3 @@
   });
   Object.keys(docketTypes).forEach(load);
 })();
-

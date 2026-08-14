@@ -30,7 +30,7 @@
       <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Home</a>
       <a href="{{ '/case-search.html' | relative_url }}"{% if page.url == '/case-search.html' %} aria-current="page"{% endif %}>Cases &amp; Dockets</a>
       <details class="nav-menu"{% if page.collection or page.url == '/frap/' or page.url == '/frcp/' or page.url == '/frcmp/' or page.url == '/fre/' or page.url == '/supct/' %} data-current="true"{% endif %}>
-        <summary>Rules</summary>
+        <summary>Rules of Procedure</summary>
         <div class="nav-menu__panel">
           <a href="{{ '/frcp/' | relative_url }}"{% if page.collection == 'frcp' or page.url == '/frcp/' %} aria-current="page"{% endif %}>Civil Procedure</a>
           <a href="{{ '/frcmp/' | relative_url }}"{% if page.collection == 'frcmp' or page.url == '/frcmp/' %} aria-current="page"{% endif %}>Criminal Procedure</a>

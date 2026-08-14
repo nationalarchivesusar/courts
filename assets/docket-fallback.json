@@ -1,17 +1,161 @@
 {
-  "MMA90mFH": [
-    {
-      "id": "68786438123588ef7de50084",
-      "name": "Docket Information",
-      "desc": "This list contains the regular cases brought before the Supreme Court, including judicial complaints, that are pending certiorari or pending a decision.",
-      "url": "https://trello.com/c/roREo8Sc/35-docket-information",
-      "labels": [
+  "generatedAt": "2026-08-14T00:27:37.447Z",
+  "boards": {
+    "MMA90mFH": {
+      "type": "supreme",
+      "qualifyingListCount": 1,
+      "groups": [
         {
-          "name": "Information",
-          "color": "black"
+          "sourceListName": "Docket",
+          "cards": [
+            {
+              "id": "68786438123588ef7de50084",
+              "name": "Docket Information",
+              "desc": "This list contains the regular cases brought before the Supreme Court, including judicial complaints, that are pending certiorari or pending a decision.",
+              "url": "https://trello.com/c/roREo8Sc/35-docket-information",
+              "labels": [
+                {
+                  "name": "Information",
+                  "color": "black"
+                }
+              ],
+              "sourceListName": "Docket"
+            }
+          ]
+        }
+      ]
+    },
+    "rbISqlOt": {
+      "type": "district",
+      "qualifyingListCount": 5,
+      "groups": [
+        {
+          "sourceListName": "The Honorable axell_14",
+          "cards": [
+            {
+              "id": "6a7cb91af93fb37785f4dab3",
+              "name": "CR-072626-0067 — United States v. 17XKUNO",
+              "desc": "**Court:** USDC\n**Case type:** Criminal\n\n### Filed documents\n- `2026-07-26 05:12:51 UTC` — [drive-file](https://drive.google.com/file/d/1ZZFlWpRkxCRlpOlGcopz-RRsjLHEW5CF/view)\n- `2026-07-26 22:25:36 UTC` — [drive-file](https://drive.google.com/file/d/1_X_wvX5GZs_rtDnOzYgaxDlkiLnTXLKh/view?usp=sharing)\n- `2026-07-26 22:25:36 UTC` — [drive-file](https://drive.google.com/file/d/1BieCqd2ywS7cPxuEAFdzoALwh9hspyoB/view?usp=sharing)\n- `2026-08-08 23:50:54 UTC` — [Notice of Appearance as Counsel (haitixn, awilla236)](https://drive.google.com/file/d/1I_dvsoyTqwNRqBvj9hyEJobsTOQQYjFA/view?usp=sharing)\n- `2026-08-09 01:12:50 UTC` — [Notice of Appearance as Co Counsel](https://drive.google.com/file/d/14_vE6__X78inpRQ6xSqtGeNMA02JuAaN/view?usp=drivesdk)",
+              "url": "https://trello.com/c/DQOjJhom/490-cr-072626-0067-united-states-v-17xkuno",
+              "labels": [
+                {
+                  "name": "Criminal Case",
+                  "color": "purple_dark"
+                },
+                {
+                  "name": "Active",
+                  "color": "green"
+                }
+              ],
+              "sourceListName": "The Honorable axell_14"
+            }
+          ]
+        },
+        {
+          "sourceListName": "The Honorable Hon. Killahrose62",
+          "cards": []
+        },
+        {
+          "sourceListName": "The Honorable Justice Kagan",
+          "cards": [
+            {
+              "id": "6a7cb90cda3111f058f75f76",
+              "name": "CR-070626-0065 — United States v. VO1OP",
+              "desc": "**Court:** USDC\n**Case type:** Criminal\n\n### Next hearing\n2026-07-31T18:43:04.501Z\nTrial Day 1\n\n### Filed documents\n- `2026-07-06 20:41:13 UTC` — [UNITED STATES OF AMERICA v. vo1op | Criminal Declaration & Affidavit .pdf](https://drive.google.com/file/d/1oO8l4hjk9medOk9DV2_T4uDGYkeZwWJU/view?usp=drivesdk)\n- `2026-07-07 03:47:51 UTC` — [drive-file](https://drive.google.com/file/d/1MitI7O1fwqfbc7-BmvfiWfG1PWJv4QQE/view?usp=sharing)\n- `2026-07-15 16:03:44 UTC` — [CR-070626-0065 | Defendant's Motion to Dismiss.pdf](https://drive.google.com/file/d/1zyWM-x0Ma19Keo4uekYr51oOq1hn0DcB/view?usp=drivesdk)\n- `2026-07-15 18:15:45 UTC` — [drive-file](https://drive.google.com/file/d/19vSWXR9Euof5-sXNRLL0uvR4O66erb_z/view)\n- `2026-07-16 22:35:00 UTC` — [Copy of CV-022825-50 MOTION TO DISMISS (1).pdf](https://drive.google.com/file/d/1dy9beb9dCFw65zqyzMG3JJy2V8K1CGII/view?usp=sharing)\n- `2026-07-17 02:23:45 UTC` — [drive-file](https://drive.google.com/file/d/17mXrk7VXih41ZezdRsBUcaJGRAYyqshI/view?usp=sharing)\n- `2026-07-17 17:50:22 UTC` — [CR-070626-0065 | Motion for Revocation of Detention Order.pdf](https://drive.google.com/file/d/1xALe5a-eLF6BwwW23_gpnF7PzTs8zh18/view?usp=drivesdk)\n- `2026-07-18 11:33:42 UTC` — [CR-070626-0065 | Defendantâs Motion for Discovery and Brady Disclosure.pdf](https://drive.google.com/file/d/12dU_bno830_9a31n3HRSLNQQh72C8fMT/view?usp=drivesdk)\n- `2026-07-18 11:33:42 UTC` — [CR-070626-0065 | Defendantâs Motion for a Bill of Particulars.pdf](https://drive.google.com/file/d/1iQyeZx7XmlZmSZTZblPNWMuGgE68jT9G/view?usp=drivesdk)\n- `2026-07-19 01:33:02 UTC` — [drive-file](https://drive.google.com/file/d/1mkSGk6AB2ET0PbXJFgMmPX41o7TBUZ0u/view)\n- `2026-07-19 20:19:38 UTC` — [CR-070626-0065 | Defendantâs Motion to Enforce Paragraph 5 and to Schedule Preliminary Hearing.pdf](https://drive.google.com/file/d/1yHU9i-iWgRTHjMbnOgC6w52AFLe9kAvL/view?usp=drivesdk)\n- `2026-07-20 14:19:02 UTC` — [CR-070626-0065 | Defendantâs Reply in Support of Motion for Revocation.pdf](https://drive.google.com/file/d/1ob3e8UccU7X1-zpCPawBuQsZGs7fuU8I/view?usp=drivesdk)\n- `2026-07-25 21:41:20 UTC` — [ORDER 7222026.pdf](https://drive.google.com/file/d/1m6YT4HfvKS4sd1ysF8TCmHkFK9hIZF2P/view?usp=sharing)\n- `2026-07-26 06:24:10 UTC` — [drive-file](https://drive.google.com/file/d/1p35lwja2Ez2s3pwt9yoagxYvNiCZ2NCk/view)\n- `2026-07-26 17:14:48 UTC` — [CR-070626-0065 | Defendant's Motion to Compel Discovery.pdf](https://drive.google.com/file/d/13_QT4U0d5E2cUA3WA7vwUos02jYcAqDp/view?usp=sharing)\n- `2026-07-26 17:14:48 UTC` — [CR-070626-0065 | Defendant's Motion in Limine.pdf](https://drive.google.com/file/d/1HrbAXFZmM5tXnn88U5jEb-sR_a1eOTxk/view?usp=sharing)\n- `2026-07-26 17:14:48 UTC` — [CR-070626-0065 | Defendant's Renewed Motion for Bill of Particulars.pdf](https://drive.google.com/file/d/1qAcg9ZfpAIkTnxk3DTQsDSiOgFoK9RkO/view?usp=sharing)\n- `2026-07-27 05:15:12 UTC` — [drive-file](https://drive.google.com/file/d/1-CD7PnYK-yxi7XlfDhNVCcq20ByCVwum/view)\n- `2026-07-27 05:15:12 UTC` — [drive-file](https://drive.google.com/file/d/1krXooL0R51zhHhf4UyshjywKa-IW2wH0/view)\n- `2026-07-27 05:15:12 UTC` — [drive-file](https://drive.google.com/file/d/1t49dSY46KYWZa6xJs3ad1BkiYXHHN7aJ/view)\n- `2026-07-29 03:23:56 UTC` — [drive-file](https://drive.google.com/file/d/1uJDDobyw0ZGeZK3PcEQvikeh9_vH9CRy/view?usp=sharing)\n- `2026-07-29 14:21:06 UTC` — [CR-070626-0065 | Defendant's Reply in Support of Renewed Motion for a Bill of Particulars.pdf](https://drive.google.com/file/d/14rD5QLZF0aZq0VYUJ4MfRm2VWmnf5axn/view?usp=sharing)\n- `2026-07-29 14:21:06 UTC` — [CR-070626-0065 | Defendant's Reply in Support of Motion in Limine.pdf](https://drive.google.com/file/d/1iAaJ7K4tl5hGbrQEjTG__l588kSFbQBb/view?usp=sharing)\n- `2026-07-29 14:21:06 UTC` — [CR-070626-0065 | Defendant's Reply in Support of Motion to Compel Discovery.pdf](https://drive.google.com/file/d/1TjgbKQScSFzrrMh9yc-ZteSq0ip9kpMv/view?usp=sharing)\n- `2026-08-02 04:54:12 UTC` — [ORDER_070626-3-2.pdf](https://cdn.discordapp.com/attachments/1459268634043220050/1533349849699717240/ORDER_070626-3-2.pdf?ex=6a702ad4&is=6a6ed954&hm=cced253ff79746f33bd056e992ee806ebc8b5ec93b7c7fb7f33de0de90e8ccb4&)\n- `2026-08-02 04:54:12 UTC` — [ORDER (070626-4).pdf](https://drive.google.com/file/d/15arTXlum8U8pdzi8yMqqFQxrDDIoO-F6/view?usp=sharing)\n- `2026-08-02 04:54:12 UTC` — [ORDER (070626-5).pdf](https://drive.google.com/file/d/1hKKmwu6hKY4K3uDwcNug4h1Ci8h7OeMq/view?usp=sharing)\n- `2026-08-02 05:44:52 UTC` — [ORDER (070626-3).pdf](https://drive.google.com/file/d/1cZIfjP42jfUj4kvMin33hpiMC6Xg0uXm/view?usp=sharing)\n- `2026-08-03 03:44:59 UTC` — [drive-file](https://drive.google.com/file/d/1clH0d5hYEcWiK2abGQ9gT9muBrXIRUPb/view)\n- `2026-08-03 10:33:35 UTC` — [CR-070626-65 | Defendant's Supplemental Motion in Limine.pdf](https://drive.google.com/file/d/1rUYyFH4IyRw12iskA7-UqjzWfI1ooX9M/view?usp=sharing)\n- `2026-08-05 05:07:24 UTC` — [drive-file](https://drive.google.com/file/d/1PvM5k2WBptzDpdtGpvB7Pf8QalYtav0t/view)\n- `2026-08-06 20:30:06 UTC` — [CR-070626-0065 | Defendant's Reply in Support of Supplemental Motion in Limine.pdf](https://drive.google.com/file/d/1Zc5ZEAM_OhQF3cRoIp61NeFoMcq2Eiu9/view?usp=sharing)\n- `2026-08-09 21:36:31 UTC` — [ORDER (070626-6).pdf](https://drive.google.com/file/d/1m3NHprhPze8CwxnIz2q-JdAomVdbHaZA/view?usp=sharing)",
+              "url": "https://trello.com/c/IwiRHhx2/488-cr-070626-0065-united-states-v-vo1op",
+              "labels": [
+                {
+                  "name": "Criminal Case",
+                  "color": "purple_dark"
+                },
+                {
+                  "name": "Active",
+                  "color": "green"
+                }
+              ],
+              "sourceListName": "The Honorable Justice Kagan"
+            }
+          ]
+        },
+        {
+          "sourceListName": "The Honorable Christgov",
+          "cards": [
+            {
+              "id": "6a7cb928151963b917f56945",
+              "name": "CR-080826-0069 — United States v. 0DURE",
+              "desc": "**Court:** USDC\n**Case type:** Criminal\n\n### Filed documents\n- `2026-08-08 19:40:19 UTC` — [UNITED STATES v. 0DURE | Criminal Information & Declaration](https://drive.google.com/file/d/1MtMscvKuACooGIURHsdk0tab836JigyX/view?usp=sharing)\n- `2026-08-11 23:06:23 UTC` — [CR-080826-0069 | Amended Declaration.pdf](https://drive.google.com/file/d/1UwAMbPAXGDElzTAHe_eXQIyX1IKcjZVj/view?usp=drive_link)",
+              "url": "https://trello.com/c/i96u5ONT/492-cr-080826-0069-united-states-v-0dure",
+              "labels": [
+                {
+                  "name": "Criminal Case",
+                  "color": "purple_dark"
+                },
+                {
+                  "name": "Active",
+                  "color": "green"
+                }
+              ],
+              "sourceListName": "The Honorable Christgov"
+            },
+            {
+              "id": "6a7cb92f8d5a3e0571585ec2",
+              "name": "CR-080826-0070 — United States v. HECTORVOYLVE",
+              "desc": "**Court:** USDC\n**Case type:** Criminal\n\n### Filed documents\n- `2026-08-08 20:09:20 UTC` — [UNITED STATES v. HECTORVOYLVE | Criminal Information & Declaration](https://drive.google.com/file/d/1mOIORZ37nEgvrs4J-rIqErGUJWt59I9l/view?usp=drive_link)",
+              "url": "https://trello.com/c/cxh7NewZ/493-cr-080826-0070-united-states-v-hectorvoylve",
+              "labels": [
+                {
+                  "name": "Criminal Case",
+                  "color": "purple_dark"
+                },
+                {
+                  "name": "Active",
+                  "color": "green"
+                }
+              ],
+              "sourceListName": "The Honorable Christgov"
+            }
+          ]
+        },
+        {
+          "sourceListName": "The Honorable Hon. Kamaric Logan",
+          "cards": [
+            {
+              "id": "6a7cb9131f7c10e11efe8d45",
+              "name": "CR-072626-0066 — United States v. THE_CAPTIAN77",
+              "desc": "**Court:** USDC\n**Case type:** Criminal\n\n### Filed documents\n- `2026-07-26 05:09:13 UTC` — [Criminal Information & Declaration](https://drive.google.com/file/d/1VR4zGBroCNcZuAppZm71FXzHu7DDcNlt/view?usp=sharing)\n- `2026-08-01 19:17:50 UTC` — [Motion to Dismiss](https://drive.google.com/file/d/140LTek1o7hPg4DJmGXwkg_ehw3t_Lbmu/view)\n- `2026-08-06 04:51:42 UTC` — [Proof of written statement of IMPERATORRYKARD in relation to EXHIBIT B](https://drive.google.com/file/d/1PIwm2KDBO7Xer2HPu-7QPTqR_1dl_O4V/view?usp=sharing)\n- `2026-08-06 04:51:42 UTC` — [EXHIBIT A](https://drive.google.com/file/d/1WyIrXRCWpxTWxRkQYW3zGpOuo0CXOtA2/view?usp=sharing)\n- `2026-08-06 04:51:42 UTC` — [UNITED STATES’ FINAL SUPPLEMENTAL DISCOVERY DISCLOSURE](https://drive.google.com/file/d/1xCv5nE5fPW4MuOg4bQLNcpawIKlWC7mx/view?usp=sharing)\n- `2026-08-06 04:51:42 UTC` — [EXHIBIT B](https://drive.google.com/file/d/1XK1lftHdnBL2f3CAukhYpF_2FYy0NvkY/view?usp=sharing)\n- `2026-08-06 04:51:42 UTC` — [Proof of the identity of Defendant, the_captian77 and associating that username and avatar with the person depicted in EXHIBIT B.](https://drive.google.com/file/d/1YEhf5BF_L2yyei0iMpxFLjOP0ysinNcO/view?usp=sharing)\n- `2026-08-06 16:41:29 UTC` — [Motion for Extension of Discovery Deadline](https://drive.google.com/file/d/1ninvO4H-dkVJJDa17odRbT8-zSRxiwMR/view?usp=sharing)\n- `2026-08-06 17:01:57 UTC` — [Motion to Strike Speculative and Improper Portions of the Government's Final Supplemental Discovery Disclosure](https://drive.google.com/file/d/1TDZsrdeBtxvy6EiyAPkeenGgaUfHp0y8/view)\n- `2026-08-06 21:18:43 UTC` — [UNITED STATES’ OPPOSITION TO DEFENDANT’S MOTION TO STRIKE  PORTIONS OF THE FINAL SUPPLEMENTAL DISCOVERY DISCLOSURE](https://drive.google.com/file/d/1QYqHc4FxnIW0vM6BPrIK0zn2fs1HIYI4/view?usp=sharing)\n- `2026-08-06 21:18:43 UTC` — [UNITED STATES’ OPPOSITION TO DEFENDANT’S MOTION  FOR EXTENSION OF DISCOVERY DEADLINE](https://drive.google.com/file/d/1xdijCM0w1CFQH4o4UXn8zy8sIzoiJFvO/view?usp=sharing)\n- `2026-08-07 03:28:46 UTC` — [Defendant's Reply to the United States' Opposition to Defendant's Motion to Strike Portions of the Final Supplemental Discovery Disclosure](https://drive.google.com/file/d/1pD9rhO9xd4r7dqssi19hYkl-4rAORC3s/view)\n- `2026-08-07 03:28:46 UTC` — [Defendant's Reply in Support of Motion for Extension of Discovery Deadline](https://drive.google.com/file/d/1Z00PfWPrLZQyKjThBACIxE8hI5ZhNgQ0/view)\n- `2026-08-07 04:23:25 UTC` — [UNITED STATES' RESPONSE TO DEFENDANT'S REPLY AND  OPPOSITION TO DEFENDANT'S REQUEST FOR ALTERNATIVE RELIEF](https://drive.google.com/file/d/1-Ffvbw2xOK-zkc3iFqPMmk9Oz58-hpdu/view?usp=sharing)\n- `2026-08-07 04:23:25 UTC` — [UNITED STATES' MOTION FOR LEAVE TO FILE SURREPLY AND  SURREPLY IN OPPOSITION TO DEFENDANT'S MOTION FOR EXTENSION OF DISCOVERY DEADLINE](https://drive.google.com/file/d/1Cj1pYUEqlyhTUlO3k9g_RkSIUFX51sak/view?usp=sharing)\n- `2026-08-08 05:38:24 UTC` — [Motion to Reopen Discovery](https://drive.google.com/file/d/1XbRA98A57_WbQ9Nx7wAEgNgJXordc9NQ/view)\n- `2026-08-10 06:54:57 UTC` — [Defendant's Discovery Disclosure](https://drive.google.com/file/d/1y8tMylFW1BHZ6hw06VHlJKDVnmdSwYjd/view)\n- `2026-08-12 19:56:53 UTC` — [UNITED STATES' MOTION IN LIMINE](https://drive.google.com/file/d/1gVRsGjeseEKQy0_pucVqgZcH1VOd597W/view?usp=sharing)\n- `2026-08-12 19:56:53 UTC` — [UNITED STATES’ MOTION IN LIMINE TO PRECLUDE UNSUPPORTED DEFENSES AND IMPROPER ARGUMENT](https://drive.google.com/file/d/1yPKVtImrGkE1T2aZdggBIHWX8qv0VBGn/view?usp=sharing)\n- `2026-08-12 22:52:53 UTC` — [Defendant's Response in Opposition to the United States' Motion in Limine to Preclude Unsopported Defenses and Improper Argument](https://drive.google.com/file/d/1hb9ReWuIyrfR0gWZUQcLns_-MlzUh-9H/view)",
+              "url": "https://trello.com/c/6qC3Ovke/489-cr-072626-0066-united-states-v-thecaptian77",
+              "labels": [
+                {
+                  "name": "Criminal Case",
+                  "color": "purple_dark"
+                },
+                {
+                  "name": "Active",
+                  "color": "green"
+                }
+              ],
+              "sourceListName": "The Honorable Hon. Kamaric Logan"
+            },
+            {
+              "id": "6a7cb921c9d19dfdb9708292",
+              "name": "CR-080826-0068 — United States v. ETHANNNMR",
+              "desc": "**Court:** USDC\n**Case type:** Criminal\n\n### Filed documents\n- `2026-08-08 03:35:01 UTC` — [UNITED STATES v. ETHANNNMR | Criminal Information & Declaration](https://drive.google.com/file/d/1RsiV1zkQuDjLRLazAIj0a0T3UEK6RpmN/view?usp=sharing)",
+              "url": "https://trello.com/c/6rTGX9tQ/491-cr-080826-0068-united-states-v-ethannnmr",
+              "labels": [
+                {
+                  "name": "Criminal Case",
+                  "color": "purple_dark"
+                },
+                {
+                  "name": "Active",
+                  "color": "green"
+                }
+              ],
+              "sourceListName": "The Honorable Hon. Kamaric Logan"
+            }
+          ]
         }
       ]
     }
-  ],
-  "rbISqlOt": []
+  }
 }

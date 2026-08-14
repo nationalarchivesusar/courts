@@ -65,13 +65,15 @@ show_breadcrumbs: false
   </header>
 
   <div class="court-resource-grid">
-    <section class="court-resource">
-      <h3><a href="{{ '/case-search.html' | relative_url }}">Cases &amp; Dockets</a></h3>
-      <p>Search Supreme Court cases and review pending matters.</p>
-    </section>
+    <a class="court-resource court-resource--link" href="{{ '/case-search.html' | relative_url }}">
+      <span class="court-resource__heading">Cases &amp; Dockets</span>
+      <span class="court-resource__description">Search case law and review current Supreme Court and District Court matters.</span>
+      <span class="court-resource__arrow" aria-hidden="true">→</span>
+    </a>
 
     <section id="rules-procedure" class="court-resource">
-      <h3>Rules &amp; Procedure</h3>
+      <h3>Rules of Procedure</h3>
+      <p class="court-resource__description">Civil, criminal, evidence, and Supreme Court procedural rules.</p>
       <p class="rule-links">
         <a href="{{ '/frcp/' | relative_url }}">Civil Procedure</a>
         <a href="{{ '/frcmp/' | relative_url }}">Criminal Procedure</a>
@@ -80,16 +82,19 @@ show_breadcrumbs: false
       </p>
     </section>
 
-    <section class="court-resource">
-      <h3><a href="{{ '/docs/' | relative_url }}">Documents &amp; Forms</a></h3>
-      <p>Court forms, templates, opinions, and filing resources.</p>
-    </section>
+    <a class="court-resource court-resource--link" href="{{ '/docs/' | relative_url }}">
+      <span class="court-resource__heading">Documents &amp; Forms</span>
+      <span class="court-resource__description">Court documents, templates, and filing resources.</span>
+      <span class="court-resource__arrow" aria-hidden="true">→</span>
+    </a>
 
-    <section class="court-resource">
-      <h3><a href="{{ site.related_sites.us_code }}">United States Code <span aria-hidden="true">↗</span></a></h3>
-      <p>Browse and search federal statutory law.</p>
-    </section>
+    <a class="court-resource court-resource--link" href="{{ site.related_sites.us_code }}">
+      <span class="court-resource__heading">United States Code</span>
+      <span class="court-resource__description">Browse and search federal statutory law.</span>
+      <span class="court-resource__arrow" aria-hidden="true">↗</span>
+    </a>
   </div>
 </section>
 
+<script src="{{ '/assets/docket-model.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/dockets.js' | relative_url }}" defer></script>
