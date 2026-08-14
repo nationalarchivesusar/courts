@@ -19,6 +19,7 @@ jobs:
         run: node --test tests/*.test.cjs
       - uses: ruby/setup-ruby@v1
         with:
+          ruby-version: "3.3"
           bundler-cache: true
       - name: Build GitHub Pages site
         run: bundle exec jekyll build
