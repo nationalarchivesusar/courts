@@ -1,105 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html lang="{{ site.lang | default: 'en-US' }}">
 {% include head.html %}
+<body class="page-rule">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  {% include header.html %}
 
-<body>
-    {% include header.html %}
+  {% case page.collection %}
+    {% when 'fre' %}{% assign rule_set_title = 'Federal Rules of Evidence' %}
+    {% when 'supct' %}{% assign rule_set_title = 'Supreme Court Rules' %}
+    {% when 'frap' %}{% assign rule_set_title = 'Federal Rules of Appellate Procedure' %}
+    {% when 'frcmp' %}{% assign rule_set_title = 'Federal Rules of Criminal Procedure' %}
+    {% when 'frcp' %}{% assign rule_set_title = 'Federal Rules of Civil Procedure' %}
+  {% endcase %}
 
-    <div id="breadcrumb-bg">
-        <div id="breadcrumb" class="breadcrumb-container">
-            <a href="{{ site.baseurl }}">Legal Directory</a> &gt;
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="{{ '/' | relative_url }}">United States Courts</a></li>
+      <li><a href="{{ page.collection | prepend: '/' | append: '/' | relative_url }}">{{ rule_set_title }}</a></li>
+      <li aria-current="page">{{ page.title }}</li>
+    </ol>
+  </nav>
 
-            {% if page.url contains '/fre/' or page.permalink contains '/fre/' %}
-            <a href="{{ site.baseurl }}/fre/">Federal Rules of Evidence</a> &gt;
-            {% elsif page.url contains '/supct/' or page.permalink contains '/supct/' %}
-            <a href="{{ site.baseurl }}/supct/">Supreme Court Rules</a> &gt;
-            {% elsif page.url contains '/frap/' or page.permalink contains '/frap/' %}
-            <a href="{{ site.baseurl }}/frap/">Federal Appellate Procedure</a> &gt;
-            {% elsif page.url contains '/frcmp/' or page.permalink contains '/frcmp/' %}
-            <a href="{{ site.baseurl }}/frcmp/">Federal Rules of Criminal Procedure</a> &gt;
-            {% elsif page.url contains '/frcp/' or page.permalink contains '/frcp/' %}
-            <a href="{{ site.baseurl }}/frcp/">Federal Rules of Civil Procedure</a> &gt;
-            {% endif %}
-
-            <strong>{{ page.title }}</strong>
-        </div>
-    </div>
-
-
-    <main id="top" class="content-container">
+  <main id="main-content" class="content-shell rule-shell" data-rule-set="{{ page.collection }}" tabindex="-1">
+    <article class="legal-document">
+      <header class="legal-document__heading">
+        <p class="eyebrow">{{ rule_set_title }}</p>
         <h1>{{ page.title }}</h1>
-        {{ content }}
-
-        {% if page.notes %}
-        <section class="rule-notes">
-            <h2>Notes</h2>
-            <ul>
-                {% for note in page.notes %}
-                <li>{{ note | markdownify }}</li>
-                {% endfor %}
-            </ul>
-        </section>
-        {% endif %}
-
-        <div class="up-link">
-            <a href="#top">Top of Page</a>
+        <div class="rule-actions" aria-label="Rule tools">
+          <button type="button" data-copy-citation>Copy citation</button>
+          <button type="button" data-print-rule>Print rule</button>
         </div>
-    </main>
+      </header>
 
-    {% include footer.html %}
+      <nav id="rule-toc" class="rule-toc" aria-label="On this page" hidden>
+        <h2>On this page</h2>
+        <ol></ol>
+      </nav>
 
-    <script src="{{ site.baseurl }}/assets/linkify-rules.js"></script>
-    <script src="{{ site.baseurl }}/assets/rule-tools.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const content = document.querySelector('main');
-        if (!content) return;
+      <div class="rule-content">
+        {{ content }}
+      </div>
 
-        const headings = Array.from(content.querySelectorAll('h2, h3')).filter(h => !h.closest('.rule-notes'));
-        if (!headings.length) return;
+      {% if page.notes %}
+      <section class="rule-notes" aria-labelledby="rule-notes-heading">
+        <h2 id="rule-notes-heading">Notes</h2>
+        <ul>
+          {% for note in page.notes %}
+          <li>{{ note | markdownify }}</li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
 
-        const toc = document.getElementById('toc');
-        const list = toc ? document.createElement('ul') : null;
+      {% assign rules = site[page.collection] | sort: 'order' %}
+      {% for rule in rules %}
+        {% if rule.url == page.url %}
+          {% assign previous_index = forloop.index0 | minus: 1 %}
+          {% assign next_index = forloop.index0 | plus: 1 %}
+          {% if forloop.first == false %}{% assign previous_rule = rules[previous_index] %}{% endif %}
+          {% if forloop.last == false %}{% assign next_rule = rules[next_index] %}{% endif %}
+        {% endif %}
+      {% endfor %}
+      <nav class="rule-pagination" aria-label="Adjacent rules">
+        {% if previous_rule %}<a rel="prev" href="{{ previous_rule.url | relative_url }}"><span>Previous rule</span>{{ previous_rule.title }}</a>{% endif %}
+        {% if next_rule %}<a rel="next" href="{{ next_rule.url | relative_url }}"><span>Next rule</span>{{ next_rule.title }}</a>{% endif %}
+      </nav>
+      <a class="back-to-top" href="#main-content">Back to top</a>
+    </article>
+  </main>
 
-        headings.forEach(h => {
-            const title = h.textContent.trim();
-            if (!h.id) {
-                h.id = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
-            }
-
-            const anchor = document.createElement('a');
-            anchor.href = '#' + h.id;
-            anchor.className = 'heading-anchor';
-            anchor.textContent = '#';
-
-            const copyBtn = document.createElement('button');
-            copyBtn.type = 'button';
-            copyBtn.className = 'copy-anchor';
-            copyBtn.setAttribute('aria-label', 'Copy link');
-            copyBtn.textContent = 'Copy';
-            copyBtn.addEventListener('click', () => {
-                const url = `${window.location.origin}${window.location.pathname}#${h.id}`;
-                navigator.clipboard.writeText(url);
-            });
-
-            h.appendChild(anchor);
-            h.appendChild(copyBtn);
-
-            if (list) {
-                const li = document.createElement('li');
-                if (h.tagName.toLowerCase() === 'h3') li.classList.add('toc-sub');
-                const a = document.createElement('a');
-                a.href = '#' + h.id;
-                a.textContent = title;
-                li.appendChild(a);
-                list.appendChild(li);
-            }
-        });
-
-        if (list) toc.appendChild(list);
-    });
-    </script>
+  {% include footer.html %}
+  <script src="{{ '/assets/rule-page.js' | relative_url }}" defer></script>
 </body>
-
 </html>

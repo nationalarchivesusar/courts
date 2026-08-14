@@ -3,3 +3,6 @@ __pycache__/
 next-app/node_modules/
 next-app/.next/
 next-app/out/
+.bundle/
+_site/
+vendor/

@@ -14,9 +14,6 @@ jobs:
         with:
           node-version: 20
       - run: node scripts/update-fallback.js
-        env:
-          TRELLO_KEY: ${{ secrets.TRELLO_KEY }}
-          TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

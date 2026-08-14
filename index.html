@@ -1,269 +1,136 @@
 ---
 layout: page
 title: Home
+slug: home
+description: Public access to court information, current dockets, Supreme Court case law, rules of procedure, forms, and legal resources of the USAR federal judiciary.
 show_breadcrumbs: false
 ---
 
-<section class="homepage-section">
-  <h1>Welcome to USAR's Legal Directory</h1>
-  <p>This directory provides access to essential legal resources, including federal rules, court procedures, and
-    educational materials. We also provide learning resources for those seeking to learn more about specific topics of
-    law in USAR and real life.</p>
-  <p>USAR primarily uses real life Federal Rules and other legal materials, but we have some caveats. So, we host a
-    fully modified version of the Federal Rules here on this website.</p>
-  <p>This website is created and maintained by the USAR Supreme Court.</p>
-  <p><a href="{{ site.baseurl }}/case-search.html" class="case-search-button">SCOTUS Case Search</a> – browse Supreme Court cases and explore citation relationships without running your own server.</p>
-
-
-  <section class="homepage-section docket-section">
-    <div class="docket-columns">
-
-      <!-- Supreme Court Column -->
-      <div class="docket-column">
-        <h3 class="docket-header">Supreme Court Docket</h3>
-        <div id="docket-cards-supreme" class="docket-scroll">
-          <!-- Supreme Court cards will load here -->
-        </div>
-        <p id="docket-error-supreme" class="docket-error hidden">Unable to load docket data. Please try again later.</p>
-      </div>
-
-      <!-- District Court Column -->
-      <div class="docket-column">
-        <h3 class="docket-header">District Court Docket</h3>
-        <div id="docket-cards-district" class="docket-scroll">
-          <!-- District Court cards will load here -->
-        </div>
-        <p id="docket-error-district" class="docket-error hidden">Unable to load docket data. Please try again later.</p>
-      </div>
-
-    </div>
-  </section>
-
-
-  <div class="resource-grid">
-    <div class="resource-column">
-      <h2>Legal Resources</h2>
-      <ul>
-        <li><a href="https://www.law.cornell.edu/uscode/text">U.S. Code</a></li>
-        <li><a href="{{ site.baseurl }}/frap/">Federal Rules of Appellate Procedure</a></li>
-        <li><a href="{{ site.baseurl }}/frcp/">Federal Rules of Civil Procedure</a></li>
-        <li><a href="{{ site.baseurl }}/frcmp/">Federal Rules of Criminal Procedure</a></li>
-        <li><a href="{{ site.baseurl }}/fre/">Federal Rules of Evidence</a></li>
-        <li><a href="{{ site.baseurl }}/supct/">U.S. Supreme Court Rules</a></li>
-        <li><a href="{{ site.baseurl }}/docs/">Document Library</a></li>
-      </ul>
-    </div>
-
-    <div class="resource-column">
-      <h2>Discord Servers</h2>
-      <ul>
-        <li><a href="https://discord.gg/J8qQA62KZK">United States Supreme Court</a></li>
-        <li><a href="https://discord.gg/yK7e8BAGSa">United States District Court</a></li>
-        <li><a href="https://discord.gg/fknPvcCfFp">Uniform Legal Practice Authority</a></li>
-        <li><a href="https://discord.gg/BDjwjUPHmx">Department of Justice</a></li>
-        <li><a href="https://discord.gg/NBSrA88yJ3">House of Representatives</a></li>
-        <li><a href="https://discord.gg/h2ukxdHFrJ">United States Senate</a></li>
-      </ul>
-    </div>
-
-    <div class="resource-column">
-      <h2>Learning Resources</h2>
-      <ul>
-        <li><a href="https://www.law.cornell.edu/wex/administrative_law">Administrative Law</a></li>
-        <li><a href="https://www.law.cornell.edu/wex/constitutional_law">Constitutional Law</a></li>
-        <li><a href="https://www.law.cornell.edu/wex/category/criminal-law-and-procedure">Criminal Law Dictionary</a>
-        </li>
-        <li><a href="https://www.law.cornell.edu/wex/category/courts_and_procedure">Courts and Procedure</a></li>
-        <li><a href="https://www.oyez.org/issues">Supreme Court Decisions by Topic</a></li>
-        <li><a href="https://www.law.cornell.edu/wex/legislation">Legislation</a></li>
-      </ul>
-    </div>
-
+<section class="institutional-intro" aria-labelledby="intro-heading">
+  <div class="institutional-intro__copy">
+    <p class="eyebrow">Federal Judiciary</p>
+    <h1 id="intro-heading">United States Courts</h1>
+    <p class="intro-lede">Public access to court information, current dockets, Supreme Court case law, rules of procedure, forms, and other resources of the USAR federal judiciary.</p>
+    <p class="intro-note">Phase I preserves the former Legal Directory’s existing materials while establishing a court-wide public information service.</p>
+  </div>
+  <div class="institutional-intro__mark" aria-hidden="true">
+    <img src="{{ '/assets/uscourts-logo.png' | relative_url }}" alt="">
   </div>
 </section>
 
+<nav class="primary-actions" aria-label="Primary court resources">
+  <a href="{{ '/case-search.html' | relative_url }}">
+    <span>Search case law</span>
+    <small>Supreme Court scope</small>
+  </a>
+  <a href="#current-dockets">
+    <span>View current dockets</span>
+    <small>Supreme and District Courts</small>
+  </a>
+  <a href="#rules-procedure">
+    <span>Rules &amp; Procedure</span>
+    <small>Federal and Supreme Court rules</small>
+  </a>
+  <a href="{{ '/docs/' | relative_url }}">
+    <span>Document Library</span>
+    <small>Forms and filing templates</small>
+  </a>
+</nav>
 
+<section id="current-dockets" class="section-block docket-section" aria-labelledby="dockets-heading"
+  data-docket-supreme="{{ site.dockets.supreme_court_board }}"
+  data-docket-district="{{ site.dockets.district_court_board }}"
+  data-fallback-url="{{ '/assets/docket-fallback.json' | relative_url }}">
+  <header class="section-heading">
+    <div>
+      <p class="eyebrow">Current proceedings</p>
+      <h2 id="dockets-heading">Court dockets</h2>
+    </div>
+    <p>Public summaries drawn from the Courts’ existing docket boards. Open a matter for the authoritative working record.</p>
+  </header>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const supremeContainer = document.getElementById("docket-cards-supreme");
-    const districtContainer = document.getElementById("docket-cards-district");
-
-    const renderLabels = (labels = []) => {
-      return labels.map(label => {
-        const color = label.color || "gray";
-        return `<span class="docket-label label-${color}">${label.name}</span>`;
-      }).join(" ");
-    };
-
-    const formatDescription = (desc) => {
-      if (!desc || desc.trim() === "") return "";
-
-      let cleaned = desc;
-
-      // Remove escaped markdown characters like \* or \>
-      cleaned = cleaned.replace(/\\([*_`>])/g, "$1");
-
-      // Remove leading > symbols
-      cleaned = cleaned.replace(/^\s*>+\s?/gm, "");
-
-      // 🚫 Remove fully decorative lines or lines wrapped in decorations like:
-      // ----- No. CR-xxx -----
-      cleaned = cleaned.replace(/^[\s\-_*~`=]{0,5}[-_*~`=]{5,}.*[-_*~`=]{5,}[\s\-_*~`=]{0,5}$/gm, "");
-
-      // Convert markdown links
-      cleaned = cleaned.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
-
-      // Bold: **text**
-      cleaned = cleaned.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
-
-      // Italics: *text* or _text_
-      cleaned = cleaned.replace(/(^|[^\*])\*([^*]+)\*/g, '$1<em>$2</em>');
-      cleaned = cleaned.replace(/(^|[^_])_([^_]+)_/g, '$1<em>$2</em>');
-
-      // Remove markdown backticks
-      cleaned = cleaned.replace(/`([^`]+)`/g, "$1");
-
-      // Convert - or * bullets to •
-      cleaned = cleaned.replace(/^\s*[-*•]\s+/gm, "• ");
-
-      cleaned = cleaned.replace(/-/g, "");
-
-      // Final cleanup: remove extra lines
-      return cleaned
-        .split(/\n|\\n/)
-        .map(line => line.trim())
-        .filter(line => line.length > 0)
-        .map(line => `<p>${line}</p>`)
-        .join("");
-    };
-
-    const renderCard = (card, container) => {
-      if (!card.labels || card.labels.length === 0) return; // skip cards with no labels
-
-      const labelHTML = renderLabels(card.labels);
-      const fullDesc = formatDescription(card.desc || "");
-      const showShort = fullDesc.split("</p>")[0] + "</p>";
-      const descId = `desc-${card.id}`;
-
-      const div = document.createElement("div");
-      div.className = "docket-card";
-      div.innerHTML = `
-        <div class="docket-card-entry">
-          ${card.url
-          ? `<a href="${card.url}" class="resource-link" target="_blank">${card.name}</a>`
-          : `<span>${card.name}</span>`}
+  <div class="docket-columns">
+    <section class="docket-panel" aria-labelledby="supreme-docket-heading">
+      <header>
+        <div>
+          <p class="docket-panel__court">Supreme Court of the United States</p>
+          <h3 id="supreme-docket-heading">Supreme Court docket</h3>
         </div>
-        <div class="docket-labels">${labelHTML}</div>
-        <div id="${descId}" class="desc-container">${showShort}</div>
-        ${fullDesc !== showShort
-          ? `<button class="toggle-desc" data-id="${descId}" data-full='${encodeURIComponent(fullDesc)}' data-short='${encodeURIComponent(showShort)}'>Show More</button>`
-          : ""}
-      `;
+        <span class="docket-status" id="docket-status-supreme" role="status">Loading</span>
+      </header>
+      <div id="docket-cards-supreme" class="docket-list" aria-live="polite" aria-busy="true">
+        <p class="docket-placeholder">Loading current matters…</p>
+      </div>
+      <div id="docket-error-supreme" class="docket-error" hidden>
+        <p>Docket information could not be loaded.</p>
+        <button type="button" data-retry-docket="supreme">Retry</button>
+      </div>
+    </section>
 
-      container.appendChild(div);
-    };
+    <section class="docket-panel" aria-labelledby="district-docket-heading">
+      <header>
+        <div>
+          <p class="docket-panel__court">United States District Court</p>
+          <h3 id="district-docket-heading">District Court docket</h3>
+        </div>
+        <span class="docket-status" id="docket-status-district" role="status">Loading</span>
+      </header>
+      <div id="docket-cards-district" class="docket-list" aria-live="polite" aria-busy="true">
+        <p class="docket-placeholder">Loading current matters…</p>
+      </div>
+      <div id="docket-error-district" class="docket-error" hidden>
+        <p>Docket information could not be loaded.</p>
+        <button type="button" data-retry-docket="district">Retry</button>
+      </div>
+    </section>
+  </div>
+</section>
 
-    const renderList = (container, cards) => {
-      const eligibleCards = cards.filter(c =>
-        c.labels && c.labels.length > 0 &&
-        c.name.trim() &&
-        !["____", "create template"].includes(c.name.trim().toLowerCase()) &&
-        !/^[-_—]+$/.test(c.name.trim())
-      );
+<section id="rules-procedure" class="section-block" aria-labelledby="rules-heading">
+  <header class="section-heading">
+    <div>
+      <p class="eyebrow">Authoritative reference</p>
+      <h2 id="rules-heading">Rules &amp; Procedure</h2>
+    </div>
+    <p>The established Legal Directory collection remains available at its existing routes, with improved reading and citation tools.</p>
+  </header>
+  <div class="rule-set-list">
+    <a href="{{ '/frap/' | relative_url }}"><strong>Appellate Procedure</strong><span>Federal Rules of Appellate Procedure</span></a>
+    <a href="{{ '/frcp/' | relative_url }}"><strong>Civil Procedure</strong><span>Federal Rules of Civil Procedure</span></a>
+    <a href="{{ '/frcmp/' | relative_url }}"><strong>Criminal Procedure</strong><span>Federal Rules of Criminal Procedure</span></a>
+    <a href="{{ '/fre/' | relative_url }}"><strong>Rules of Evidence</strong><span>Federal Rules of Evidence</span></a>
+    <a href="{{ '/supct/' | relative_url }}"><strong>Supreme Court Rules</strong><span>Rules of the Supreme Court</span></a>
+  </div>
+</section>
 
-      if (eligibleCards.length === 0) {
-        container.innerHTML = `<p class="text-gray-500">No active cases at this time.</p>`;
-        return;
-      }
+<section id="legal-resources" class="section-block" aria-labelledby="resources-heading">
+  <header class="section-heading">
+    <div>
+      <p class="eyebrow">Research &amp; filing</p>
+      <h2 id="resources-heading">Legal resources</h2>
+    </div>
+    <p>Courts resources are listed first. External educational references are marked separately.</p>
+  </header>
+  <div class="resource-directory">
+    <section aria-labelledby="internal-resources-heading">
+      <h3 id="internal-resources-heading">Courts &amp; legal information</h3>
+      <ul class="resource-list">
+        <li><a href="{{ site.related_sites.us_code }}"><strong>United States Code</strong><span>Browse and search the USAR legal code.</span></a></li>
+        <li><a href="{{ '/case-search.html' | relative_url }}"><strong>Supreme Court Case Search</strong><span>Search the present CourtListener-backed case-law collection.</span></a></li>
+        <li><a href="{{ '/docs/' | relative_url }}"><strong>Document Library</strong><span>Find briefs, petitions, appendices, and filing templates.</span></a></li>
+        <li><a href="{{ site.related_sites.public_laws }}"><strong>Public Laws</strong><span>Review enacted and repealed public laws in the related Code Library.</span></a></li>
+      </ul>
+    </section>
+    <section aria-labelledby="external-resources-heading">
+      <h3 id="external-resources-heading">External educational references</h3>
+      <ul class="external-resource-list">
+        <li><a href="https://www.law.cornell.edu/wex/constitutional_law" rel="noopener noreferrer">Constitutional law — Cornell Wex <span aria-hidden="true">↗</span></a></li>
+        <li><a href="https://www.law.cornell.edu/wex/category/criminal-law-and-procedure" rel="noopener noreferrer">Criminal law and procedure — Cornell Wex <span aria-hidden="true">↗</span></a></li>
+        <li><a href="https://www.law.cornell.edu/wex/category/courts_and_procedure" rel="noopener noreferrer">Courts and procedure — Cornell Wex <span aria-hidden="true">↗</span></a></li>
+        <li><a href="https://www.oyez.org/issues" rel="noopener noreferrer">Supreme Court decisions by topic — Oyez <span aria-hidden="true">↗</span></a></li>
+      </ul>
+    </section>
+  </div>
+</section>
 
-      eligibleCards.forEach(card => renderCard(card, container));
-    };
-
-    const fetchAndRenderBoard = (boardId, container, errorId) => {
-      const errorEl = document.getElementById(errorId);
-      const placeholder = document.createElement("p");
-      placeholder.className = "docket-placeholder";
-      placeholder.textContent = "Loading docket...";
-      container.appendChild(placeholder);
-
-      const controller = new AbortController();
-
-      const slowTimer = setTimeout(() => {
-        placeholder.textContent = "Still loading..."; // delayed response notice
-      }, 3000);
-
-      const abortTimer = setTimeout(() => controller.abort(), 8000);
-
-      const showError = () => {
-        container.innerHTML = "";
-        if (errorEl) {
-          errorEl.textContent = "Unable to load docket data.";
-          errorEl.classList.remove("hidden");
-          if (!errorEl.querySelector("button")) {
-            const retryBtn = document.createElement("button");
-            retryBtn.textContent = "Retry";
-            retryBtn.className = "retry-button";
-            retryBtn.addEventListener("click", () => {
-              errorEl.classList.add("hidden");
-              container.innerHTML = "";
-              fetchAndRenderBoard(boardId, container, errorId);
-            });
-            errorEl.appendChild(retryBtn);
-          }
-        }
-      };
-
-      const loadFallback = () => {
-        fetch("assets/docket-fallback.json")
-          .then(res => res.json())
-          .then(data => {
-            const cards = data[boardId] || [];
-            if (cards.length > 0) {
-              renderList(container, cards);
-            } else {
-              showError();
-            }
-          })
-          .catch(showError);
-      };
-
-      fetch(`https://api.trello.com/1/boards/${boardId}/lists?cards=open&card_fields=name,desc,url,labels&fields=name`, { signal: controller.signal })
-        .then(res => res.json())
-        .then(lists => {
-          const matchingLists = lists.filter(list => list.name.toLowerCase().includes("docket"));
-          const cards = matchingLists.flatMap(list => list.cards || []);
-          if (cards.length > 0) {
-            renderList(container, cards);
-          } else {
-            loadFallback();
-          }
-        })
-        .catch(loadFallback)
-        .finally(() => {
-          clearTimeout(slowTimer);
-          clearTimeout(abortTimer);
-          placeholder.remove();
-        });
-    };
-
-    // Load both boards
-    fetchAndRenderBoard("MMA90mFH", supremeContainer, "docket-error-supreme");
-    fetchAndRenderBoard("rbISqlOt", districtContainer, "docket-error-district");
-
-    // Toggle expandable description
-    document.addEventListener("click", (e) => {
-      if (!e.target.classList.contains("toggle-desc")) return;
-      const btn = e.target;
-      const target = document.getElementById(btn.dataset.id);
-      const isExpanded = target.classList.contains("expanded");
-
-      target.innerHTML = isExpanded
-        ? decodeURIComponent(btn.dataset.short)
-        : decodeURIComponent(btn.dataset.full);
-
-      target.classList.toggle("expanded", !isExpanded);
-      btn.textContent = isExpanded ? "Show More" : "Show Less";
-    });
-  });
-</script>
+<script src="{{ '/assets/dockets.js' | relative_url }}" defer></script>

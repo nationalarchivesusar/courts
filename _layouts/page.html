@@ -1,30 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html lang="{{ site.lang | default: 'en-US' }}">
 {% include head.html %}
+<body class="page-{{ page.slug | default: 'standard' }}">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  {% include header.html %}
 
-<body>
-    {% include header.html %}
+  {% if page.show_breadcrumbs %}
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="{{ '/' | relative_url }}">United States Courts</a></li>
+      {% if page.breadcrumb_parent and page.breadcrumb_parent != "United States Courts" %}
+      <li><a href="{{ page.breadcrumb_parent_url | relative_url }}">{{ page.breadcrumb_parent }}</a></li>
+      {% endif %}
+      <li aria-current="page">{{ page.title }}</li>
+    </ol>
+  </nav>
+  {% endif %}
 
-    {% if page.show_breadcrumbs %}
-    <div id="breadcrumb-bg">
-        <div class="breadcrumb-container">
-            <div id="breadcrumb">
-                <a href="{{ site.baseurl }}">Legal Directory</a>
-                {% if page.breadcrumb_parent %}
-                &gt; <a href="{{ site.baseurl }}{{ page.breadcrumb_parent_url }}">{{ page.breadcrumb_parent }}</a>
-                {% endif %}
-                &gt; <strong>{{ page.title }}</strong>
-            </div>
-        </div>
-    </div>
-    {% endif %}
+  <main id="main-content" class="content-shell" tabindex="-1">
+    {{ content }}
+  </main>
 
-    <main id="top" class="content-container">
-        {{ content }}
-    </main>
-
-    {% include footer.html %}
+  {% include footer.html %}
 </body>
-
 </html>

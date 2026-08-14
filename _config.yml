@@ -1,8 +1,25 @@
-title: USAR Legal Directory
-baseurl: "/courts"
+title: United States Courts
+short_title: U.S. Courts
+tagline: Judicial Information & Legal Resources
+description: Public access to court information, dockets, case law, rules of procedure, forms, and legal resources of the USAR federal judiciary.
 url: "https://nationalarchivesusar.github.io"
-description: A directory of legal resources for the USAR Community on ROBLOX.
+baseurl: "/courts"
+lang: en-US
+timezone: America/New_York
 markdown: kramdown
+
+nara:
+  name: National Archives and Records Administration
+  url: "https://discord.gg/vhTGAHgkHC"
+
+related_sites:
+  us_code: "https://nationalarchivesusar.github.io/us-code/"
+  public_laws: "https://nationalarchivesusar.github.io/us-code/public-laws.html"
+
+dockets:
+  supreme_court_board: "MMA90mFH"
+  district_court_board: "rbISqlOt"
+
 collections:
   frap:
     output: true
@@ -14,5 +31,38 @@ collections:
     output: true
   supct:
     output: true
-# CourtListener API token used by the case search page
-COURTLISTENER_TOKEN: "8671b4a853776a65c3d1393858c138e4951a246e"
+
+defaults:
+  - scope:
+      path: ""
+      type: frap
+    values:
+      layout: rule
+  - scope:
+      path: ""
+      type: frcp
+    values:
+      layout: rule
+  - scope:
+      path: ""
+      type: frcmp
+    values:
+      layout: rule
+  - scope:
+      path: ""
+      type: fre
+    values:
+      layout: rule
+  - scope:
+      path: ""
+      type: supct
+    values:
+      layout: rule
+
+exclude:
+  - ARCHITECTURE.md
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - scripts
+  - vendor

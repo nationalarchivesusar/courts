@@ -1,212 +1,43 @@
 ---
 layout: page
-title: SCOTUS Case Search
+title: Supreme Court Case Search
+slug: case-search
+description: Search published Supreme Court of the United States case law in the CourtListener public index.
+show_breadcrumbs: true
+breadcrumb_parent: United States Courts
+breadcrumb_parent_url: /
 ---
 
-<section class="case-search">
-  <h1>SCOTUS Case Search</h1>
-  <form id="case-search-form">
-    <input type="text" id="case-query" placeholder="Enter keywords or case name" required>
-    <select id="case-type">
-      <option value="o">Opinions</option>
-      <option value="d">Dockets</option>
-      <option value="f">Filings</option>
-      <option value="j">Judges</option>
-      <option value="oa">Oral Arguments</option>
-    </select>
-    <input type="text" id="case-category" placeholder="Category (optional)">
-    <button type="submit">Search</button>
+<header class="page-heading case-search-heading">
+  <p class="eyebrow">Case law search — current scope</p>
+  <h1>Supreme Court Case Search</h1>
+  <p>Search published case law from the Supreme Court of the United States. This Phase I tool does not yet search District Court matters, USAR-native filings, arrest records, or a unified judiciary database.</p>
+</header>
+
+<section class="case-search-panel" aria-labelledby="case-search-form-heading">
+  <h2 id="case-search-form-heading">Search Supreme Court decisions</h2>
+  <form id="case-search-form" role="search">
+    <div class="form-field form-field--wide">
+      <label for="case-query">Case name, citation, or keywords</label>
+      <input type="search" id="case-query" name="q" placeholder="Roe v. Wade, 410 U.S. 113, due process…" required autocomplete="off">
+    </div>
+    <div class="form-field">
+      <label for="case-category">Topic <span>(optional)</span></label>
+      <input type="text" id="case-category" name="topic" placeholder="Constitutional law">
+    </div>
+    <button type="submit">Search decisions</button>
   </form>
-  <div id="case-results"></div>
-  <div id="case-cards"></div>
+  <p class="source-note">Results are limited to the <code>scotus</code> jurisdiction in CourtListener’s public case-law search. Result links open the source record on CourtListener.</p>
 </section>
 
-<style>
-  .result-card, .case-card {
-    border: 1px solid var(--card-border, #ccc);
-    background: var(--card-bg, #f5f5f5);
-    padding: 1rem;
-    margin: 1rem 0;
-    border-radius: 4px;
-  }
-  .result-card h3 {
-    margin: 0 0 .5rem;
-  }
-  .case-link {
-    background: none;
-    border: none;
-    color: var(--link-color, #003366);
-    cursor: pointer;
-    text-decoration: underline;
-    font-size: inherit;
-    padding: 0;
-  }
-  .case-card pre {
-    white-space: pre-wrap;
-    max-height: 20rem;
-    overflow: auto;
-  }
-</style>
+<section class="case-results-section" aria-labelledby="case-results-heading">
+  <div class="case-results-heading">
+    <h2 id="case-results-heading">Results</h2>
+    <p id="case-results-count" role="status" aria-live="polite">Enter a search above.</p>
+  </div>
+  <div id="case-results" class="case-results" aria-live="polite" aria-busy="false"></div>
+</section>
 
-<script>
-const API_TOKEN = '{{ site.COURTLISTENER_TOKEN | default: "" }}';
-
-async function fetchJSON(url) {
-  const headers = API_TOKEN ? { 'Authorization': `Token ${API_TOKEN}` } : {};
-  const res = await fetch(url, { headers });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
-}
-
-function looksLikeCitation(str) {
-  return /^\d+\s+[A-Za-z][A-Za-z.\s]*\s+\d+$/.test(str.trim());
-}
-
-async function searchCases(query, type, category) {
-  const resultsDiv = document.getElementById('case-results');
-  resultsDiv.innerHTML = 'Searching...';
-  document.getElementById('case-cards').innerHTML = '';
-
-  const catParam = category ? `&topic=${encodeURIComponent(category)}` : '';
-  const searchURL = `https://www.courtlistener.com/api/rest/v4/search/?q=${encodeURIComponent(query)}&type=${encodeURIComponent(type)}${catParam}`;
-
-  let results = [];
-  try {
-    const data = await fetchJSON(searchURL);
-    if (data.results) results = results.concat(data.results);
-  } catch (err) {
-    // ignore search errors for now
-  }
-
-  if (looksLikeCitation(query)) {
-    try {
-      const lookupURL = `https://www.courtlistener.com/api/rest/v4/citation-lookup/?cite=${encodeURIComponent(query)}`;
-      const lookup = await fetchJSON(lookupURL);
-      if (lookup.results) results = results.concat(lookup.results);
-    } catch (err) {
-      // ignore lookup errors
-    }
-  }
-
-  if (!results.length) {
-    resultsDiv.textContent = 'No results found.';
-    return;
-  }
-
-  resultsDiv.innerHTML = '';
-  results.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'result-card';
-    const opinionId = item.opinions && item.opinions.length ? item.opinions[0].id : item.id;
-    const title = item.caseName || item.caseNameFull || item.caption || item.case_name || 'Result';
-    const cite = item.citation && item.citation.length ? item.citation.join(', ') : (item.citations ? item.citations.map(c => c.cite).join(', ') : '');
-    const year = item.dateFiled ? new Date(item.dateFiled).getFullYear() : (item.date_filed ? new Date(item.date_filed).getFullYear() : '');
-    card.innerHTML = `<h3><button class="case-link" data-opinion-id="${opinionId}">${title}</button></h3>` +
-      `${cite || year ? `<p>${cite}${year ? ' (' + year + ')' : ''}</p>` : ''}`;
-    resultsDiv.appendChild(card);
-  });
-}
-
-async function showCaseDetail(opinionId) {
-  const resultsDiv = document.getElementById('case-results');
-  resultsDiv.innerHTML = '';
-  const cardsDiv = document.getElementById('case-cards');
-  cardsDiv.innerHTML = '';
-  const card = document.createElement('div');
-  card.className = 'case-card';
-  card.textContent = 'Loading...';
-  cardsDiv.appendChild(card);
-  try {
-    const opinion = await fetchJSON(`https://www.courtlistener.com/api/rest/v3/opinions/${opinionId}/`);
-    const [cluster, docket] = await Promise.all([
-      opinion.cluster ? fetchJSON(opinion.cluster).catch(() => null) : null,
-      opinion.docket ? fetchJSON(opinion.docket).catch(() => null) : null
-    ]);
-    const cite = opinion.citations ? opinion.citations.map(c => c.cite).join(', ') :
-      (cluster && cluster.citations ? cluster.citations.map(c => c.cite).join(', ') : '');
-    const year = opinion.date_filed ? new Date(opinion.date_filed).getFullYear() :
-      (cluster && cluster.date_filed ? new Date(cluster.date_filed).getFullYear() : '');
-    const court = opinion.court ? (opinion.court.name_abbreviation || opinion.court.name) :
-      (cluster && cluster.court ? (cluster.court.name_abbreviation || cluster.court.name) : '');
-    const docketNum = docket && docket.docket_number ? docket.docket_number :
-      (opinion.docket_number || (cluster && cluster.docket_number));
-    const judges = cluster && cluster.judges ? cluster.judges.join(', ') : '';
-    const attorneys = cluster && cluster.attorneys ? cluster.attorneys : '';
-    const parties = cluster && cluster.parties ? cluster.parties : '';
-    card.innerHTML = `<h2>${cluster && (cluster.case_name_full || cluster.case_name) ? (cluster.case_name_full || cluster.case_name) : (opinion.case_name_full || opinion.case_name || 'Case')}</h2>` +
-      `${cite || year ? `<p>${cite}${year ? ' (' + year + ')' : ''}</p>` : ''}` +
-      `${court ? `<p>${court}</p>` : ''}` +
-      `${docketNum ? `<p>Docket: ${docketNum}</p>` : ''}` +
-      `${judges ? `<p><strong>Judges:</strong> ${judges}</p>` : ''}` +
-      `${attorneys ? `<p><strong>Attorneys:</strong> ${attorneys}</p>` : ''}` +
-      `${parties ? `<p><strong>Parties:</strong> ${parties}</p>` : ''}`;
-
-    if (opinion.download_url) {
-      card.innerHTML += `<p><a href="${opinion.download_url}" target="_blank">Download PDF</a></p>`;
-    }
-
-    if (opinion.plain_text) {
-      card.innerHTML += `<details><summary>Opinion Text</summary><pre>${opinion.plain_text}</pre></details>`;
-    }
-
-    const lists = document.createElement('div');
-    try {
-      const [cites, citedBy, viz] = await Promise.all([
-        fetchJSON(`https://www.courtlistener.com/api/rest/v3/opinions/${opinionId}/cites/`),
-        fetchJSON(`https://www.courtlistener.com/api/rest/v3/opinions/${opinionId}/cited_by/`),
-        fetchJSON(`https://www.courtlistener.com/api/rest/v3/visualizations/?o=${opinionId}`).catch(() => null)
-      ]);
-      if (cites && cites.results && cites.results.length) {
-        const ul = document.createElement('ul');
-        ul.innerHTML = '<strong>Cites:</strong>';
-        cites.results.forEach(c => {
-          const li = document.createElement('li');
-          li.innerHTML = `<button class="case-link" data-opinion-id="${c.id}">${c.caseName || c.case_name || c.caption}</button>`;
-          ul.appendChild(li);
-        });
-        lists.appendChild(ul);
-      }
-      if (citedBy && citedBy.results && citedBy.results.length) {
-        const ul = document.createElement('ul');
-        ul.innerHTML = '<strong>Cited by:</strong>';
-        citedBy.results.forEach(c => {
-          const li = document.createElement('li');
-          li.innerHTML = `<button class="case-link" data-opinion-id="${c.id}">${c.caseName || c.case_name || c.caption}</button>`;
-          ul.appendChild(li);
-        });
-        lists.appendChild(ul);
-      }
-      if (viz && viz.results && viz.results.length) {
-        const link = viz.results[0].url || viz.results[0].absolute_url;
-        if (link) {
-          const p = document.createElement('p');
-          p.innerHTML = `<a href="${link}" target="_blank">Citation Visualization</a>`;
-          lists.appendChild(p);
-        }
-      }
-    } catch (err) {
-      // ignore citation errors
-    }
-    card.appendChild(lists);
-  } catch (err) {
-    card.textContent = 'Error loading case.';
-  }
-}
-
-document.getElementById('case-search-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const query = document.getElementById('case-query').value.trim();
-  const type = document.getElementById('case-type').value;
-  const category = document.getElementById('case-category').value.trim();
-  if (!query) return;
-  await searchCases(query, type, category);
-});
-
-document.addEventListener('click', e => {
-  const btn = e.target.closest('.case-link');
-  if (btn && btn.dataset.opinionId) {
-    showCaseDetail(btn.dataset.opinionId);
-  }
-});
-</script>
+<noscript><p class="notice">JavaScript is required to search the CourtListener index. Court rules and documents remain available without JavaScript.</p></noscript>
+<script src="{{ '/assets/case-search.js' | relative_url }}" defer></script>
 

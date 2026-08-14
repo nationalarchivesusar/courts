@@ -1,4 +1,17 @@
 {
-  "MMA90mFH": [],
+  "MMA90mFH": [
+    {
+      "id": "68786438123588ef7de50084",
+      "name": "Docket Information",
+      "desc": "This list contains the regular cases brought before the Supreme Court, including judicial complaints, that are pending certiorari or pending a decision.",
+      "url": "https://trello.com/c/roREo8Sc/35-docket-information",
+      "labels": [
+        {
+          "name": "Information",
+          "color": "black"
+        }
+      ]
+    }
+  ],
   "rbISqlOt": []
 }

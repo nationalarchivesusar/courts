@@ -1,34 +1,49 @@
-<header id="cornell-header">
-    <div id="cornell-topbar-bg">
-        <div class="header-container" id="cornell-topbar">
-            <a href="{{ site.baseurl }}/">
-                <img src="{{ site.baseurl }}/assets/uscourts-logo.png" alt="U.S. Courts Logo" class="uscourts-logo">
-            </a>
+<header class="site-header">
+  <div class="masthead">
+    <div class="masthead__inner">
+      <a class="court-brand" href="{{ '/' | relative_url }}" aria-label="United States Courts home">
+        <img class="court-brand__mark" src="{{ '/assets/uscourts-logo.png' | relative_url }}" alt="">
+        <span class="court-brand__text">
+          <span class="court-brand__kicker">Federal Judiciary</span>
+          <span class="court-brand__title">United States Courts</span>
+          <span class="court-brand__tagline">{{ site.tagline }}</span>
+        </span>
+      </a>
 
-            <div class="cornell-title">
-                <a href="{{ site.baseurl }}/">USAR Legal Directory</a>
-            </div>
+      <div class="masthead__tools">
+        <form class="site-search" action="{{ '/search.html' | relative_url }}" method="get" role="search">
+          <label class="visually-hidden" for="site-search-query">Search court rules and resources</label>
+          <input id="site-search-query" type="search" name="q" placeholder="Search rules and resources" required>
+          <button type="submit">Search</button>
+        </form>
 
-            <form id="site-search" action="{{ site.baseurl }}/search.html" method="get">
-                <input type="text" name="q" placeholder="Search..." aria-label="Search the rules" />
-                <button type="submit">Search</button>
-            </form>
-
-            <button id="theme-toggle" type="button" aria-label="Toggle dark mode">🌓</button>
+        <div class="theme-switcher" role="group" aria-label="Color theme">
+          <button type="button" class="theme-switcher__button" data-theme-choice="system">System</button>
+          <button type="button" class="theme-switcher__button" data-theme-choice="light">Light</button>
+          <button type="button" class="theme-switcher__button" data-theme-choice="dark">Dark</button>
         </div>
+      </div>
     </div>
+  </div>
 
-    <div id="cornell-nav-bg">
-        <nav class="header-container" id="cornell-nav">
-            <ul>
-                <li{% if page.url contains '/frap/' %} class="active"{% endif %}><a href="{{ site.baseurl }}/frap/">Appellate Procedure</a></li>
-                <li{% if page.url contains '/frcp/' %} class="active"{% endif %}><a href="{{ site.baseurl }}/frcp/">Civil Procedure</a></li>
-                <li{% if page.url contains '/frcmp/' %} class="active"{% endif %}><a href="{{ site.baseurl }}/frcmp/">Criminal Procedure</a></li>
-                <li{% if page.url contains '/fre/' %} class="active"{% endif %}><a href="{{ site.baseurl }}/fre/">Rules of Evidence</a></li>
-                <li{% if page.url contains '/supct/' %} class="active"{% endif %}><a href="{{ site.baseurl }}/supct/">Supreme Court Rules</a></li>
-                <li{% if page.url contains '/docs/' %} class="active"{% endif %}><a href="{{ site.baseurl }}/docs/">Document Library</a></li>
-            </ul>
-        </nav>
+  <nav class="primary-nav" aria-label="Primary navigation">
+    <div class="primary-nav__inner">
+      <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Home</a>
+      <a href="{{ '/#current-dockets' | relative_url }}">Dockets</a>
+      <a href="{{ '/case-search.html' | relative_url }}"{% if page.url == '/case-search.html' %} aria-current="page"{% endif %}>Case Search</a>
+      <details class="nav-menu"{% if page.collection or page.url == '/frap/' or page.url == '/frcp/' or page.url == '/frcmp/' or page.url == '/fre/' or page.url == '/supct/' %} data-current="true"{% endif %}>
+        <summary>Rules &amp; Procedure</summary>
+        <div class="nav-menu__panel">
+          <a href="{{ '/frap/' | relative_url }}"{% if page.collection == 'frap' or page.url == '/frap/' %} aria-current="page"{% endif %}>Appellate Procedure</a>
+          <a href="{{ '/frcp/' | relative_url }}"{% if page.collection == 'frcp' or page.url == '/frcp/' %} aria-current="page"{% endif %}>Civil Procedure</a>
+          <a href="{{ '/frcmp/' | relative_url }}"{% if page.collection == 'frcmp' or page.url == '/frcmp/' %} aria-current="page"{% endif %}>Criminal Procedure</a>
+          <a href="{{ '/fre/' | relative_url }}"{% if page.collection == 'fre' or page.url == '/fre/' %} aria-current="page"{% endif %}>Rules of Evidence</a>
+          <a href="{{ '/supct/' | relative_url }}"{% if page.collection == 'supct' or page.url == '/supct/' %} aria-current="page"{% endif %}>Supreme Court Rules</a>
+        </div>
+      </details>
+      <a href="{{ '/docs/' | relative_url }}"{% if page.url == '/docs/' %} aria-current="page"{% endif %}>Documents</a>
+      <a href="{{ '/#legal-resources' | relative_url }}">Legal Resources</a>
+      <a href="{{ site.related_sites.us_code }}" aria-label="U.S. Code, related site">U.S. Code</a>
     </div>
-
+  </nav>
 </header>

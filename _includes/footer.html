@@ -1,42 +1,43 @@
-<footer id="site-footer">
-    <div class="footer-container">
-        <div class="footer-nav">
-            <a href="https://discord.gg/5vDcGMzsQg">USAR Server</a>
-            <a href="https://discord.gg/J8qQA62KZK">SCOTUS Server</a>
-            <a href="https://discord.gg/54CBUb47d6">District Court Server</a>
-            <a href="https://discord.gg/fknPvcCfFp">ULPA Server</a>
-            <a href="https://www.law.cornell.edu/">Cornell Law</a>
-            <a href="{{ site.baseurl }}/help/">Help</a>
-            <a href="{{ site.baseurl }}/about/">About</a>
-            <a href="{{ site.baseurl }}/disclaimer/">Disclaimer</a>
-        </div>
-
-        <hr class="footer-divider" />
-
-        <p class="footer-credit1">
-            Website created & maintained by RaymondLWeston, JaredLPaguio, and the United States Supreme Court
-        </p>
-
-        <p class="footer-credit2">
-            United States οf America Roblox | Owned by Jecxb
-        </p>
-
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="footer-links">
+      <section aria-labelledby="footer-courts-heading">
+        <h2 id="footer-courts-heading">United States Courts</h2>
+        <nav aria-label="Courts footer navigation">
+          <a href="{{ '/' | relative_url }}">Home</a>
+          <a href="{{ '/#current-dockets' | relative_url }}">Dockets</a>
+          <a href="{{ '/case-search.html' | relative_url }}">Case Search</a>
+          <a href="{{ '/frcp/' | relative_url }}">Rules</a>
+          <a href="{{ '/docs/' | relative_url }}">Documents</a>
+        </nav>
+      </section>
+      <section aria-labelledby="footer-info-heading">
+        <h2 id="footer-info-heading">Legal Information</h2>
+        <nav aria-label="Legal information links">
+          <a href="{{ site.related_sites.us_code }}">United States Code</a>
+          <a href="{{ site.related_sites.public_laws }}">Public Laws</a>
+          <a href="{{ '/about/' | relative_url }}">About</a>
+          <a href="{{ '/help/' | relative_url }}">Help</a>
+          <a href="{{ '/disclaimer/' | relative_url }}">Disclaimer</a>
+        </nav>
+      </section>
     </div>
+
+    <a class="nara-attribution" href="{{ site.nara.url }}" rel="noopener noreferrer">
+      <img src="{{ '/assets/images/nara.png' | relative_url }}" alt="National Archives and Records Administration">
+      <span>Maintained by the <strong>{{ site.nara.name }}</strong> for the United States Courts.</span>
+    </a>
+
+    <div class="community-links" aria-label="Court and community channels">
+      <span>Court &amp; community channels:</span>
+      <a href="https://discord.gg/5vDcGMzsQg" rel="noopener noreferrer">USAR</a>
+      <a href="https://discord.gg/J8qQA62KZK" rel="noopener noreferrer">Supreme Court</a>
+      <a href="https://discord.gg/54CBUb47d6" rel="noopener noreferrer">District Court</a>
+      <a href="https://discord.gg/fknPvcCfFp" rel="noopener noreferrer">ULPA</a>
+    </div>
+
+    <p class="footer-disclaimer">An independent USAR community resource. This site is not affiliated with the real United States government and does not provide legal advice.</p>
+  </div>
 </footer>
 
-<script>
-  (function() {
-    const toggle = document.getElementById('theme-toggle');
-    const stored = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (stored === 'dark' || (!stored && prefersDark)) {
-      document.body.classList.add('dark-mode');
-    }
-    if (toggle) {
-      toggle.addEventListener('click', function () {
-        const isDark = document.body.classList.toggle('dark-mode');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      });
-    }
-  })();
-</script>
+<script src="{{ '/assets/site.js' | relative_url }}" defer></script>

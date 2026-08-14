@@ -1,218 +1,38 @@
 ---
 layout: page
-title: Search Results
+title: Site Search
+slug: search
+description: Search United States Courts rules, pages, and legal resources.
 show_breadcrumbs: true
-breadcrumb_parent: Home
+breadcrumb_parent: United States Courts
 breadcrumb_parent_url: /
+search_exclude: true
 ---
 
-<h1>Search Results</h1>
-<form id="filter-form">
-  <fieldset id="search-filters">
-    <legend>Filter by rule set</legend>
-    <label><input type="checkbox" value="supct" checked> Sup. Ct.</label>
-    <label><input type="checkbox" value="frcp" checked> FRCP</label>
-    <label><input type="checkbox" value="frcmp" checked> FRCrP</label>
-    <label><input type="checkbox" value="fre" checked> FRE</label>
-    <label><input type="checkbox" value="frap" checked> FRAP</label>
-  </fieldset>
+<header class="page-heading">
+  <p class="eyebrow">Site search</p>
+  <h1>Search court rules and resources</h1>
+</header>
+
+<form class="search-page-form" action="{{ '/search.html' | relative_url }}" method="get" role="search">
+  <label for="search-page-query">Search terms</label>
+  <div>
+    <input id="search-page-query" type="search" name="q" required>
+    <button type="submit">Search</button>
+  </div>
 </form>
-<p id="search-results-count"></p>
-<div id="search-results"></div>
 
-<style>
-  #search-filters {
-    border: 0;
-    margin: 1rem 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  #search-filters label {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-  }
+<fieldset id="search-filters" class="search-filters">
+  <legend>Filter rule sets</legend>
+  <label><input type="checkbox" value="supct" checked> Supreme Court</label>
+  <label><input type="checkbox" value="frcp" checked> Civil Procedure</label>
+  <label><input type="checkbox" value="frcmp" checked> Criminal Procedure</label>
+  <label><input type="checkbox" value="fre" checked> Evidence</label>
+  <label><input type="checkbox" value="frap" checked> Appellate Procedure</label>
+  <label><input type="checkbox" value="" checked> Other pages</label>
+</fieldset>
 
-  .search-results-list {
-    list-style: none;
-    padding: 0;
-    margin: 0.5rem 0 0;
-  }
+<p id="search-results-count" class="result-count" role="status" aria-live="polite">Enter a search term.</p>
+<ol id="search-results" class="search-results-list"></ol>
 
-  .search-result {
-    border-bottom: 1px solid #ddd;
-    padding: 1rem 0;
-  }
-
-  .search-result:first-child {
-    padding-top: 0;
-  }
-
-  .search-result:last-child {
-    border-bottom: 0;
-  }
-
-  .search-result a {
-    font-weight: 600;
-    display: inline-block;
-    margin-bottom: 0.25rem;
-  }
-
-  .search-result-meta {
-    font-size: 0.9rem;
-    color: #555;
-    margin-bottom: 0.5rem;
-  }
-
-  .search-result-snippet {
-    margin: 0;
-    color: #222;
-  }
-  @media (max-width: 600px) {
-    #search-filters {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  }
-</style>
-
-<script src="https://unpkg.com/lunr/lunr.js"></script>
-<script>
-    const params = new URLSearchParams(window.location.search);
-    const query = params.get("q");
-    const DEBUG = false;
-
-    const filterInputs = Array.from(document.querySelectorAll('#search-filters input[type="checkbox"]'));
-    let docs = [];
-    let docMap = {};
-    let idx;
-
-    function createSnippet(content, term) {
-        if (!content || !term) return "";
-
-        const lowerContent = content.toLowerCase();
-        const lowerTerm = term.toLowerCase();
-        const index = lowerContent.indexOf(lowerTerm);
-        const snippetLength = 160;
-
-        if (index === -1) {
-            return content.length > snippetLength ? `${content.slice(0, snippetLength).trim()}…` : content;
-        }
-
-        const start = Math.max(0, index - Math.floor(snippetLength / 2));
-        const end = Math.min(content.length, start + snippetLength);
-        let snippet = content.slice(start, end).trim();
-
-        if (start > 0) snippet = `…${snippet}`;
-        if (end < content.length) snippet = `${snippet}…`;
-
-        return snippet;
-    }
-
-    function performSearch() {
-        if (!idx) return;
-        const selected = filterInputs.filter(cb => cb.checked).map(cb => cb.value);
-
-        const results = idx.search(query.toLowerCase());
-        if (DEBUG) console.log("Search results:", results);
-
-        const container = document.getElementById("search-results");
-        const count = document.getElementById("search-results-count");
-        container.innerHTML = "";
-
-        const filtered = results.filter(r => {
-            const match = docMap[r.ref];
-            if (!match) return false;
-            if (!match.collection) return true;
-            return selected.includes(match.collection);
-        });
-
-        const seen = new Set();
-        const uniqueMatches = filtered
-            .map(result => docMap[result.ref])
-            .filter(Boolean)
-            .filter(match => {
-                if (seen.has(match.url)) return false;
-                seen.add(match.url);
-                return true;
-            });
-
-        if (uniqueMatches.length > 0) {
-            count.textContent = `${uniqueMatches.length} result${uniqueMatches.length !== 1 ? "s" : ""} found for “${query}”`;
-
-            const list = document.createElement("ul");
-            list.className = "search-results-list";
-
-            uniqueMatches.forEach(match => {
-                const item = document.createElement("li");
-                item.className = "search-result";
-
-                const titleLink = document.createElement("a");
-                titleLink.href = match.url;
-                titleLink.textContent = match.title || match.url;
-                item.appendChild(titleLink);
-
-                if (match.breadcrumb_parent) {
-                    const meta = document.createElement("div");
-                    meta.className = "search-result-meta";
-                    meta.textContent = match.breadcrumb_parent;
-                    item.appendChild(meta);
-                }
-
-                const snippetText = createSnippet(match.content, query);
-                if (snippetText) {
-                    const snippet = document.createElement("p");
-                    snippet.className = "search-result-snippet";
-                    snippet.textContent = snippetText;
-                    item.appendChild(snippet);
-                }
-
-                list.appendChild(item);
-            });
-
-            container.appendChild(list);
-        } else {
-            count.textContent = `No results found for “${query}”`;
-        }
-    }
-
-    if (DEBUG) console.log("Search query:", query);
-
-    if (query) {
-        document.title = `Search: ${query}`;
-
-        fetch("{{ site.baseurl }}/search.json")
-            .then(res => res.json())
-            .then(data => {
-                if (DEBUG) console.log("Fetched documents:", data);
-                docs = data;
-                docs.forEach(doc => {
-                    docMap[doc.url] = doc;
-                });
-
-                idx = lunr(function () {
-                    this.ref("url");
-                    this.field("title");
-                    this.field("content");
-
-                    docs.forEach(doc => {
-                        this.add({
-                            url: doc.url,
-                            title: (doc.title || "").toLowerCase(),
-                            content: (doc.content || "").toLowerCase()
-                        });
-                    });
-                });
-
-                performSearch();
-                filterInputs.forEach(cb => cb.addEventListener('change', performSearch));
-            })
-            .catch(error => {
-                console.error("Failed to load search.json or process search:", error);
-            });
-    } else {
-        document.getElementById("search-results-count").textContent = "No query provided.";
-    }
-</script>
+<script data-search-index="{{ '/search.json' | relative_url }}" src="{{ '/assets/site-search.js' | relative_url }}" defer></script>

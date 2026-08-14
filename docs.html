@@ -1,108 +1,37 @@
 ---
 layout: page
 title: Document Library
+slug: documents
 permalink: /docs/
-show_breadcrumbs: false
+description: Browse court forms, filing templates, briefs, petitions, and appendices used in the USAR judiciary.
+show_breadcrumbs: true
+breadcrumb_parent: United States Courts
+breadcrumb_parent_url: /
 ---
 
-<section class="homepage-section">
-  <h1 class="section-title">Court Document Library</h1>
-  <p>Browse official templates for petitions, briefs, and appendices used in the USAR Judiciary. All documents open in a
-    new tab. Use the search bar to narrow your results instantly.</p>
-  <p>You are not required to use these templates — they are merely provided for the convenience of those who need them.
-  </p>
+<header class="page-heading">
+  <p class="eyebrow">Forms &amp; filing resources</p>
+  <h1>Court Document Library</h1>
+  <p>Browse established templates for petitions, briefs, and appendices used in the USAR judiciary. Templates are provided for convenience; individual courts may impose additional requirements.</p>
+</header>
 
-  <div class="top-flex-wrapper" style="margin-top: 1rem;">
-    <div class="intro-column">
-      <label for="courtFilter"><strong>Filter by Court:</strong></label><br>
-      <select id="courtFilter"
-        style="margin-top: 0.25rem; padding: 0.4rem 0.6rem; border: 1px solid #ccc; border-radius: 6px;">
-        <option value="All">All Courts</option>
-        <option value="Supreme Court">Supreme Court</option>
-        <option value="District Court">District Court</option>
-      </select>
-    </div>
-    <div class="intro-column">
-      <label for="docSearch"><strong>Search templates:</strong></label><br>
-      <input type="text" id="docSearch" placeholder="Search templates..."
-        style="margin-top: 0.25rem; padding: 0.4rem 0.8rem; border: 1px solid #ccc; border-radius: 6px; width: 100%;" />
-    </div>
+<section class="document-controls" aria-label="Filter court documents">
+  <div class="form-field">
+    <label for="court-filter">Court</label>
+    <select id="court-filter">
+      <option value="All">All courts</option>
+      <option value="Supreme Court">Supreme Court</option>
+      <option value="District Court">District Court</option>
+    </select>
   </div>
-
-  <div id="docGrid" class="resource-grid" style="margin-top: 1.5rem;">
-    <!-- Cards injected by JS -->
+  <div class="form-field form-field--wide">
+    <label for="document-search">Search documents</label>
+    <input type="search" id="document-search" placeholder="Petition, brief, appendix…">
   </div>
 </section>
 
-<script id="doc-data" type="application/json">
-  {{ site.data.documents | jsonify }}
-</script>
-<script>
-  const documents = JSON.parse(document.getElementById("doc-data").textContent);
+<p id="document-count" class="result-count" role="status"></p>
+<div id="document-grid" class="document-grid"></div>
 
-  const container = document.getElementById("docGrid");
-  const search = document.getElementById("docSearch");
-  const courtFilter = document.getElementById("courtFilter");
-
-  function renderDocs(filter = "", selectedCourt = "All") {
-    const query = filter.toLowerCase();
-    container.innerHTML = "";
-
-    documents
-      .filter(doc => {
-        const matchesSearch =
-          doc.title.toLowerCase().includes(query) ||
-          doc.description.toLowerCase().includes(query);
-
-        const matchesCourt =
-          selectedCourt === "All" || doc.tags.includes(selectedCourt);
-
-        return matchesSearch && matchesCourt;
-      })
-      .sort((a, b) => a.title.localeCompare(b.title))
-      .forEach(doc => {
-        const card = document.createElement("div");
-        card.className = "docket-card";
-
-        const tagSpans = doc.tags.map(tag =>
-          `<span class="docket-label label-gray">${tag}</span>`
-        ).join(" ");
-
-        function getTagClass(tag) {
-          const tagMap = {
-            "Supreme Court": "tag-supreme",
-            "District Court": "tag-district"
-          };
-          return tagMap[tag] || "tag-default";
-        }
-
-        const tagHtml = doc.tags.map(tag => {
-          const cls = getTagClass(tag);
-          return `<span class="doc-tag ${cls}">${tag}</span>`;
-        }).join("");
-
-        card.className = "doc-card";
-        card.innerHTML = `
-          <div>
-            <div class="doc-title">${doc.title}</div>
-            <div class="doc-desc">${doc.description}</div>
-          </div>
-          <div>
-            <div class="doc-tags">${tagHtml}</div>
-            <a href="${doc.url}" target="_blank" class="doc-link">View Document</a>
-          </div>
-        `;
-
-    container.appendChild(card);
-  });
-  }
-
-  function updateDisplay() {
-    renderDocs(search.value, courtFilter.value);
-  }
-
-  search.addEventListener("input", updateDisplay);
-  courtFilter.addEventListener("change", updateDisplay);
-
-  renderDocs();
-</script>
+<script id="document-data" type="application/json">{{ site.data.documents | jsonify }}</script>
+<script src="{{ '/assets/document-library.js' | relative_url }}" defer></script>

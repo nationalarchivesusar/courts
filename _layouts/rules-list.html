@@ -1,31 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html lang="{{ site.lang | default: 'en-US' }}">
 {% include head.html %}
+<body class="page-rules-index">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  {% include header.html %}
 
-<body>
-    {% include header.html %}
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="{{ '/' | relative_url }}">United States Courts</a></li>
+      <li><a href="{{ '/#rules-procedure' | relative_url }}">Rules &amp; Procedure</a></li>
+      <li aria-current="page">{{ page.title }}</li>
+    </ol>
+  </nav>
 
-    {% if page.show_breadcrumbs %}
-    <div id="breadcrumb-bg">
-        <div class="breadcrumb-container">
-            <div id="breadcrumb">
-                <a href="{{ site.baseurl }}">Legal Directory</a>
-                {% if page.breadcrumb_parent %}
-                &gt; <a href="{{ site.baseurl }}{{ page.breadcrumb_parent_url }}">{{ page.breadcrumb_parent }}</a>
-                {% endif %}
-                &gt; <strong>{{ page.title }}</strong>
-            </div>
-        </div>
-    </div>
-    {% endif %}
+  <main id="main-content" class="content-shell rules-index" tabindex="-1">
+    <header class="page-heading">
+      <p class="eyebrow">Rules &amp; Procedure</p>
+      <h1>{{ page.title }}</h1>
+      {% if page.description %}<p>{{ page.description }}</p>{% endif %}
+    </header>
+    {{ content }}
+  </main>
 
-    <main id="top" class="rules-list-container">
-        <h1>{{ page.title }}</h1>
-        {{ content }}
-    </main>
-
-    {% include footer.html %}
+  {% include footer.html %}
 </body>
-
 </html>
