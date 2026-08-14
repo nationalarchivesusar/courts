@@ -639,24 +639,94 @@ h3 {
   font-weight: 700;
 }
 
-.docket-group {
-  padding-top: 1rem;
+.judge-docket {
+  border-bottom: 1px solid var(--border-strong);
 }
 
-.docket-group + .docket-group {
+.judge-docket:first-child {
   border-top: 1px solid var(--border-strong);
 }
 
-.docket-group h4 {
-  margin: 0;
-  color: var(--navy-mid);
-  font-family: var(--serif);
-  font-size: 0.96rem;
-  letter-spacing: 0.01em;
+.judge-docket__summary {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.78rem 2.2rem 0.78rem 0.8rem;
+  background: var(--surface-alt);
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
 }
 
-:root[data-theme="dark"] .docket-group h4 {
+.judge-docket__summary::-webkit-details-marker {
+  display: none;
+}
+
+.judge-docket__summary::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0.85rem;
+  width: 0.48rem;
+  height: 0.48rem;
+  border-right: 2px solid var(--navy-mid);
+  border-bottom: 2px solid var(--navy-mid);
+  transform: translateY(-65%) rotate(45deg);
+  transition: transform 120ms ease;
+}
+
+.judge-docket[open] > .judge-docket__summary::after {
+  transform: translateY(-35%) rotate(225deg);
+}
+
+.judge-docket__summary:hover {
+  background: var(--surface-blue);
+}
+
+.judge-docket__summary:focus-visible {
+  z-index: 1;
+  outline: 3px solid var(--focus);
+  outline-offset: -3px;
+}
+
+.judge-docket__identity {
+  min-width: 0;
+  display: grid;
+  gap: 0.08rem;
+}
+
+.judge-docket__eyebrow {
+  color: var(--muted);
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.judge-docket__name {
+  color: var(--navy-deep);
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+:root[data-theme="dark"] .judge-docket__name {
   color: var(--ink);
+}
+
+.judge-docket__count {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.judge-docket__cases {
+  padding: 0 0.8rem;
 }
 
 .docket-placeholder,
@@ -1236,6 +1306,94 @@ h3:hover .heading-anchor,
   font-family: var(--sans);
 }
 
+.about-page {
+  max-width: 58rem;
+}
+
+.about-heading {
+  max-width: 52rem;
+}
+
+.about-section {
+  padding-top: 1.6rem;
+  margin-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.about-section > h2 {
+  margin: 0 0 0.65rem;
+}
+
+.about-section > p {
+  max-width: 52rem;
+}
+
+.court-structure,
+.about-information > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.5rem;
+  margin-top: 1.3rem;
+}
+
+.court-structure section,
+.about-information section {
+  padding-top: 1rem;
+  border-top: 2px solid var(--navy-mid);
+}
+
+.court-structure h3,
+.about-information h3 {
+  margin: 0.25rem 0 0.55rem;
+}
+
+.court-structure p:last-child,
+.about-information p {
+  margin-bottom: 0;
+}
+
+.about-resources {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 2.5rem;
+  margin: 1.1rem 0 0;
+}
+
+.about-resources > div {
+  padding: 0.85rem 0 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.about-resources dt {
+  color: var(--navy-deep);
+  font-family: var(--serif);
+  font-size: 1.08rem;
+  font-weight: 700;
+}
+
+:root[data-theme="dark"] .about-resources dt {
+  color: var(--ink);
+}
+
+.about-resources dd {
+  margin: 0.3rem 0 0;
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+.about-disclaimer {
+  padding: 0.15rem 0 0.15rem 1rem;
+  margin-top: 2rem;
+  border-left: 3px solid var(--gold);
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.86rem;
+}
+
+.about-disclaimer p {
+  margin: 0;
+}
+
 .faq-list dt {
   margin-top: 1.15rem;
   color: var(--navy-deep);
@@ -1430,6 +1588,9 @@ h3:hover .heading-anchor,
   .section-heading,
   .docket-columns,
   .court-resource-grid,
+  .court-structure,
+  .about-resources,
+  .about-information > div,
   .resource-directory,
   .case-search-panel form,
   .document-controls {
@@ -1462,6 +1623,11 @@ h3:hover .heading-anchor,
     grid-template-columns: 1fr;
     gap: 0.2rem;
   }
+
+  .court-structure,
+  .about-information > div {
+    gap: 1.25rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1492,6 +1658,15 @@ h3:hover .heading-anchor,
 
   .site-search input {
     font-size: 16px;
+  }
+
+  .judge-docket__summary {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
+  }
+
+  .judge-docket__count {
+    white-space: normal;
   }
 
   .rule-shell,

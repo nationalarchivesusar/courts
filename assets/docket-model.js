@@ -65,6 +65,11 @@
     return source === "fallback" ? "Cached" : "Current";
   }
 
+  function matterCountLabel(count) {
+    const value = Number.isFinite(Number(count)) ? Number(count) : 0;
+    return `${value.toLocaleString()} active ${value === 1 ? "matter" : "matters"}`;
+  }
+
   function selectDocketData(type, lists) {
     const qualifyingLists = Array.isArray(lists)
       ? lists.filter((list) => listBelongsToDocket(type, list))
@@ -97,6 +102,7 @@
     emptyMessage,
     fallbackIsFresh,
     listBelongsToDocket,
+    matterCountLabel,
     normalizedListName,
     selectDocketData,
     statusLabel,

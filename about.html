@@ -3,22 +3,79 @@ layout: page
 title: About
 slug: about
 permalink: /about/
-description: About the United States Courts public legal-information website and its maintenance by NARA.
+description: About the United States Courts, the USAR federal judiciary, and the public legal resources maintained by NARA.
 show_breadcrumbs: true
 breadcrumb_parent: United States Courts
 breadcrumb_parent_url: /
 ---
 
-<article class="prose-page">
-  <header class="page-heading">
-    <p class="eyebrow">About this service</p>
+<article class="about-page prose-page">
+  <header class="page-heading about-heading">
+    <p class="eyebrow">About the judiciary</p>
     <h1>United States Courts</h1>
-    <p>This website is the public legal-information portal for the USAR federal judiciary.</p>
+    <p>This is the public information and legal-resource website of the USAR federal judiciary. It provides access to current court dockets, Supreme Court case law, Rules of Procedure, documents and forms, and related federal legal information.</p>
   </header>
-  <h2>Phase I</h2>
-  <p>The site succeeds the former <em>USAR Legal Directory</em>. Its existing federal and Supreme Court rules, rulings, document templates, dockets, and search resources have been retained while the service adopts a court-wide identity.</p>
-  <h2>Maintenance</h2>
-  <p>The judiciary remains the primary identity of this website. The <a href="{{ site.nara.url }}">National Archives and Records Administration</a> maintains and hosts the site for the United States Courts.</p>
-  <h2>Scope</h2>
-  <p>This phase does not yet provide a unified court-records system or public judiciary API. Case Search is currently limited to Supreme Court case law indexed by CourtListener, and docket summaries continue to use the established court boards.</p>
+
+  <section class="about-section" aria-labelledby="judiciary-heading">
+    <h2 id="judiciary-heading">The Federal Judiciary</h2>
+    <p>The USAR federal judiciary consists principally of the Supreme Court of the United States and the United States District Court. It does not include an intermediate Court of Appeals.</p>
+
+    <div class="court-structure">
+      <section>
+        <p class="eyebrow">Highest court</p>
+        <h3>Supreme Court of the United States</h3>
+        <p>The Supreme Court is the highest court of the United States. It exercises the jurisdiction provided by the USAR Constitution, federal law, and the Rules of the Supreme Court. Appeals from the United States District Court proceed directly to the Supreme Court where permitted.</p>
+      </section>
+      <section>
+        <p class="eyebrow">Federal trial court</p>
+        <h3>United States District Court</h3>
+        <p>The District Court hears federal criminal prosecutions, civil actions, and other matters within its jurisdiction. Its public docket is organized by the judges responsible for active matters.</p>
+      </section>
+    </div>
+  </section>
+
+  <section class="about-section" aria-labelledby="resources-heading">
+    <h2 id="resources-heading">Resources Available Here</h2>
+    <dl class="about-resources">
+      <div>
+        <dt>Cases &amp; Dockets</dt>
+        <dd>Current Supreme Court and District Court docket information and a Supreme Court case-law search.</dd>
+      </div>
+      <div>
+        <dt>Rules of Procedure</dt>
+        <dd>Federal Rules of Civil Procedure, Federal Rules of Criminal Procedure, Federal Rules of Evidence, Supreme Court Rules, and retained procedural references.</dd>
+      </div>
+      <div>
+        <dt>Documents &amp; Forms</dt>
+        <dd>Court filing resources, templates, opinions, orders, and other legal documents.</dd>
+      </div>
+      <div>
+        <dt>Legal Information</dt>
+        <dd>Access to the related <a href="{{ site.related_sites.us_code }}">United States Code Library</a> and federal legal materials maintained through the NARA legal-information system.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="about-section about-information" aria-labelledby="information-heading">
+    <h2 id="information-heading">Current Information Services</h2>
+    <div>
+      <section>
+        <h3>Case Search Scope</h3>
+        <p>Case Search uses CourtListener’s public case-law index and is presently scoped to published and other available Supreme Court material. It does not search USAR District Court docket records or arrest records.</p>
+      </section>
+      <section>
+        <h3>Docket Data</h3>
+        <p>Current docket information is synchronized from the public working records maintained by the respective courts.</p>
+      </section>
+    </div>
+  </section>
+
+  <section class="about-section" aria-labelledby="maintenance-heading">
+    <h2 id="maintenance-heading">Maintenance</h2>
+    <p>This website represents the United States Courts. The <a href="{{ site.nara.url }}">National Archives and Records Administration</a> maintains and hosts the public website and its associated legal-information infrastructure for the judiciary.</p>
+  </section>
+
+  <aside class="about-disclaimer" aria-label="Community disclaimer">
+    <p>This is an independent USAR community resource. It is not affiliated with the real United States government and does not provide real-world legal advice.</p>
+  </aside>
 </article>

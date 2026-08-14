@@ -1,10 +1,15 @@
 (() => {
+  "use strict";
+
   const form = document.getElementById("case-search-form");
   const queryInput = document.getElementById("case-query");
-  const topicInput = document.getElementById("case-category");
+  const statusSelect = document.getElementById("case-status");
   const results = document.getElementById("case-results");
   const count = document.getElementById("case-results-count");
-  if (!form || !queryInput || !results || !count) return;
+  if (!form || !queryInput || !statusSelect || !results || !count) return;
+
+  const statusOptions = Array.from(statusSelect.options).filter((option) => option.dataset.apiParameter);
+  const validStatusValues = new Set(statusOptions.map((option) => option.value));
 
   function plainText(value) {
     const parser = new DOMParser();
@@ -39,7 +44,7 @@
     article.append(heading);
 
     const citations = Array.isArray(item.citation) ? item.citation.join(", ") : "";
-    const metaParts = [item.court, item.dateFiled, item.docketNumber, citations].filter(Boolean);
+    const metaParts = [item.court, item.status, item.dateFiled, item.docketNumber, citations].filter(Boolean);
     if (metaParts.length) {
       const meta = document.createElement("p");
       meta.className = "case-result__meta";
@@ -60,7 +65,13 @@
     return article;
   }
 
-  async function search(query, topic) {
+  function applyStatusFilter(url, status) {
+    const selected = statusOptions.find((option) => option.value === status);
+    const options = selected ? [selected] : statusOptions;
+    options.forEach((option) => url.searchParams.set(option.dataset.apiParameter, "on"));
+  }
+
+  async function search(query, status) {
     results.replaceChildren();
     results.setAttribute("aria-busy", "true");
     count.textContent = "Searching Supreme Court case law…";
@@ -69,7 +80,7 @@
     url.searchParams.set("q", scopedQuery);
     url.searchParams.set("type", "o");
     url.searchParams.set("order_by", "score desc");
-    if (topic) url.searchParams.set("topic", topic);
+    applyStatusFilter(url, status);
 
     try {
       const response = await fetch(url, { credentials: "omit" });
@@ -94,30 +105,37 @@
     }
   }
 
-  function updateLocation(query, topic) {
+  function updateLocation(query, status) {
     const url = new URL(window.location.href);
     url.searchParams.set("q", query);
-    if (topic) url.searchParams.set("topic", topic);
-    else url.searchParams.delete("topic");
+    if (status) url.searchParams.set("status", status);
+    else url.searchParams.delete("status");
+    url.searchParams.delete("topic");
     history.replaceState(null, "", url);
   }
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     const query = queryInput.value.trim();
-    const topic = topicInput?.value.trim() || "";
+    const status = validStatusValues.has(statusSelect.value) ? statusSelect.value : "";
     if (!query) return;
-    updateLocation(query, topic);
-    search(query, topic);
+    updateLocation(query, status);
+    search(query, status);
   });
 
   const params = new URLSearchParams(window.location.search);
   const initialQuery = params.get("q")?.trim();
-  const initialTopic = params.get("topic")?.trim() || "";
-  if (initialQuery) {
-    queryInput.value = initialQuery;
-    if (topicInput) topicInput.value = initialTopic;
-    search(initialQuery, initialTopic);
-  }
-})();
+  const requestedStatus = params.get("status")?.trim() || "";
+  const initialStatus = validStatusValues.has(requestedStatus) ? requestedStatus : "";
+  const shouldCleanUrl = params.has("topic") || (requestedStatus && !validStatusValues.has(requestedStatus));
+  queryInput.value = initialQuery || "";
+  statusSelect.value = initialStatus;
 
+  if (shouldCleanUrl) {
+    const cleanUrl = new URL(window.location.href);
+    cleanUrl.searchParams.delete("topic");
+    if (!initialStatus) cleanUrl.searchParams.delete("status");
+    history.replaceState(null, "", cleanUrl);
+  }
+  if (initialQuery) search(initialQuery, initialStatus);
+})();

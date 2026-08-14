@@ -71,3 +71,9 @@ test("Fallback data is accepted only within its freshness window", () => {
   assert.equal(model.statusLabel("fallback"), "Cached");
   assert.equal(model.statusLabel("live"), "Current");
 });
+
+test("Judge docket counts use correct singular and plural grammar", () => {
+  assert.equal(model.matterCountLabel(0), "0 active matters");
+  assert.equal(model.matterCountLabel(1), "1 active matter");
+  assert.equal(model.matterCountLabel(4), "4 active matters");
+});

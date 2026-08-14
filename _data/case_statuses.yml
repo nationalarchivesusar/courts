@@ -1,0 +1,21 @@
+- value: published
+  label: Published opinions
+  parameter: stat_Published
+- value: unpublished
+  label: Unpublished opinions
+  parameter: stat_Unpublished
+- value: errata
+  label: Errata
+  parameter: stat_Errata
+- value: separate
+  label: Separate opinions
+  parameter: stat_Separate
+- value: in-chambers
+  label: In-chambers opinions
+  parameter: stat_In-chambers
+- value: relating-to
+  label: Relating-to orders
+  parameter: stat_Relating-to
+- value: unknown
+  label: Unknown status
+  parameter: stat_Unknown

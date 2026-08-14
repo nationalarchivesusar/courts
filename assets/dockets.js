@@ -134,13 +134,32 @@
 
     activeGroups.forEach((group) => {
       if (type === "district") {
-        const section = document.createElement("section");
-        section.className = "docket-group";
-        const heading = document.createElement("h4");
-        heading.textContent = group.sourceListName;
-        section.append(heading);
-        group.cards.forEach((card) => section.append(renderCard(card)));
-        container.append(section);
+        const details = document.createElement("details");
+        details.className = "judge-docket";
+        details.open = true;
+
+        const summary = document.createElement("summary");
+        summary.className = "judge-docket__summary";
+        const identity = document.createElement("span");
+        identity.className = "judge-docket__identity";
+        const eyebrow = document.createElement("span");
+        eyebrow.className = "judge-docket__eyebrow";
+        eyebrow.textContent = "District Judge";
+        const name = document.createElement("span");
+        name.className = "judge-docket__name";
+        name.textContent = String(group.sourceListName || "").trim();
+        identity.append(eyebrow, name);
+
+        const count = document.createElement("span");
+        count.className = "judge-docket__count";
+        count.textContent = model.matterCountLabel(group.cards.length);
+        summary.append(identity, count);
+
+        const cases = document.createElement("div");
+        cases.className = "judge-docket__cases";
+        group.cards.forEach((card) => cases.append(renderCard(card)));
+        details.append(summary, cases);
+        container.append(details);
       } else {
         group.cards.forEach((card) => container.append(renderCard(card)));
       }
