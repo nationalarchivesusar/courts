@@ -21,8 +21,7 @@ dockets:
   district_court_board: "rbISqlOt"
 
 jis:
-  # Set to the deployed public JIS HTTPS origin before publishing Records search.
-  public_api_base_url: ""
+  public_api_base_url: "https://ray-500-c60.tail6f3caa.ts.net:8443"
 
 collections:
   frap:
