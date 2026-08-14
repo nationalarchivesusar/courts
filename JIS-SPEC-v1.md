@@ -1,6 +1,6 @@
 # Judicial Information System (JIS) Specification v1
 
-**Status:** Proposed architecture for approval
+**Status:** Approved architecture for foundational implementation
 **Date:** 2026-08-13
 **Scope:** Data architecture, security boundaries, ingestion contracts, and API design
 **Related document:** [`ARCHITECTURE.md`](ARCHITECTURE.md)
@@ -143,7 +143,7 @@ JIS must not create a canonical Person based only on a username. A historical re
 - `rejected`: the claim is not a person or cannot be used;
 - `superseded`: replaced by a corrected claim.
 
-An Arrest may point to either `subject_person_id` or `subject_identity_claim_id`, enforced by a database check constraint requiring exactly one. Background checks by Roblox UserId exclude unresolved claims. Merging two different Roblox UserIds is prohibited. Correcting an incorrectly attributed record requires a review decision, a new provenance assertion, and an audit event.
+An Arrest points to either `subject_person_id` or `subject_identity_claim_id`, enforced by a database check constraint requiring exactly one. An arresting officer, when the source identifies one, points to either `arresting_actor_id` or `arresting_identity_claim_id`; both may be null only when the source contains no officer identity. Background checks by Roblox UserId exclude unresolved subject claims. Merging two different Roblox UserIds is prohibited. Correcting an incorrectly attributed subject or officer requires a review decision, a new provenance assertion, and an audit event.
 
 ### 7.3 Username handling
 
@@ -215,13 +215,13 @@ Database names below use `snake_case`; API examples use `camelCase`. All timesta
 
 **Purpose:** Holds a source identity that cannot yet be joined to a Person.
 **Primary identifier:** `id uuid`.
-**Fields:** `raw_username`, `raw_user_id`, `status`, `candidate_person_ids`, `resolved_person_id`, `resolution_method`, `resolved_by`, `resolved_at`.
-**Relationships:** Belongs to SourceRecord; may temporarily identify an Arrest or CaseParty.
+**Fields:** `raw_username`, `raw_user_id`, `claim_context` (`arrest_subject`, `arresting_officer`, `case_party`, `other`), `status`, `candidate_person_ids`, `resolved_person_id`, `resolution_method`, `resolved_by`, `resolved_at`.
+**Relationships:** Belongs to SourceRecord; may temporarily identify an arrest subject, arresting officer, or CaseParty.
 **Provenance:** The exact source field and raw value are required.
 **Access:** `admin_only`.
 
 ```json
-{"id":"0198a2f1-32ec-77a0-8091-37a92dd50101","rawUsername":"JohnDoe123","rawUserId":null,"status":"ambiguous","candidatePersonIds":["0198a2f0-7f6d-7d0a-8e10-0b77d7b63c01"]}
+{"id":"0198a2f1-32ec-77a0-8091-37a92dd50101","rawUsername":"JohnDoe123","rawUserId":null,"claimContext":"arrest_subject","status":"ambiguous","candidatePersonIds":["0198a2f0-7f6d-7d0a-8e10-0b77d7b63c01"]}
 ```
 
 ### 10.4 Agency
@@ -239,10 +239,10 @@ Database names below use `snake_case`; API examples use `camelCase`. All timesta
 
 ### 10.5 GovernmentActor
 
-**Purpose:** A Person acting for an Agency, including an arresting officer.
+**Purpose:** A resolved Person acting for an Agency, including an arresting officer.
 **Primary identifier:** `id uuid`.
 **Fields:** `person_id`, `agency_id`, `title`, `badge_or_roster_id`, `status` (`active`, `inactive`, `suspended`, `unknown`), `effective_from`, `effective_until`.
-**Relationships:** Belongs to Person and Agency; may be arresting actor or reviewer attribution.
+**Relationships:** Belongs to Person and Agency; may be arresting actor or reviewer attribution. A source-only officer name remains an IdentityClaim until both the Person and agency relationship are verified.
 **Provenance:** Roster/group verification or administrator assertion required.
 **Access:** Public only when separately designated; operational details restricted.
 
@@ -254,8 +254,8 @@ Database names below use `snake_case`; API examples use `camelCase`. All timesta
 
 **Purpose:** Records a law-enforcement action; never proves guilt or conviction.
 **Primary identifier:** `id uuid`; unique human `arrest_number`.
-**Fields:** `arrest_number`, exactly one of `subject_person_id`/`subject_identity_claim_id`, `subject_username_at_arrest`, `arresting_actor_id`, `officer_username_at_arrest`, `agency_id`, `occurred_at`, `location_text`, `source_server_job_id`, `source_place_id`, `notes`, `system_version`, `status` (`recorded`, `corrected`, `voided`, `archived`), `verification_status`, `access_level`.
-**Relationships:** Has ArrestCharges, ArrestCaseLinks, SourceRecords, and audit events.
+**Fields:** `arrest_number`, exactly one of `subject_person_id`/`subject_identity_claim_id`, `subject_username_at_arrest`, nullable `arresting_actor_id`, nullable `arresting_identity_claim_id`, `officer_username_at_arrest`, `agency_id`, `occurred_at`, `location_text`, `source_server_job_id`, `source_place_id`, `notes`, `system_version`, `status` (`recorded`, `corrected`, `voided`, `archived`), `verification_status`, `access_level`.
+**Relationships:** Has ArrestCharges, ArrestCaseLinks, SourceRecords, and audit events; belongs to either a resolved GovernmentActor or unresolved officer IdentityClaim when the source names an officer.
 **Provenance:** A primary SourceRecord is mandatory. Corrections are additional assertions, not source replacement.
 **Access:** `restricted_leo` by default; no complete public arrest endpoint.
 
@@ -421,13 +421,13 @@ Conviction rows are created by the disposition application service, never by arr
 
 **Purpose:** Durable metadata for a filing, order, opinion, judgment, or evidentiary source.
 **Primary identifier:** `id uuid`.
-**Fields:** `case_id`, `title`, `document_type` (`charging_document`, `plea`, `verdict`, `order`, `judgment`, `sentence`, `opinion`, `pardon`, `commutation`, `other`), `filed_at`, `source_url`, `storage_key`, `source_attachment_id`, `sha256`, `mime_type`, `byte_size`, `access_level`, `text_extraction_status` (`not_requested`, `queued`, `extracted`, `failed`, `unsupported`), `classification_status` (`unclassified`, `classified`, `needs_review`), `parser_version`.
+**Fields:** `case_id`, `title`, `document_type` (`charging_document`, `plea`, `verdict`, `order`, `judgment`, `sentence`, `opinion`, `pardon`, `commutation`, `other`), `filed_at`, `source_url`, `storage_key`, `source_attachment_id`, `sha256`, `mime_type`, `byte_size`, `access_level`, `publication_status` (`pending_review`, `public`, `restricted`, `sealed`), `text_extraction_status` (`not_requested`, `queued`, `extracted`, `failed`, `unsupported`), `parser_version`.
 **Relationships:** Belongs to Case and SourceRecord; supports Dispositions, Sentences, and PostJudgmentActions.
 **Provenance:** Source URL/attachment ID and checksum required when content is retrievable.
-**Access:** Explicit per document; a public case does not override a restricted document.
+**Access:** Explicit per document; a public case does not override a restricted document. `access_level` controls who may read the record, while `publication_status` records the publication/sealing decision. `publication_status=public` requires `access_level=public`; `sealed` requires `restricted_justice` or `admin_only`.
 
 ```json
-{"id":"0198a2f6-0000-72c9-8a71-092ca6701001","caseId":"0198a2f5-0000-7b43-9f88-c1d1c4a5c012","title":"Judgment","documentType":"judgment","filedAt":"2026-09-02T21:00:00Z","sourceUrl":"https://trello.com/example-attachment","sha256":"7f83b1657ff1fc53b92dc18148a1d65dfa13514d6f319dd472e29bb6d8a8e5a6","mimeType":"application/pdf","accessLevel":"public","textExtractionStatus":"extracted"}
+{"id":"0198a2f6-0000-72c9-8a71-092ca6701001","caseId":"0198a2f5-0000-7b43-9f88-c1d1c4a5c012","title":"Judgment","documentType":"judgment","filedAt":"2026-09-02T21:00:00Z","sourceUrl":"https://trello.com/example-attachment","sha256":"7f83b1657ff1fc53b92dc18148a1d65dfa13514d6f319dd472e29bb6d8a8e5a6","mimeType":"application/pdf","accessLevel":"public","publicationStatus":"public","textExtractionStatus":"extracted"}
 ```
 
 ### 10.18 SourceRecord / Provenance
@@ -468,7 +468,7 @@ The generic target is restricted to an allowlist. The first implementation must 
 
 **Purpose:** Human decision queue for ambiguity, conflicts, and possible duplicates.
 **Primary identifier:** `id uuid`.
-**Fields:** `reason` (`identity_ambiguity`, `disposition_ambiguity`, `possible_duplicate`, `source_conflict`, `invalid_record`, `access_classification`, `other`), `status` (`open`, `assigned`, `resolved`, `rejected`, `superseded`), `priority`, `target_type`, `target_id`, `candidate_values jsonb`, `evidence_source_ids`, `assigned_to`, `decision`, `decision_reason`, `resolved_by`, `resolved_at`.
+**Fields:** `reason` (`identity_ambiguity`, `disposition_ambiguity`, `possible_duplicate`, `source_conflict`, `invalid_record`, `publication_access`, `other`), `status` (`open`, `assigned`, `resolved`, `rejected`, `superseded`), `priority`, `target_type`, `target_id`, `candidate_values jsonb`, `evidence_source_ids`, `assigned_to`, `decision`, `decision_reason`, `resolved_by`, `resolved_at`.
 **Relationships:** Belongs to ImportJob optionally; references evidence and audited reviewer.
 **Provenance:** Candidate values retain their source IDs.
 **Access:** `admin_only` or designated justice reviewers.
@@ -573,6 +573,8 @@ Required database invariants include:
 - partial unique index on `disposition(charge_defendant_id) WHERE is_current`;
 - unique `conviction.originating_disposition_id`;
 - exactly one Arrest subject reference (`subject_person_id` XOR `subject_identity_claim_id`);
+- at most one Arrest officer reference (`arresting_actor_id` XOR `arresting_identity_claim_id`), and exactly one when `officer_username_at_arrest` is present; a resolved actor's Agency must match the Arrest Agency;
+- a CourtDocument with `publication_status=public` must have `access_level=public`, while `sealed` must use `restricted_justice` or `admin_only`;
 - exactly one unresolved/resolved CaseParty identity reference where a person identity is claimed;
 - immutable arrest number and accepted external source keys; Roblox UserId reattribution and docket-number correction require governed commands that preserve the prior value and audit the change;
 - no hard delete of accepted justice records through the runtime database role.
@@ -635,7 +637,7 @@ Deduplication is staged: exact idempotency checks first, deterministic unique ke
 
 - Same verified Roblox UserId resolves to the same Person.
 - Different Roblox UserIds never auto-merge.
-- Username-only and display-name-only matches produce IdentityClaims, not Person merges.
+- Subject- or officer-username-only matches produce context-specific IdentityClaims, not Person or GovernmentActor records.
 
 ## 14. Historical Import Strategy
 
@@ -659,7 +661,7 @@ read-only Discord HTML export
 Each line is independent and carries parsed data plus source locators:
 
 ```json
-{"schemaVersion":"jis.discord-arrest-import.v1","source":{"exportSha256":"28d2f5a1e11f...","guildId":"111111111111111111","channelId":"222222222222222222","messageId":"333333333333333333","messageTimestamp":"2026-06-15T02:31:00Z","embedIndex":0},"subject":{"robloxUserId":null,"usernameRaw":"JohnDoe123","fieldLocator":{"fieldName":"Suspect","fieldIndex":0}},"officer":{"robloxUserId":"987654321","usernameRaw":"AgentExample"},"agency":{"raw":"FBI","normalizedSlug":"fbi"},"occurredAt":"2026-06-15T02:29:00Z","allegedOffenses":[{"rawCitation":"18 USC 111(a)","offenseNameRaw":"Assaulting a federal officer","fieldLocator":{"fieldName":"Charges","line":1}}],"raw":{"authorId":"444444444444444444","embed":{"title":"Arrest Report","fields":[{"name":"Suspect","value":"JohnDoe123"}]}},"parser":{"name":"discord-html-arrests","version":"1.0.0"}}
+{"schemaVersion":"jis.discord-arrest-import.v1","source":{"exportSha256":"28d2f5a1e11f...","guildId":"111111111111111111","channelId":"222222222222222222","messageId":"333333333333333333","messageTimestamp":"2026-06-15T02:31:00Z","embedIndex":0},"subject":{"robloxUserId":null,"usernameRaw":"JohnDoe123","fieldLocator":{"fieldName":"Suspect","fieldIndex":0}},"officer":{"robloxUserId":null,"usernameRaw":"CoolFBIMan123","fieldLocator":{"fieldName":"Officer","fieldIndex":1}},"agency":{"raw":"FBI","normalizedSlug":"fbi"},"occurredAt":"2026-06-15T02:29:00Z","allegedOffenses":[{"rawCitation":"18 USC 111(a)","offenseNameRaw":"Assaulting a federal officer","fieldLocator":{"fieldName":"Charges","line":1}}],"raw":{"authorId":"444444444444444444","embed":{"title":"Arrest Report","fields":[{"name":"Suspect","value":"JohnDoe123"},{"name":"Officer","value":"CoolFBIMan123"}]}},"parser":{"name":"discord-html-arrests","version":"1.0.0"}}
 ```
 
 `raw` is restricted and may be stored compressed outside the primary database with a checksum and storage key. Normalized values never replace raw locators. The import tool supports `parse`, `validate`, `plan`, and `apply` modes. `apply` requires an approved plan checksum and is idempotent.
@@ -667,7 +669,7 @@ Each line is independent and carries parsed data plus source locators:
 ### 14.3 Acceptance rules
 
 - Missing required event time, agency, or subject identity data produces review rather than a fabricated default.
-- A record may be imported with an unresolved IdentityClaim, but it is excluded from UserId background checks.
+- A subject or officer username without a Roblox UserId creates a context-specific IdentityClaim. The Arrest may be imported with either or both identities unresolved; unresolved subjects are excluded from UserId background checks, and unresolved officers are not represented as GovernmentActors or used as verified officer/agency evidence.
 - Parser warnings and rejected lines appear in a machine-readable and human-readable reconciliation report.
 - Re-running the same export/parser version must not duplicate records.
 
@@ -688,14 +690,16 @@ X-JIS-Sent-At: 2026-08-13T18:42:05Z
 
 The experience secret is stored through Roblox's secret store and sent only by a server Script over HTTPS. Because the Roblox secret abstraction is designed for placing secrets into request URLs/headers rather than exposing raw key material, v1 recommends a rotatable bearer service credential plus timestamp and idempotency replay protection instead of custom Lua HMAC. If Roblox later supports an appropriate signing primitive, HMAC can be added as defense-in-depth without changing the body contract.
 
+`X-JIS-Sent-At` is the transport-attempt timestamp used for replay protection; the game server refreshes it on every retry. The Idempotency-Key and body `sourceEventId` remain stable across those retries. Body field `occurredAt` is the immutable time the arrest occurred. A delayed or queued arrest may therefore have an old `occurredAt` while presenting a current `X-JIS-Sent-At`.
+
 ### 15.2 Validation and transaction
 
 1. Authenticate an active service principal scoped to the expected Roblox universe.
 2. Apply a service-specific rate limit.
-3. Reject timestamps more than five minutes old/future, except controlled retry requests carrying an existing idempotency key.
+3. Validate `X-JIS-Sent-At` within ±5 minutes of JIS server time. Reject a stale/future transport attempt even if its body contains a plausible arrest time.
 4. Claim unique `(principal, idempotency_key)` before processing.
-5. Validate all strings, IDs, charge count, timestamp, place/universe, and payload size.
-6. Verify subject/officer Roblox identities. Verify the officer/agency authorization from cached, recently refreshed policy evidence; if the authorization provider is unavailable and the cache is stale, fail closed with a retryable error.
+5. Validate all strings, IDs, charge count, place/universe, and payload size. Validate `occurredAt` independently: reject a value more than five minutes in the future, but do not reject a record merely because the arrest is more than five minutes old. An unusually delayed event may be accepted with a review/audit flag.
+6. Require and verify subject/officer Roblox UserIds for live ingestion. Verify the officer/agency authorization from cached, recently refreshed policy evidence; if the authorization provider is unavailable and the cache is stale, fail closed with a retryable error. Unresolved officer identities are supported by the historical import path, not accepted from the authenticated live game service.
 7. Insert SourceRecord, Arrest, ArrestCharges, provenance, audit event, and Discord outbox event in one transaction.
 8. Return `201`; an exact replay returns `200` and the original identifiers.
 
@@ -710,7 +714,7 @@ Discord delivery occurs after commit. Exponential retries with jitter stop at a 
 3. Parse docket number, case caption, court/list routing, and candidate case status.
 4. Match or create a Case by `(court, normalized docket)`.
 5. Discover attachments and linked documents; create CourtDocument metadata.
-6. Queue download/text extraction/classification work.
+6. Queue download, text extraction, document-type identification, and publication review work.
 7. Stage candidate parties, charges, and legal facts with provenance.
 8. Apply only deterministic low-risk metadata automatically.
 9. Send all possible conviction/disposition facts through the validation rules and review queue.
@@ -733,7 +737,7 @@ attachment discovered
   -> hash and malware/content-type checks
   -> store metadata and optional archival blob
   -> extract text deterministically
-  -> classify document type
+  -> identify document type
   -> extract candidate facts with source spans
   -> schema and legal-invariant validation
   -> auto-accept safe metadata OR create ReviewItem
@@ -806,7 +810,7 @@ Authentication answers who; authorization answers what. Use internal roles and p
 | --- | --- |
 | `law_enforcement` | `background_checks.read`, `arrests.read` |
 | `justice` | LEO permissions plus `cases.write`, `documents.restricted.read`, `records.review` as assigned |
-| `jis_administrator` | Policy, imports, audit, access classification, service credentials, all review permissions |
+| `jis_administrator` | Policy, imports, audit, publication/access decisions, service credentials, all review permissions |
 
 Service principals receive direct narrow permissions such as `arrests.ingest` or `trello.sync`; they do not receive human roles.
 
@@ -836,7 +840,7 @@ Group/rank values are strings or bounded integers only at the integration edge a
 - Existing sessions lose elevated roles on the next check; administrators can revoke all sessions for a principal immediately.
 - Record the policy version and evidence timestamp used for each restricted decision.
 
-Object-level rules apply after role checks: a Justice user with `cases.write` still cannot alter an archived case without `records.restore`, and no role may publish a document without the classification permission.
+Object-level rules apply after role checks: a Justice user with `cases.write` still cannot alter an archived case without `records.restore`, and no role may publish a document without the publication permission.
 
 ## 21. Audit Logging
 
@@ -897,6 +901,8 @@ Use cursor pagination ordered by a documented stable tuple such as `(filed_at DE
 Public endpoints never return complete arrest history, law-enforcement notes, unresolved identity claims, raw sources, review state, or audit data.
 
 ### 22.3 Restricted read endpoint
+
+The aggregation service may be implemented and tested before human login exists, but no human-accessible route may be registered or deployed until Roblox OAuth, internal role authorization, session security, successful/denied access auditing, and restricted-response controls are active and tested.
 
 `GET /api/v1/background-checks/{robloxUserId}` requires `background_checks.read`. It aggregates four visibly separate arrays:
 
@@ -1002,6 +1008,8 @@ All examples use fake identifiers and the same subject, arrest, and case.
 }
 ```
 
+A historical Arrest whose officer is unresolved returns an `arrestingOfficer` projection containing `identityStatus: "unresolved"` and `usernameAtArrest`, with no invented Roblox UserId or GovernmentActor ID.
+
 ### 23.4 Background-check response (restricted)
 
 ```json
@@ -1090,7 +1098,7 @@ Failure philosophy:
 - Trello unavailable: serve last verified data with sync health; do not mark records deleted.
 - Identity unresolved: retain IdentityClaim; do not guess.
 - Partial database failure: transaction rolls back canonical write and outbox together.
-- Unknown write outcome: client retries with the same idempotency key.
+- Unknown write outcome: client retries with the same idempotency key/source event ID and a newly generated current `X-JIS-Sent-At`.
 
 Responses expose safe messages; internal traces and dependency bodies remain in restricted operational logs keyed by request ID.
 
@@ -1114,7 +1122,7 @@ Responses expose safe messages; internal traces and dependency bodies remain in 
 
 ### Privacy and minimization
 
-Collect only Roblox account identity and USAR justice-system data. Do not add fields for real names, real addresses, real birth dates, device fingerprints, or real-world identifiers without a separately approved requirement and classification review. Store game server/job IDs only as restricted anti-fraud provenance and apply a defined retention period.
+Collect only Roblox account identity and USAR justice-system data. Do not add fields for real names, real addresses, real birth dates, device fingerprints, or real-world identifiers without a separately approved requirement and data-access review. Store game server/job IDs only as restricted anti-fraud provenance and apply a defined retention period.
 
 ### Soft and physical deletion
 
@@ -1154,20 +1162,22 @@ Court Bot is a JIS client, not a database or business-logic owner. It authentica
 - permitted background checks;
 - person history lookup.
 
-Bot commands must not write tables directly. JIS performs validation, authorization, provenance, concurrency, and audit logging. Discord user IDs can be linked to AuthenticatedPrincipals for attribution but never replace Roblox UserId as subject identity. Interactive bot responses must respect access classification and avoid posting restricted reports in public channels.
+Bot commands must not write tables directly. JIS performs validation, authorization, provenance, concurrency, and audit logging. Discord user IDs can be linked to AuthenticatedPrincipals for attribution but never replace Roblox UserId as subject identity. Interactive bot responses must respect access level and avoid posting restricted reports in public channels.
 
 ## 28. Data Migration Strategy
 
 ### 28.1 Order
 
 1. Seed Courts, Agencies, roles, permissions, and approved policy configuration.
-2. Synchronize Trello case/card/document metadata in read-only mode.
-3. Reconcile docket counts and sampled cases against current public boards.
-4. Parse historical Discord exports to JSONL without database writes.
-5. Resolve identities/deduplicates and approve an import plan.
-6. Import historical arrests with provenance.
-7. Enable live arrest ingestion and compare Discord outbox notifications to prior webhook output.
-8. Mark JIS canonical only after completeness, deduplication, and recovery tests pass.
+2. Exercise live arrest ingestion, idempotency, recovery, and Discord outbox delivery in a non-production environment.
+3. Switch the game from direct Discord-only delivery to `Roblox -> JIS -> Discord`, record an exact UTC historical cutoff, and make JIS canonical for all new arrests from that instant.
+4. Monitor and reconcile the live path until every accepted post-cutoff arrest exists in JIS and its Discord notification is delivered or visibly queued/failed.
+5. Export and parse historical Discord records strictly before the cutoff into JSONL without database writes.
+6. Resolve identities/deduplicates, approve the import plan, and backfill historical arrests with provenance.
+7. Begin Trello case/document synchronization and reconciliation after the foundation is stable; this work may proceed in parallel with live-arrest monitoring and historical backfill.
+8. Mark the historical arrest migration and each Trello source complete only after completeness, idempotency, deduplication, and recovery tests pass.
+
+The cutoff prevents the historical dataset from continuing to grow during parser/review work and prevents post-cutoff Discord notifications from being re-imported as legacy arrests.
 
 ### 28.2 Reconciliation requirements
 
@@ -1189,9 +1199,10 @@ erDiagram
     PERSON ||--o{ USERNAME_HISTORY : has
     PERSON ||--o{ GOVERNMENT_ACTOR : serves_as
     AGENCY ||--o{ GOVERNMENT_ACTOR : employs
-    PERSON ||--o{ ARREST : subject_of
+    PERSON o|--o{ ARREST : resolved_subject
     IDENTITY_CLAIM o|--o{ ARREST : unresolved_subject
-    GOVERNMENT_ACTOR ||--o{ ARREST : performs
+    GOVERNMENT_ACTOR o|--o{ ARREST : resolved_officer
+    IDENTITY_CLAIM o|--o{ ARREST : unresolved_officer
     AGENCY ||--o{ ARREST : records
     ARREST ||--|{ ARREST_CHARGE : alleges
     ARREST ||--o{ ARREST_CASE_LINK : relates
@@ -1244,11 +1255,11 @@ erDiagram
 
 ### 30.3 Historical Discord arrest
 
-1. Parser finds an embed with username `JohnDoe123` but no UserId.
-2. JSONL retains the embed field locator and original value.
-3. Import creates an IdentityClaim and ReviewItem; the row is not included in UserId results.
-4. Administrator verifies the correct Roblox UserId using approved evidence.
-5. JIS links the imported Arrest to Person and audits the decision. It does not merge similarly named accounts.
+1. Parser finds subject username `JohnDoe123` and officer username `CoolFBIMan123`, but no UserId for either.
+2. JSONL retains both embed field locators and original values.
+3. Import creates separate `arrest_subject` and `arresting_officer` IdentityClaims and ReviewItems; the row is not included in subject UserId results and no GovernmentActor is invented.
+4. Administrator verifies each Roblox UserId independently using approved evidence and verifies the officer's Agency relationship.
+5. JIS links the imported Arrest to the resolved Person and GovernmentActor and audits both decisions. It does not merge similarly named accounts.
 
 ### 30.4 Ambiguous court document
 
@@ -1286,16 +1297,17 @@ erDiagram
 - Add PostgreSQL development environment, migrations, test database, configuration, health endpoint, and OpenAPI generation.
 - Implement foundational identity, court, arrest, case, charge/defendant/disposition, provenance, review, and audit tables with constraints and invariant tests.
 
-### Phase C — Historical arrest migration tooling
-
-- Build versioned Discord HTML parser and JSONL schema.
-- Implement parse/validate/plan/apply CLI and reconciliation reports.
-- Add identity resolution and duplicate review workflow.
-
-### Phase D — Live arrest ingestion
+### Phase C — Live arrest ingestion
 
 - Implement Roblox server submission contract and service authentication.
 - Add idempotency, authorization checks, database transaction, outbox, and Discord retries.
+- Validate the flow outside production, switch the game to JIS-first delivery, and record the historical cutoff.
+
+### Phase D — Historical arrest migration tooling
+
+- Build versioned Discord HTML parser and JSONL schema for records before the cutoff.
+- Implement parse/validate/plan/apply CLI and reconciliation reports.
+- Add subject/officer identity resolution and duplicate review workflow.
 
 ### Phase E — Court ingestion
 
@@ -1303,24 +1315,29 @@ erDiagram
 - Add CourtDocument metadata/download/extraction pipeline.
 - Implement candidate charges/dispositions and review safeguards.
 
-### Phase F — Restricted background checks
+### Phase F — Background-check domain service
 
-- Implement the aggregate service and restricted API.
-- Add access auditing, no-store responses, rate limiting, and misuse alerts.
+- Implement and test the aggregate business logic behind a non-public application boundary.
+- Do not register or expose a human-accessible background-check route in this phase.
 
 ### Phase G — Human authentication and authorization
 
 - Implement Roblox OAuth authorization code with PKCE.
 - Add group/rank adapter, policy mappings, session management, refresh, and revocation.
-- This may move before Phase F if interactive testing requires it; service-level authorization and audit still precede any restricted deployment.
+- Integrate authorization decisions and successful/denied access audit events with the background-check service.
 
-### Phase H — Public Courts integration
+### Phase H — Restricted background-check deployment
+
+- Register the restricted API and portal only after OAuth, group/rank authorization, session security, access auditing, rate limits, and `Cache-Control: no-store` are active and tested.
+- Verify that an authenticated user without an eligible JIS role receives `403` and an AuditEvent without any subject data.
+
+### Phase I — Public Courts integration
 
 - Add public cases/courts/judges API projections.
 - Replace direct public Trello reads only after reconciliation.
 - Add public case/docket pages to GitHub Pages without secrets.
 
-### Phase I — Court Bot integration
+### Phase J — Court Bot integration
 
 - Give Court Bot a scoped service Principal.
 - Move supported bot operations to JIS commands and remove duplicate business logic.
@@ -1368,12 +1385,14 @@ After this specification is approved, create a separate private `jis-backend` re
 The initial migration must implement the identity, institution, arrest, case/count/defendant/disposition, conviction/sentence, document, provenance, import/review, principal/role, and audit foundations defined here. The acceptance tests must prove at least:
 
 - different Roblox UserIds cannot merge;
-- unresolved username-only imports do not create Person rows;
+- unresolved identity claims do not create Person rows;
+- unresolved historical officers do not create GovernmentActor rows, and Arrest officer references obey the resolved/unresolved exclusivity constraint;
 - ArrestCharges cannot create Convictions;
 - Convictions require a verified conviction Disposition and source document;
 - only one current Disposition exists per ChargeDefendant;
 - later vacatur preserves the original conviction history;
 - court+docket and source/idempotency keys enforce the stated uniqueness rules;
-- public projections cannot expose restricted fields.
+- public projections cannot expose restricted fields;
+- CourtDocument publication/access combinations reject public-sealed or otherwise inconsistent states.
 
 This task creates the stable foundation on which the three ingestion paths can be implemented independently and safely.
