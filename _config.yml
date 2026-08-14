@@ -61,6 +61,7 @@ defaults:
 
 exclude:
   - ARCHITECTURE.md
+  - JIS-SPEC-v1.md
   - Gemfile
   - Gemfile.lock
   - README.md
