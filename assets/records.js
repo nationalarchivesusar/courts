@@ -49,8 +49,7 @@
 
   function arrestElement(arrest) {
     const article = element("article", "public-arrest");
-    const heading = element("h3", "", arrest.arrestNumber || "Arrest record");
-    article.append(heading);
+    article.append(element("h4", "", arrest.arrestNumber || "Arrest record"));
 
     const notice = model.identityNotice(arrest);
     if (notice) article.append(element("p", "identity-unverified", notice));
@@ -63,8 +62,7 @@
     addDefinition(details, "Location", arrest.location);
     article.append(details);
 
-    const offensesHeading = element("h4", "", "Alleged offenses");
-    article.append(offensesHeading);
+    article.append(element("h5", "", "Alleged offenses"));
     const emptyLabel = model.allegedOffenseLabel(arrest);
     if (emptyLabel) {
       article.append(element("p", "public-arrest__empty", emptyLabel));
@@ -77,6 +75,63 @@
         list.append(element("li", "", text));
       });
       article.append(list);
+    }
+    return article;
+  }
+
+  function sentenceComponentText(component) {
+    const amount = component?.amount === null || component?.amount === undefined
+      ? ""
+      : String(component.amount);
+    const unit = component?.unit || component?.currency || "";
+    const value = [amount, unit].filter(Boolean).join(" ");
+    const label = String(component?.type || "other").replaceAll("_", " ");
+    const detail = component?.details ? ` — ${component.details}` : "";
+    return `${label.charAt(0).toUpperCase()}${label.slice(1)}${value ? `: ${value}` : ""}${detail}`;
+  }
+
+  function convictionCaseElement(group) {
+    const article = element("article", "public-conviction");
+    article.append(element("p", "public-conviction__docket", group.docketNumber));
+    article.append(element("h4", "", group.caption));
+
+    const notice = model.identityNotice({ identity: group.identity });
+    if (notice) article.append(element("p", "identity-unverified", notice));
+
+    const details = element("dl", "public-arrest__details public-conviction__details");
+    addDefinition(details, "Defendant", group.defendantUsername);
+    addDefinition(details, "Convicted", group.convictedAt ? formatDate(group.convictedAt) : null);
+    addDefinition(details, "Disposition basis", model.dispositionBasisLabel(group.basis));
+    addDefinition(details, "Current status", model.convictionStatusLabel(group.currentStatus));
+    article.append(details);
+
+    article.append(element("h5", "", "Convicted counts"));
+    const counts = element("ol", "public-conviction__counts");
+    group.counts.forEach((count) => {
+      const prefix = Number.isFinite(Number(count.countNumber)) ? `Count ${count.countNumber}: ` : "";
+      const citation = count.displayCitation ? `${count.displayCitation} — ` : "";
+      counts.append(element("li", "", `${prefix}${citation}${count.offenseName}`));
+    });
+    article.append(counts);
+
+    article.append(element("h5", "", "Sentence"));
+    if (!Array.isArray(group.sentences) || group.sentences.length === 0) {
+      article.append(element("p", "public-arrest__empty", "No public sentencing details are currently available for this conviction record."));
+    } else {
+      group.sentences.forEach((sentence) => {
+        const block = element("div", "public-conviction__sentence");
+        const dateLabel = sentence.imposedAt ? `Imposed ${formatDate(sentence.imposedAt)}` : "Sentencing order";
+        block.append(element("p", "public-conviction__sentence-date", dateLabel));
+        block.append(element("p", "public-conviction__sentence-text", sentence.rawText || "Sentence details unavailable."));
+        if (Array.isArray(sentence.components) && sentence.components.length > 0) {
+          const components = element("ul", "public-conviction__components");
+          sentence.components.forEach((component) => {
+            components.append(element("li", "", sentenceComponentText(component)));
+          });
+          block.append(components);
+        }
+        article.append(block);
+      });
     }
     return article;
   }
@@ -103,6 +158,40 @@
     }
   }
 
+  async function loadConvictions(container, path, cursor, button) {
+    if (button) button.disabled = true;
+    try {
+      const response = await requestJson(path, { limit: 100, cursor });
+      const convictions = Array.isArray(response?.data?.convictions) ? response.data.convictions : [];
+      model.groupConvictions(convictions).forEach((group) => container.append(convictionCaseElement(group)));
+      const nextCursor = response?.meta?.pagination?.nextCursor || null;
+      if (button) button.remove();
+      if (nextCursor) {
+        const loadMore = element("button", "records-load-more", "Load more convictions");
+        loadMore.type = "button";
+        loadMore.addEventListener("click", () => void loadConvictions(container, path, nextCursor, loadMore));
+        container.after(loadMore);
+      } else if (convictions.length === 0 && cursor === null) {
+        container.append(element("p", "records-empty", "No public conviction records are available in this category."));
+      }
+    } catch {
+      if (button) button.disabled = false;
+      container.append(element("p", "notice", "Conviction details are temporarily unavailable. Please try again later."));
+    }
+  }
+
+  function addRecordHistories(section, convictionPath, arrestPath) {
+    section.append(element("h3", "records-subheading", "Conviction history"));
+    const convictions = element("div", "public-conviction-list");
+    section.append(convictions);
+    void loadConvictions(convictions, convictionPath, null, null);
+
+    section.append(element("h3", "records-subheading", "Arrest history"));
+    const arrests = element("div", "public-arrest-list");
+    section.append(arrests);
+    void loadArrests(arrests, arrestPath, null, null);
+  }
+
   function accountSection(account) {
     const section = element("section", "records-class records-class--verified");
     section.append(element("p", "records-class__label", "Verified account records"));
@@ -111,10 +200,11 @@
     addDefinition(identity, "Username", account.currentUsername);
     addDefinition(identity, "Roblox UserId", account.robloxUserId);
     section.append(identity);
-    section.append(element("h3", "records-subheading", "Arrest history"));
-    const list = element("div", "public-arrest-list");
-    section.append(list);
-    void loadArrests(list, `/api/v1/people/${encodeURIComponent(account.robloxUserId)}/arrests`, null, null);
+    addRecordHistories(
+      section,
+      `/api/v1/people/${encodeURIComponent(account.robloxUserId)}/convictions`,
+      `/api/v1/people/${encodeURIComponent(account.robloxUserId)}/arrests`,
+    );
     return section;
   }
 
@@ -126,11 +216,13 @@
     section.append(element(
       "p",
       "historical-identity-explanation",
-      `These records were originally recorded under ${spellings}. The historical source did not contain a Roblox UserId, and these records have not been independently linked to a current Roblox account.`,
+      `These records were originally recorded under ${spellings}. The historical sources did not establish a Roblox UserId, and these records have not been independently linked to a current Roblox account.`,
     ));
-    const list = element("div", "public-arrest-list");
-    section.append(list);
-    void loadArrests(list, `/api/v1/arrests/by-username/${encodeURIComponent(query)}`, null, null);
+    addRecordHistories(
+      section,
+      `/api/v1/convictions/by-username/${encodeURIComponent(query)}`,
+      `/api/v1/arrests/by-username/${encodeURIComponent(query)}`,
+    );
     return section;
   }
 
