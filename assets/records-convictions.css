@@ -1,0 +1,71 @@
+.public-conviction {
+  padding: 1.35rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.public-conviction__docket {
+  margin: 0 0 0.2rem;
+  color: var(--navy-mid);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.public-conviction h4 {
+  margin: 0 0 0.65rem;
+  color: var(--navy-deep);
+  font-family: var(--serif);
+  font-size: 1.25rem;
+}
+
+:root[data-theme="dark"] .public-conviction h4 {
+  color: var(--ink);
+}
+
+.public-conviction h5 {
+  margin: 1rem 0 0.35rem;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 0.9rem;
+}
+
+.public-conviction__counts,
+.public-conviction__components {
+  margin: 0;
+  padding-left: 1.4rem;
+}
+
+.public-conviction__counts li + li,
+.public-conviction__components li + li {
+  margin-top: 0.25rem;
+}
+
+.public-conviction__sentence {
+  padding: 0.75rem 0 0.15rem 1rem;
+  border-left: 3px solid var(--navy-soft);
+}
+
+.public-conviction__sentence + .public-conviction__sentence {
+  margin-top: 0.75rem;
+}
+
+.public-conviction__sentence-date {
+  margin: 0 0 0.25rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.public-conviction__sentence-text {
+  margin: 0 0 0.45rem;
+}
+
+.public-conviction__components {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.public-conviction-list + .records-subheading {
+  margin-top: 2rem;
+}
