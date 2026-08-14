@@ -2,17 +2,19 @@
 layout: page
 title: Public Records Search
 slug: records
-description: Search public JIS arrest records by Roblox username or UserId.
+description: Search public JIS arrest and conviction records by Roblox username or UserId.
 permalink: /records/
 show_breadcrumbs: true
 breadcrumb_parent: United States Courts
 breadcrumb_parent_url: /
 ---
 
+<link rel="stylesheet" href="{{ '/assets/records-convictions.css' | relative_url }}">
+
 <header class="page-heading records-heading">
   <p class="eyebrow">Judicial Information System</p>
   <h1>Public Records Search</h1>
-  <p>Search public arrest records by Roblox username or UserId. Verified account records and historical username-only records are presented separately.</p>
+  <p>Search public conviction and arrest records by Roblox username or UserId. Verified account records and historical username-only records are presented separately.</p>
 </header>
 
 <section class="records-search" aria-labelledby="records-search-heading">
@@ -27,9 +29,9 @@ breadcrumb_parent_url: /
   <p class="source-note">Searches use only public JIS records. The Courts website does not query Roblox or attempt to resolve historical usernames.</p>
 </section>
 
-<aside class="records-legal-notice" aria-label="Arrest record notice">
+<aside class="records-legal-notice" aria-label="Criminal record notice">
   <strong>An arrest record is not a conviction.</strong>
-  Arrests, criminal charges, case dispositions, and convictions are distinct records.
+  Arrests, criminal charges, case dispositions, and convictions are distinct records. Conviction history below reflects only dispositions recorded by JIS as verified convictions.
 </aside>
 
 <div
