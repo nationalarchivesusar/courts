@@ -168,8 +168,7 @@
 
   function renderCharges(charges) {
     const wrapper = section("Charges and dispositions");
-    const notice = textElement("p", "case-section-note", "A filed charge is an allegation. It is not a conviction unless the count has a convicted disposition.");
-    wrapper.append(notice);
+    wrapper.append(textElement("p", "case-section-note", "A filed charge is an allegation. It is not a conviction unless the count has a convicted disposition."));
     const current = model.groupCharges(charges);
     if (!current.length) {
       wrapper.append(textElement("p", "case-empty", "No public structured charges are recorded for this case."));
@@ -180,14 +179,44 @@
     current.forEach((charge) => {
       const article = document.createElement("article");
       article.className = "case-charge";
-      const heading = textElement("h3", "case-charge__heading", `Count ${charge.countNumber} — ${charge.offenseName}`);
-      article.append(heading);
+      article.append(textElement("h3", "case-charge__heading", `Count ${charge.countNumber} — ${charge.offenseName}`));
       if (charge.displayCitation) article.append(textElement("p", "case-charge__citation", charge.displayCitation));
-      const disposition = model.dispositionLabel(charge.disposition);
-      const line = textElement("p", "case-charge__disposition", `Disposition: ${disposition}`);
+      const line = textElement("p", "case-charge__disposition", `Disposition: ${model.dispositionLabel(charge.disposition)}`);
       if (charge.convictionStatus) line.append(document.createTextNode(` · Conviction status: ${model.titleCase(charge.convictionStatus)}`));
       article.append(line);
       list.append(article);
+    });
+    wrapper.append(list);
+    return wrapper;
+  }
+
+  function renderDocuments(documents) {
+    const wrapper = section("Documents");
+    if (!Array.isArray(documents) || !documents.length) {
+      wrapper.append(textElement("p", "case-empty", "No separately indexed public documents are available."));
+      return wrapper;
+    }
+    const list = document.createElement("div");
+    list.className = "case-documents";
+    documents.forEach((documentRecord) => {
+      const item = document.createElement("article");
+      item.className = "case-document";
+      const safeUrl = model.safeExternalUrl(documentRecord.sourceUrl);
+      const title = safeUrl ? document.createElement("a") : document.createElement("span");
+      title.className = "case-document__title";
+      title.textContent = documentRecord.title;
+      if (safeUrl) {
+        title.href = safeUrl;
+        title.target = "_blank";
+        title.rel = "noopener noreferrer";
+      }
+      item.append(title);
+      item.append(textElement(
+        "p",
+        "case-document__meta",
+        `${model.titleCase(documentRecord.documentType)} · ${model.formatDate(documentRecord.filedAt)}`,
+      ));
+      list.append(item);
     });
     wrapper.append(list);
     return wrapper;
@@ -236,7 +265,7 @@
     return wrapper;
   }
 
-  function renderDetail(record) {
+  function renderDetail(record, documents) {
     if (!detail) return;
     detail.replaceChildren();
     const summary = record.case;
@@ -268,7 +297,13 @@
       header.append(source);
     }
 
-    detail.append(header, renderParties(record.parties), renderCharges(record.charges), renderDocket(record.docket));
+    detail.append(
+      header,
+      renderParties(record.parties),
+      renderCharges(record.charges),
+      renderDocket(record.docket),
+      renderDocuments(documents),
+    );
   }
 
   async function loadCase(docketNumber) {
@@ -283,10 +318,14 @@
     setBusy(true);
     setStatus(`Loading ${docketNumber}…`);
     try {
-      const payload = await fetchJson(model.buildCaseApiUrl(apiBase, docketNumber));
-      renderDetail(payload.data);
-      document.title = `${payload.data.case.docketNumber} — ${payload.data.case.caption} | United States Courts`;
-      setStatus(`Case ${payload.data.case.docketNumber}.`);
+      const [casePayload, documentPayload] = await Promise.all([
+        fetchJson(model.buildCaseApiUrl(apiBase, docketNumber)),
+        fetchJson(model.buildCaseApiUrl(apiBase, docketNumber, "/documents")),
+      ]);
+      const documents = Array.isArray(documentPayload?.data?.documents) ? documentPayload.data.documents : [];
+      renderDetail(casePayload.data, documents);
+      document.title = `${casePayload.data.case.docketNumber} — ${casePayload.data.case.caption} | United States Courts`;
+      setStatus(`Case ${casePayload.data.case.docketNumber}.`);
     } catch (error) {
       if (detail) {
         detail.replaceChildren(textElement(
@@ -301,10 +340,10 @@
     }
   }
 
-  function showSearch() {
+  function showSearch({ pushHistory = true } = {}) {
     const url = new URL(window.location.href);
     url.searchParams.delete("docket");
-    window.history.pushState({}, "", url);
+    if (pushHistory) window.history.pushState({}, "", url);
     if (detail) {
       detail.hidden = true;
       detail.replaceChildren();
@@ -329,11 +368,11 @@
   loadMore?.addEventListener("click", () => {
     if (nextCursor) void runSearch({ append: true });
   });
-  backButton?.addEventListener("click", showSearch);
+  backButton?.addEventListener("click", () => showSearch());
   window.addEventListener("popstate", () => {
     const docket = model.currentDocket(window.location.search);
     if (docket) void loadCase(docket);
-    else showSearch();
+    else showSearch({ pushHistory: false });
   });
 
   const docket = model.currentDocket(window.location.search);
