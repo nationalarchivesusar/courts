@@ -1,0 +1,344 @@
+.cases-search {
+  margin: 1.6rem 0 1.25rem;
+  padding: 1.35rem 1.5rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.cases-search__heading h2 {
+  margin: 0 0 0.35rem;
+  color: var(--navy-deep);
+  font-family: var(--serif);
+}
+
+.cases-search__heading p {
+  margin: 0 0 1rem;
+  color: var(--muted);
+}
+
+.cases-search form {
+  display: grid;
+  grid-template-columns: minmax(14rem, 2fr) minmax(9rem, 0.7fr) minmax(9rem, 0.7fr) auto;
+  gap: 0.85rem;
+  align-items: end;
+}
+
+.cases-search .form-field {
+  margin: 0;
+}
+
+.cases-search input,
+.cases-search select {
+  width: 100%;
+}
+
+.cases-legal-notice {
+  margin: 1rem 0 1.5rem;
+  padding: 0.9rem 1rem;
+  border-left: 4px solid var(--navy-mid);
+  background: var(--surface-muted);
+  color: var(--ink);
+}
+
+.cases-toolbar {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.cases-status {
+  margin: 0.7rem 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.case-back-button {
+  padding: 0.45rem 0.75rem;
+  font-size: 0.86rem;
+}
+
+.case-results-list {
+  min-height: 2rem;
+}
+
+.case-result {
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.case-result__docket,
+.case-file-heading__docket {
+  margin: 0 0 0.25rem;
+  color: var(--navy-mid);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.case-result__caption {
+  margin: 0 0 0.85rem;
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  line-height: 1.25;
+}
+
+.case-result__caption a {
+  color: var(--navy-deep);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.case-meta {
+  margin: 0;
+}
+
+.case-result__meta,
+.case-file-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0.65rem 1.15rem;
+}
+
+.case-meta__item {
+  min-width: 0;
+}
+
+.case-meta__label {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.case-meta__value {
+  margin: 0.12rem 0 0;
+  color: var(--ink);
+  font-size: 0.93rem;
+}
+
+.cases-load-more-wrap {
+  padding: 1.2rem 0;
+  text-align: center;
+}
+
+.case-file {
+  padding-top: 1.35rem;
+}
+
+.case-file-heading {
+  padding-bottom: 1.4rem;
+  border-bottom: 2px solid var(--navy-deep);
+}
+
+.case-file-heading h1 {
+  margin: 0 0 1.15rem;
+  color: var(--navy-deep);
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 2.65rem);
+  line-height: 1.1;
+}
+
+.case-file-heading .eyebrow {
+  margin-bottom: 0.35rem;
+}
+
+.case-source-link {
+  margin: 1rem 0 0;
+  font-size: 0.88rem;
+}
+
+.case-detail-section {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.case-detail-section__heading {
+  margin: 0 0 1rem;
+  color: var(--navy-deep);
+  font-family: var(--serif);
+  font-size: 1.45rem;
+}
+
+.case-section-note {
+  margin: -0.45rem 0 1rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.case-parties {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.75rem 1.5rem;
+}
+
+.case-party {
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.case-party__role {
+  margin: 0 0 0.2rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.case-party__name {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.case-party__identity {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.case-charge {
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.case-charge__heading {
+  margin: 0 0 0.25rem;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.05rem;
+}
+
+.case-charge__citation,
+.case-charge__disposition {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.case-documents {
+  border-top: 1px solid var(--border);
+}
+
+.case-document {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.case-document__title {
+  color: var(--navy-deep);
+  font-weight: 700;
+}
+
+.case-document__meta {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.case-docket-wrap {
+  overflow-x: auto;
+  border-top: 1px solid var(--border);
+}
+
+.case-docket-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 38rem;
+}
+
+.case-docket-table th {
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.case-docket-table td {
+  padding: 0.8rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  font-size: 0.9rem;
+}
+
+.case-docket-table__date {
+  width: 12rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.case-docket-table__number {
+  display: inline-block;
+  min-width: 2.5rem;
+  margin-right: 0.35rem;
+  color: var(--navy-mid);
+  font-weight: 800;
+}
+
+.case-empty,
+.case-system-notice {
+  margin: 1rem 0;
+  padding: 1rem 0;
+  color: var(--muted);
+}
+
+.case-system-notice--error {
+  padding: 1rem;
+  border-left: 4px solid var(--danger, #8b1e1e);
+  background: var(--surface-muted);
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .cases-search__heading h2,
+:root[data-theme="dark"] .case-result__caption a,
+:root[data-theme="dark"] .case-file-heading h1,
+:root[data-theme="dark"] .case-detail-section__heading,
+:root[data-theme="dark"] .case-document__title {
+  color: var(--ink);
+}
+
+@media (max-width: 860px) {
+  .cases-search form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cases-search .form-field--wide {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 580px) {
+  .cases-search {
+    padding: 1rem;
+  }
+
+  .cases-search form {
+    grid-template-columns: 1fr;
+  }
+
+  .cases-search .form-field--wide {
+    grid-column: auto;
+  }
+
+  .cases-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+    padding-bottom: 0.75rem;
+  }
+
+  .case-result__meta,
+  .case-file-meta,
+  .case-parties {
+    grid-template-columns: 1fr;
+  }
+}

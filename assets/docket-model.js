@@ -26,6 +26,12 @@
       .trim();
   }
 
+  function docketNumberFromCardName(value) {
+    const name = cleanCardName(value).replace(/[\u2010-\u2015\u2212]/g, "-");
+    const match = name.match(/^([A-Za-z]{2}-[A-Za-z0-9-]{3,120})\s+-\s+/);
+    return match ? match[1].toUpperCase() : null;
+  }
+
   function listBelongsToDocket(type, list) {
     const definition = definitions[type];
     if (!definition || list?.closed === true) return false;
@@ -99,6 +105,7 @@
     cardBelongsToDocket,
     cleanCardName,
     definitions,
+    docketNumberFromCardName,
     emptyMessage,
     fallbackIsFresh,
     listBelongsToDocket,

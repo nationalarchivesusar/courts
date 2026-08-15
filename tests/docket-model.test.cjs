@@ -77,3 +77,11 @@ test("Judge docket counts use correct singular and plural grammar", () => {
   assert.equal(model.matterCountLabel(1), "1 active matter");
   assert.equal(model.matterCountLabel(4), "4 active matters");
 });
+
+test("District docket card names expose a canonical docket number for JIS links", () => {
+  assert.equal(
+    model.docketNumberFromCardName("CR-072626-0066 — United States v. THE_CAPTIAN77"),
+    "CR-072626-0066",
+  );
+  assert.equal(model.docketNumberFromCardName("United States v. Example"), null);
+});
