@@ -166,7 +166,7 @@ chapter: Title II. Commencing an Action; Service of Process, Pleadings, Motions,
 2. at a place not within any judicial district of the United States, in any manner prescribed by Rule 4(f) for serving an individual, except personal delivery under (f)(2)(C)(i) .
 
 
-    - (i) Serving the United States and Its Agencies, Corporations, Officers, or Employees.
+(i) Serving the United States and Its Agencies, Corporations, Officers, or Employees.
 
 
 1. United States. To serve the United States, a party must:
@@ -238,7 +238,7 @@ chapter: Title II. Commencing an Action; Service of Process, Pleadings, Motions,
     - (B) exercising jurisdiction is consistent with the United States Constitution and laws.
 
 
-( l ) Proving Service.
+(l) Proving Service.
 
 
 1. Affidavit Required. Unless service is waived, proof of service must be made to the court. Except for service by a United States marshal or deputy marshal, proof must be by the server's affidavit.
@@ -256,7 +256,7 @@ chapter: Title II. Commencing an Action; Service of Process, Pleadings, Motions,
 3. Validity of Service; Amending Proof. Failure to prove service does not affect the validity of service. The court may permit proof of service to be amended.
 
 
-    - (m) Time Limit for Service. If a defendant is not served within 90 days after the complaint is filed, the court—on motion or on its own after notice to the plaintiff—must dismiss the action without prejudice against that defendant or order that service be made within a specified time. But if the plaintiff shows good cause for the failure, the court must extend the time for service for an appropriate period. This subdivision (m) does not apply to service in a foreign country under Rule 4(f) , 4(h)(2) , or 4(j)(1) , or to service of a notice under Rule 71.1(d)(3)(A).
+(m) Time Limit for Service. If a defendant is not served within 90 days after the complaint is filed, the court—on motion or on its own after notice to the plaintiff—must dismiss the action without prejudice against that defendant or order that service be made within a specified time. But if the plaintiff shows good cause for the failure, the court must extend the time for service for an appropriate period. This subdivision (m) does not apply to service in a foreign country under Rule 4(f) , 4(h)(2) , or 4(j)(1) , or to service of a notice under Rule 71.1(d)(3)(A).
 
 
 (n) Asserting Jurisdiction over Property or Assets.

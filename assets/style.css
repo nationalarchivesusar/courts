@@ -1024,6 +1024,130 @@ h3 {
   margin-top: 2rem;
 }
 
+.rule-content {
+  --provision-rail: color-mix(in srgb, var(--border-strong) 74%, transparent);
+}
+
+.rule-content > .rule-provision {
+  margin-block: 1.1rem;
+}
+
+.rule-provision {
+  position: relative;
+  scroll-margin-top: 6rem;
+  border-left: 3px solid var(--provision-rail);
+  padding: 0.35rem 0.5rem 0.35rem 0.75rem;
+  transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.rule-provision--level-1 {
+  border-left-color: var(--navy-mid);
+}
+
+.rule-provision--level-2 {
+  border-left-width: 2px;
+}
+
+.rule-provision--level-3,
+.rule-provision--level-4,
+.rule-provision--level-5,
+.rule-provision--level-6 {
+  border-left-width: 1px;
+}
+
+.rule-provision-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.65rem 0;
+}
+
+.rule-provision .rule-provision-list {
+  margin-left: clamp(0.15rem, 1.4vw, 0.8rem);
+}
+
+.rule-provision-list > .rule-provision + .rule-provision {
+  margin-top: 0.45rem;
+}
+
+.rule-provision > p:first-child,
+p.rule-provision {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.rule-marker {
+  appearance: none;
+  display: inline;
+  margin: 0 0.4rem 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--navy-mid);
+  font-family: var(--sans);
+  font-size: 0.9em;
+  font-weight: 800;
+  line-height: inherit;
+  cursor: pointer;
+}
+
+.rule-marker:hover,
+.rule-marker:focus-visible {
+  color: var(--link-hover);
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+
+.rule-marker:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.rule-provision:target,
+.rule-provision.is-pinpoint-highlighted {
+  border-left-color: var(--gold);
+  background: color-mix(in srgb, var(--gold) 15%, var(--surface));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--gold) 52%, transparent);
+}
+
+.rule-provision.is-pinpoint-highlighted {
+  animation: rule-pinpoint-flash 2.2s ease-out;
+}
+
+@keyframes rule-pinpoint-flash {
+  0% {
+    background: color-mix(in srgb, var(--gold) 35%, var(--surface));
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 70%, transparent);
+  }
+  100% {
+    background: color-mix(in srgb, var(--gold) 15%, var(--surface));
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--gold) 52%, transparent);
+  }
+}
+
+.rule-copy-toast {
+  position: fixed;
+  z-index: 1000;
+  right: 1rem;
+  bottom: 1rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 0.25rem;
+  background: var(--navy);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 0.84rem;
+  font-weight: 700;
+  opacity: 0;
+  transform: translateY(0.5rem);
+  pointer-events: none;
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.rule-copy-toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .heading-anchor {
   margin-left: 0.35rem;
   opacity: 0;
@@ -1036,6 +1160,16 @@ h2:hover .heading-anchor,
 h3:hover .heading-anchor,
 .heading-anchor:focus-visible {
   opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rule-provision.is-pinpoint-highlighted {
+    animation: none;
+  }
+
+  .rule-copy-toast {
+    transition: none;
+  }
 }
 
 .rule-notes {

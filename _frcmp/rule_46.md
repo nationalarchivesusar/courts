@@ -74,7 +74,7 @@ order: 46
 2. Reports. An attorney for the government must report biweekly to the court, listing each material witness held in custody for more than 10 days pending indictment, arraignment, or trial. For each material witness listed in the report, an attorney for the government must state why the witness should not be released with or without a deposition being taken under Rule 15(a) .
 
 
-    - (i) Forfeiture of Property. The court may dispose of a charged offense by ordering the forfeiture of 18 U.S.C. §3142(c)(1)(B) (xi) property under 18 U.S.C. §3146(d) , if a fine in the amount of the property's value would be an appropriate sentence for the charged offense.
+(i) Forfeiture of Property. The court may dispose of a charged offense by ordering the forfeiture of 18 U.S.C. §3142(c)(1)(B) (xi) property under 18 U.S.C. §3146(d) , if a fine in the amount of the property's value would be an appropriate sentence for the charged offense.
 
 
 (j) Producing a Statement.

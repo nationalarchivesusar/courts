@@ -9,6 +9,12 @@ This repository publishes the United States Courts website at
   maintenance attribution.
 - `_frap`, `_frcp`, `_frcmp`, `_fre`, and `_supct` remain the authoritative
   rule collections. Their established permalinks are preserved.
+- Rule pages progressively enhance subdivision markers into stable hierarchical
+  fragment links (for example, `#subsection-f-paragraph-2-subparagraph-C`).
+  Clicking a marker copies its pinpoint URL; opening that URL highlights the
+  provision. The same hierarchy also drives the on-page contents list.
+- Rule-page Open Graph and Twitter metadata is generated from the rule title,
+  ruleset, and opening text so shared rule and pinpoint URLs have useful embeds.
 - `_data/documents.yml` is the document-library catalog.
 - `assets/dockets.js` reads the two configured public docket boards for the
   lightweight current-proceedings panels on the home page. District Court cards

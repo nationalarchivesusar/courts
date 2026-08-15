@@ -133,4 +133,4 @@ A motion asserting any of these defenses must be made before pleading if a respo
 3. Lack of Subject-Matter Jurisdiction. If the court determines at any time that it lacks subject-matter jurisdiction, the court must dismiss the action.
 
 
-    - (i) Hearing Before Trial. If a party so moves, any defense listed in Rule 12(b)(1) –(7)—whether made in a pleading or by motion—and a motion under Rule 12(c) must be heard and decided before trial unless the court orders a deferral until trial.
+(i) Hearing Before Trial. If a party so moves, any defense listed in Rule 12(b)(1) –(7)—whether made in a pleading or by motion—and a motion under Rule 12(c) must be heard and decided before trial unless the court orders a deferral until trial.

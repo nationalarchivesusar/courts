@@ -188,4 +188,4 @@ order: 71.1
 (k) Condemnation Under a State's Power of Eminent Domain. This rule governs an action involving eminent domain under state law. But if state law provides for trying an issue by jury—or for trying the issue of compensation by jury or commission or both—that law governs.
 
 
-( l ) Costs. Costs are not subject to Rule 54(d) .
+(l) Costs. Costs are not subject to Rule 54(d) .

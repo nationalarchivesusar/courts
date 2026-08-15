@@ -3,21 +3,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {% assign meta_title = page.title | default: site.title %}
   {% assign meta_description = page.description | default: site.description %}
+  {% assign meta_type = 'website' %}
+  {% if page.layout == 'rule' %}
+    {% case page.collection %}
+      {% when 'fre' %}{% assign meta_rule_set = 'Federal Rules of Evidence' %}
+      {% when 'supct' %}{% assign meta_rule_set = 'Supreme Court Rules' %}
+      {% when 'frap' %}{% assign meta_rule_set = 'Federal Rules of Appellate Procedure' %}
+      {% when 'frcmp' %}{% assign meta_rule_set = 'Federal Rules of Criminal Procedure' %}
+      {% when 'frcp' %}{% assign meta_rule_set = 'Federal Rules of Civil Procedure' %}
+    {% endcase %}
+    {% assign meta_title = page.title | append: ' — ' | append: meta_rule_set %}
+    {% unless page.description %}
+      {% assign rule_summary = page.content | markdownify | strip_html | normalize_whitespace | truncate: 150 %}
+      {% assign rule_meta_description = meta_rule_set | append: '. ' | append: page.title | append: '. ' | append: rule_summary %}
+      {% assign meta_description = rule_meta_description | truncate: 240 %}
+    {% endunless %}
+    {% assign meta_type = 'article' %}
+  {% endif %}
   {% assign canonical_url = page.url | replace: 'index.html', '' | absolute_url %}
-  <title>{% if page.title and page.title != "Home" %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+  <title>{% if page.title and page.title != "Home" %}{{ meta_title }} | {% endif %}{{ site.title }}</title>
   <meta name="description" content="{{ meta_description | escape }}">
   <link rel="canonical" href="{{ canonical_url }}">
   <meta name="robots" content="{{ page.robots | default: 'index, follow' }}">
   <meta name="theme-color" content="#122a49">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="{{ meta_type }}">
   <meta property="og:site_name" content="{{ site.title }}">
-  <meta property="og:title" content="{% if page.title and page.title != 'Home' %}{{ page.title }} | {% endif %}{{ site.title }}">
+  <meta property="og:title" content="{% if page.title and page.title != 'Home' %}{{ meta_title }} | {% endif %}{{ site.title }}">
   <meta property="og:description" content="{{ meta_description | escape }}">
   <meta property="og:url" content="{{ canonical_url }}">
   <meta property="og:image" content="{{ '/assets/images/social-card.png' | absolute_url }}">
+  <meta property="og:image:secure_url" content="{{ '/assets/images/social-card.png' | absolute_url }}">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="United States Courts — Judicial Information & Legal Resources">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{% if page.title and page.title != 'Home' %}{{ page.title }} | {% endif %}{{ site.title }}">
+  <meta name="twitter:title" content="{% if page.title and page.title != 'Home' %}{{ meta_title }} | {% endif %}{{ site.title }}">
   <meta name="twitter:description" content="{{ meta_description | escape }}">
   <meta name="twitter:image" content="{{ '/assets/images/social-card.png' | absolute_url }}">
   <link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/images/favicon-32.png' | relative_url }}">
