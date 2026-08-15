@@ -1,0 +1,82 @@
+---
+layout: page
+title: Cases & Dockets
+slug: cases
+description: Search public United States District Court cases, dockets, charges, dispositions, and filings in the Judicial Information System.
+permalink: /cases/
+show_breadcrumbs: true
+breadcrumb_parent: United States Courts
+breadcrumb_parent_url: /
+---
+
+<link rel="stylesheet" href="{{ '/assets/cases.css' | relative_url }}">
+
+<header class="page-heading cases-heading">
+  <p class="eyebrow">Judicial Information System</p>
+  <h1>Cases &amp; Dockets</h1>
+  <p>Search public United States District Court case records by docket number, caption, party, statute, or offense. Case pages combine the docket, public filings, charges, and recorded dispositions held by JIS.</p>
+</header>
+
+<section class="cases-search" aria-labelledby="cases-search-heading">
+  <div class="cases-search__heading">
+    <div>
+      <h2 id="cases-search-heading">Search District Court cases</h2>
+      <p>Searches use the public JIS case index. For published Supreme Court decisions, use the <a href="{{ '/case-search.html' | relative_url }}">Supreme Court case-law search</a>.</p>
+    </div>
+  </div>
+  <form id="cases-search-form" role="search" novalidate>
+    <div class="form-field form-field--wide">
+      <label for="cases-query">Docket number, case name, party, statute, or offense</label>
+      <input type="search" id="cases-query" name="q" maxlength="128" autocomplete="off" placeholder="CR-072626-0066, United States v. …, 18 U.S.C. § 111…">
+    </div>
+    <div class="form-field">
+      <label for="cases-type">Case type</label>
+      <select id="cases-type" name="caseType">
+        <option value="">All case types</option>
+        <option value="criminal">Criminal</option>
+        <option value="civil">Civil</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label for="cases-status-filter">Status</label>
+      <select id="cases-status-filter" name="status">
+        <option value="">All statuses</option>
+        <option value="pending">Pending</option>
+        <option value="filed">Filed</option>
+        <option value="stayed">Stayed</option>
+        <option value="closed">Closed</option>
+        <option value="archived">Archived</option>
+      </select>
+    </div>
+    <button type="submit">Search cases</button>
+  </form>
+  <p class="source-note">JIS case records are derived from official court source records. A case being closed or placed in a completed-case list does not itself establish a conviction.</p>
+</section>
+
+<aside class="cases-legal-notice" aria-label="Case record notice">
+  <strong>Charges and convictions are distinct records.</strong>
+  A criminal charge is an allegation. A conviction is displayed only when JIS contains a verified convicted disposition for that defendant and count.
+</aside>
+
+<div
+  id="cases-experience"
+  data-api-base="{{ site.jis.public_api_base_url | escape }}"
+  data-cases-path="{{ '/cases/' | relative_url }}"
+>
+  <div class="cases-toolbar">
+    <p id="cases-status" class="cases-status" role="status" aria-live="polite">Search public District Court cases below.</p>
+    <button type="button" id="case-back-to-search" class="case-back-button" hidden>Back to case search</button>
+  </div>
+
+  <div id="cases-results" class="case-results-list" aria-live="polite" aria-busy="false"></div>
+  <div class="cases-load-more-wrap">
+    <button type="button" id="cases-load-more" hidden>Load more cases</button>
+  </div>
+
+  <article id="case-detail" class="case-file" aria-live="polite" aria-busy="false" hidden></article>
+</div>
+
+<noscript><p class="notice">JavaScript is required to search the Judicial Information System case index.</p></noscript>
+<script src="{{ '/assets/cases-model.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/cases.js' | relative_url }}" defer></script>
