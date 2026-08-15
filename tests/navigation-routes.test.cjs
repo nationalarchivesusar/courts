@@ -12,12 +12,13 @@ test("primary navigation keeps Docket and Case Law separate", () => {
   assert.match(header, /href="\{\{ '\/caselaw\/' \| relative_url \}\}"[^>]*>Case Law<\/a>/);
 });
 
-test("canonical docket page contains live dockets and JIS records", () => {
+test("canonical docket page is independent of JIS case routes", () => {
   const page = read("docket.html");
   assert.match(page, /permalink: \/docket\//);
   assert.match(page, /data-docket-supreme=/);
   assert.match(page, /data-docket-district=/);
-  assert.match(page, /id="cases-experience"/);
+  assert.doesNotMatch(page, /id="cases-experience"/);
+  assert.doesNotMatch(page, /assets\/cases\.js/);
 });
 
 test("case-law page owns the CourtListener search", () => {
