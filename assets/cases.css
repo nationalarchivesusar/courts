@@ -222,6 +222,26 @@
   font-size: 0.88rem;
 }
 
+.case-documents {
+  border-top: 1px solid var(--border);
+}
+
+.case-document {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.case-document__title {
+  color: var(--navy-deep);
+  font-weight: 700;
+}
+
+.case-document__meta {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
 .case-docket-wrap {
   overflow-x: auto;
   border-top: 1px solid var(--border);
@@ -282,7 +302,8 @@
 :root[data-theme="dark"] .cases-search__heading h2,
 :root[data-theme="dark"] .case-result__caption a,
 :root[data-theme="dark"] .case-file-heading h1,
-:root[data-theme="dark"] .case-detail-section__heading {
+:root[data-theme="dark"] .case-detail-section__heading,
+:root[data-theme="dark"] .case-document__title {
   color: var(--ink);
 }
 
