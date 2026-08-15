@@ -16,7 +16,7 @@ show_breadcrumbs: false
   data-docket-supreme="{{ site.dockets.supreme_court_board }}"
   data-docket-district="{{ site.dockets.district_court_board }}"
   data-fallback-url="{{ '/assets/docket-fallback.json' | relative_url }}"
-  data-cases-path="{{ '/cases/' | relative_url }}">
+  data-cases-path="{{ '/docket/' | relative_url }}">
   <header class="section-heading">
     <p class="eyebrow">Current proceedings</p>
     <h2 id="dockets-heading">Current Dockets</h2>
@@ -66,9 +66,15 @@ show_breadcrumbs: false
   </header>
 
   <div class="court-resource-grid">
-    <a class="court-resource court-resource--link" href="{{ '/cases/' | relative_url }}">
-      <span class="court-resource__heading">Cases &amp; Dockets</span>
-      <span class="court-resource__description">Search District Court cases, parties, charges, dispositions, and public docket filings.</span>
+    <a class="court-resource court-resource--link" href="{{ '/docket/' | relative_url }}">
+      <span class="court-resource__heading">Docket &amp; Case Records</span>
+      <span class="court-resource__description">View current court matters and search public District Court case records, filings, charges, and dispositions.</span>
+      <span class="court-resource__arrow" aria-hidden="true">→</span>
+    </a>
+
+    <a class="court-resource court-resource--link" href="{{ '/caselaw/' | relative_url }}">
+      <span class="court-resource__heading">Case Law</span>
+      <span class="court-resource__description">Search published Supreme Court decisions through the CourtListener case-law index.</span>
       <span class="court-resource__arrow" aria-hidden="true">→</span>
     </a>
 
