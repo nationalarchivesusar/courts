@@ -1,47 +1,23 @@
 ---
-layout: page
-title: Supreme Court Case Search
-slug: case-search
-description: Search Supreme Court of the United States case law in the CourtListener public index.
-show_breadcrumbs: true
-breadcrumb_parent: United States Courts
-breadcrumb_parent_url: /
+layout: null
+permalink: /case-search.html
 ---
-
-<header class="page-heading case-search-heading">
-  <p class="eyebrow">Case law search — current scope</p>
-  <h1>Supreme Court Case Search</h1>
-  <p>Search Supreme Court case law available through CourtListener. Search does not include USAR District Court docket records, USAR-native filings, or arrest records.</p>
-</header>
-
-<section class="case-search-panel" aria-labelledby="case-search-form-heading">
-  <h2 id="case-search-form-heading">Search Supreme Court decisions</h2>
-  <form id="case-search-form" role="search">
-    <div class="form-field form-field--wide">
-      <label for="case-query">Case name, citation, or keywords</label>
-      <input type="search" id="case-query" name="q" placeholder="Roe v. Wade, 410 U.S. 113, due process…" required autocomplete="off">
-    </div>
-    <div class="form-field">
-      <label for="case-status">Opinion status <span>(optional)</span></label>
-      <select id="case-status" name="status">
-        <option value="">All opinion statuses</option>
-        {% for status in site.data.case_statuses %}
-        <option value="{{ status.value }}" data-api-parameter="{{ status.parameter }}">{{ status.label }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <button type="submit">Search decisions</button>
-  </form>
-  <p class="source-note">Results are limited to the <code>scotus</code> jurisdiction in CourtListener’s public case-law search. Opinion-status options use CourtListener’s defined case-law status filters. Result links open the source record on CourtListener.</p>
-</section>
-
-<section class="case-results-section" aria-labelledby="case-results-heading">
-  <div class="case-results-heading">
-    <h2 id="case-results-heading">Results</h2>
-    <p id="case-results-count" role="status" aria-live="polite">Enter a search above.</p>
-  </div>
-  <div id="case-results" class="case-results" aria-live="polite" aria-busy="false"></div>
-</section>
-
-<noscript><p class="notice">JavaScript is required to search the CourtListener index. Court rules and documents remain available without JavaScript.</p></noscript>
-<script src="{{ '/assets/case-search.js' | relative_url }}" defer></script>
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="0; url={{ '/caselaw/' | relative_url }}">
+  <link rel="canonical" href="{{ '/caselaw/' | absolute_url }}">
+  <title>Case Law Search | United States Courts</title>
+  <script>
+    (() => {
+      const target = {{ '/caselaw/' | relative_url | jsonify }};
+      window.location.replace(target + window.location.search + window.location.hash);
+    })();
+  </script>
+</head>
+<body>
+  <p>This page has moved to <a href="{{ '/caselaw/' | relative_url }}">Case Law Search</a>.</p>
+</body>
+</html>

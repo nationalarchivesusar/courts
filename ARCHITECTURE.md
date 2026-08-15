@@ -16,32 +16,39 @@ This repository publishes the United States Courts website at
 - Rule-page Open Graph and Twitter metadata is generated from the rule title,
   ruleset, and opening text so shared rule and pinpoint URLs have useful embeds.
 - `_data/documents.yml` is the document-library catalog.
-- `assets/dockets.js` reads the two configured public docket boards for the
-  lightweight current-proceedings panels on the home page. District Court cards
-  with a recognized docket number link into the JIS-backed case record rather
-  than making Trello the public destination.
+- `assets/dockets.js` reads the two configured public docket boards for current
+  proceedings on the home page and the dedicated `/docket/` page. District
+  Court cards with a recognized docket number link into the JIS-backed docket
+  case view rather than making Trello the normal public destination.
 - `assets/docket-fallback.json` is a generated last-known-good cache. Run
   `node scripts/update-fallback.js` to refresh it; the scheduled workflow runs
   the same script.
-- `assets/case-search.js` remains a separate Supreme Court case-law search using
-  CourtListener's public endpoint and the `scotus` jurisdiction. No API
-  credential is shipped to the browser.
+- `/caselaw/` is a deliberately separate Supreme Court case-law research page.
+  `assets/case-search.js` uses CourtListener's public endpoint and the `scotus`
+  jurisdiction. No API credential is shipped to the browser.
 - `search.json` is the generated local site index used by
   `assets/site-search.js`.
 - `/records/` is the public JIS person-record client for arrests and convictions.
-- `/cases/` is the public JIS case/docket client. It searches the JIS case index
-  and renders individual case files with parties, charges/dispositions, judge
-  assignment metadata, and chronological public docket entries.
+- `/docket/` is the public current-docket and JIS case-record surface. It first
+  presents live Supreme Court and District Court docket listings and then
+  provides JIS-backed District Court case search/detail records with parties,
+  charges/dispositions, judge assignment metadata, public documents, and
+  chronological docket entries.
+- `/cases/` remains only as a compatibility redirect to `/docket/`.
+- `/case-search.html` remains only as a compatibility redirect to `/caselaw/`.
 - The public JIS API origin is configured once in `jis.public_api_base_url`.
-  Browser clients call JIS only and contain no secret.
+  Browser clients contain no JIS secret.
 
 ## JIS case data flow
 
-The District Court Trello remains a workflow/source system, but the public
-website should not need to understand Trello's internal organization.
+The District Court Trello remains a workflow/source system. Current-docket
+panels may read the public board directly for immediate availability, while JIS
+maintains the normalized structured case record.
 
 ```text
 District Court Trello
+        |
+        +------------------------> current docket display
         |
         v
 JIS worker / source records
@@ -60,7 +67,7 @@ public_api allowlisted projections
 GET /api/v1/cases...
         |
         v
-/courts/cases/
+/courts/docket/
 ```
 
 The worker preserves changed Trello cards as immutable `SourceRecord` versions.
@@ -71,9 +78,10 @@ closed or moved to `Completed Criminal Cases`.
 
 ## Record namespaces and identity rules
 
-Stable public namespaces include `/cases/`, `/records/`, and the JIS
-`/api/v1/` endpoints. Future backed services may add `/judges/`, opinions/orders,
-and internal administrative surfaces without creating empty placeholder pages.
+Stable public namespaces include `/docket/`, `/caselaw/`, `/records/`, and the
+JIS `/api/v1/` endpoints. Future backed services may add `/judges/`,
+opinions/orders, and internal administrative surfaces without creating empty
+placeholder pages.
 
 Data models must preserve the distinction among allegation or arrest, charge,
 conviction, acquittal, dismissal, pardon, vacatur, and other post-judgment
@@ -95,6 +103,5 @@ linkage.
   public browser responses.
 - Keep the site progressively enhanced and dependency-light. Do not introduce a
   client framework merely to add a records feature.
-- The site may expose the Supreme Court case-law search separately, but JIS
-  District Court case pages are the canonical public destination for roleplay
-  District Court dockets.
+- Docket/current-proceedings and Supreme Court case-law research are separate
+  user experiences and should not be nested inside one another.

@@ -1,14 +1,51 @@
-.cases-search {
-  margin: 1.6rem 0 1.25rem;
-  padding: 1.35rem 1.5rem;
-  border: 1px solid var(--border);
-  background: var(--surface);
+.docket-page-current {
+  margin-top: 0.5rem;
 }
 
-.cases-search__heading h2 {
-  margin: 0 0 0.35rem;
+.docket-page-section-heading {
+  margin-bottom: 1.25rem;
+}
+
+.docket-page-section-heading h2 {
+  margin-bottom: 0.35rem;
+}
+
+.docket-page-columns {
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.docket-page-columns .docket-panel {
+  padding: 1.1rem 1.2rem 0.4rem;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 94%, var(--surface-alt));
+}
+
+.docket-page-columns .docket-list {
+  max-height: 34rem;
+}
+
+.docket-records-section {
+  margin-top: 2.5rem;
+  padding-top: 2.25rem;
+  border-top: 2px solid var(--navy-deep);
+}
+
+.cases-search {
+  margin: 1.25rem 0;
+  padding: 1.35rem 1.5rem;
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+}
+
+.cases-search__heading h2,
+.cases-search__heading h3 {
+  margin: 0 0 0.75rem;
   color: var(--navy-deep);
   font-family: var(--serif);
+}
+
+.cases-search__heading h3 {
+  font-size: 1.25rem;
 }
 
 .cases-search__heading p {
@@ -27,16 +64,45 @@
   margin: 0;
 }
 
+.cases-search .form-field label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
 .cases-search input,
 .cases-search select {
   width: 100%;
+}
+
+.cases-search button,
+.case-back-button,
+#cases-load-more {
+  min-height: 2.65rem;
+  padding: 0.62rem 0.95rem;
+  border: 1px solid var(--navy-deep);
+  background: var(--navy-deep);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.cases-search button:hover,
+.case-back-button:hover,
+#cases-load-more:hover {
+  background: var(--navy-mid);
+  color: #fff;
 }
 
 .cases-legal-notice {
   margin: 1rem 0 1.5rem;
   padding: 0.9rem 1rem;
   border-left: 4px solid var(--navy-mid);
-  background: var(--surface-muted);
+  background: var(--surface-alt);
   color: var(--ink);
 }
 
@@ -56,17 +122,22 @@
 }
 
 .case-back-button {
+  min-height: 0;
   padding: 0.45rem 0.75rem;
-  font-size: 0.86rem;
+  font-size: 0.82rem;
 }
 
 .case-results-list {
-  min-height: 2rem;
+  min-height: 4rem;
 }
 
 .case-result {
   padding: 1.4rem 0;
   border-bottom: 1px solid var(--border);
+}
+
+.case-result:first-child {
+  padding-top: 1.15rem;
 }
 
 .case-result__docket,
@@ -249,8 +320,8 @@
 
 .case-docket-table {
   width: 100%;
-  border-collapse: collapse;
   min-width: 38rem;
+  border-collapse: collapse;
 }
 
 .case-docket-table th {
@@ -295,11 +366,12 @@
 .case-system-notice--error {
   padding: 1rem;
   border-left: 4px solid var(--danger, #8b1e1e);
-  background: var(--surface-muted);
+  background: var(--surface-alt);
   color: var(--ink);
 }
 
 :root[data-theme="dark"] .cases-search__heading h2,
+:root[data-theme="dark"] .cases-search__heading h3,
 :root[data-theme="dark"] .case-result__caption a,
 :root[data-theme="dark"] .case-file-heading h1,
 :root[data-theme="dark"] .case-detail-section__heading,
@@ -308,6 +380,10 @@
 }
 
 @media (max-width: 860px) {
+  .docket-page-columns {
+    grid-template-columns: 1fr;
+  }
+
   .cases-search form {
     grid-template-columns: 1fr 1fr;
   }
@@ -318,6 +394,7 @@
 }
 
 @media (max-width: 580px) {
+  .docket-page-columns .docket-panel,
   .cases-search {
     padding: 1rem;
   }

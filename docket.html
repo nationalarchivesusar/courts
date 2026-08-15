@@ -1,0 +1,145 @@
+---
+layout: page
+title: Docket
+slug: docket
+description: Current Supreme Court and District Court dockets, with public District Court case records from the Judicial Information System.
+permalink: /docket/
+show_breadcrumbs: true
+breadcrumb_parent: United States Courts
+breadcrumb_parent_url: /
+---
+
+<link rel="stylesheet" href="{{ '/assets/data-pages.css' | relative_url }}">
+<link rel="stylesheet" href="{{ '/assets/cases.css' | relative_url }}">
+
+<header class="page-heading docket-page-heading">
+  <p class="eyebrow">Current proceedings</p>
+  <h1>Docket</h1>
+  <p>View current Supreme Court and District Court matters. District Court case records, filings, charges, and dispositions are available below through the Judicial Information System.</p>
+</header>
+
+<section id="current-dockets" class="docket-page-current" aria-labelledby="current-dockets-heading"
+  data-docket-supreme="{{ site.dockets.supreme_court_board }}"
+  data-docket-district="{{ site.dockets.district_court_board }}"
+  data-fallback-url="{{ '/assets/docket-fallback.json' | relative_url }}"
+  data-cases-path="{{ '/docket/' | relative_url }}">
+  <header class="section-heading docket-page-section-heading">
+    <p class="eyebrow">Live court calendars</p>
+    <h2 id="current-dockets-heading">Current Matters</h2>
+    <p>Current docket listings are read from the courts' public docket boards, with a recent cached copy used if the live source is temporarily unavailable.</p>
+  </header>
+
+  <div class="docket-columns docket-page-columns">
+    <section class="docket-panel" aria-labelledby="supreme-docket-heading">
+      <header>
+        <div>
+          <p class="docket-panel__court">Supreme Court of the United States</p>
+          <h3 id="supreme-docket-heading">Supreme Court</h3>
+        </div>
+        <span class="docket-status" id="docket-status-supreme" role="status">Loading</span>
+      </header>
+      <div id="docket-cards-supreme" class="docket-list" aria-live="polite" aria-busy="true">
+        <p class="docket-placeholder">Loading current matters…</p>
+      </div>
+      <div id="docket-error-supreme" class="docket-error" hidden>
+        <p>Supreme Court docket information could not be loaded.</p>
+        <button type="button" data-retry-docket="supreme">Retry</button>
+      </div>
+    </section>
+
+    <section class="docket-panel" aria-labelledby="district-docket-heading">
+      <header>
+        <div>
+          <p class="docket-panel__court">United States District Court</p>
+          <h3 id="district-docket-heading">District Court</h3>
+        </div>
+        <span class="docket-status" id="docket-status-district" role="status">Loading</span>
+      </header>
+      <div id="docket-cards-district" class="docket-list" aria-live="polite" aria-busy="true">
+        <p class="docket-placeholder">Loading current matters…</p>
+      </div>
+      <div id="docket-error-district" class="docket-error" hidden>
+        <p>District Court docket information could not be loaded.</p>
+        <button type="button" data-retry-docket="district">Retry</button>
+      </div>
+    </section>
+  </div>
+</section>
+
+<section class="docket-records-section" aria-labelledby="case-records-heading">
+  <header class="section-heading docket-page-section-heading">
+    <p class="eyebrow">Judicial Information System</p>
+    <h2 id="case-records-heading">District Court Case Records</h2>
+    <p>Search structured public case records by docket number, case name, party, statute, or offense. Recent public cases load automatically.</p>
+  </header>
+
+  <section class="cases-search" aria-labelledby="cases-search-heading">
+    <div class="cases-search__heading">
+      <h3 id="cases-search-heading">Search case records</h3>
+    </div>
+    <form id="cases-search-form" role="search" novalidate>
+      <div class="form-field form-field--wide">
+        <label for="cases-query">Docket number, case name, party, statute, or offense</label>
+        <input type="search" id="cases-query" name="q" maxlength="128" autocomplete="off" placeholder="CR-072626-0066, United States v. …, 18 U.S.C. § 111…">
+      </div>
+      <div class="form-field">
+        <label for="cases-type">Case type</label>
+        <select id="cases-type" name="caseType">
+          <option value="">All case types</option>
+          <option value="criminal">Criminal</option>
+          <option value="civil">Civil</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="cases-status-filter">Status</label>
+        <select id="cases-status-filter" name="status">
+          <option value="">All statuses</option>
+          <option value="pending">Pending</option>
+          <option value="filed">Filed</option>
+          <option value="stayed">Stayed</option>
+          <option value="closed">Closed</option>
+          <option value="archived">Archived</option>
+        </select>
+      </div>
+      <button type="submit">Search</button>
+    </form>
+  </section>
+
+  <aside class="cases-legal-notice" aria-label="Case record notice">
+    <strong>Charges and convictions are distinct records.</strong>
+    A criminal charge is an allegation. A conviction is displayed only when JIS contains a verified convicted disposition for that defendant and count.
+  </aside>
+
+  <div
+    id="cases-experience"
+    data-api-base="{{ site.jis.public_api_base_url | escape }}"
+    data-cases-path="{{ '/docket/' | relative_url }}"
+  >
+    <div class="cases-toolbar">
+      <p id="cases-status" class="cases-status" role="status" aria-live="polite">Loading recent public cases…</p>
+      <button type="button" id="case-back-to-search" class="case-back-button" hidden>Back to case search</button>
+    </div>
+
+    <div id="cases-results" class="case-results-list" aria-live="polite" aria-busy="true">
+      <p class="case-empty">Loading recent public cases…</p>
+    </div>
+    <div class="cases-load-more-wrap">
+      <button type="button" id="cases-load-more" hidden>Load more cases</button>
+    </div>
+
+    <article id="case-detail" class="case-file" aria-live="polite" aria-busy="false" hidden></article>
+  </div>
+</section>
+
+<noscript><p class="notice">JavaScript is required for live docket and Judicial Information System searches.</p></noscript>
+<script src="{{ '/assets/docket-model.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/dockets.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/cases-model.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/cases.js' | relative_url }}" defer></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has("docket")) document.getElementById("cases-search-form")?.requestSubmit();
+  });
+</script>
