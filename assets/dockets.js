@@ -10,6 +10,7 @@
     district: root.dataset.docketDistrict,
   };
   const fallbackUrl = root.dataset.fallbackUrl;
+  const casesPath = root.dataset.casesPath;
   const maxFallbackAge = 7 * 24 * 60 * 60 * 1000;
   const colorNames = new Set(["blue", "green", "orange", "red", "purple", "yellow", "black", "pink", "sky", "lime", "gray"]);
 
@@ -76,17 +77,27 @@
     return wrapper;
   }
 
-  function renderCard(card) {
+  function districtCaseUrl(card) {
+    const docketNumber = model.docketNumberFromCardName(card.name);
+    if (!docketNumber || !casesPath) return null;
+    return `${casesPath}?${new URLSearchParams({ docket: docketNumber }).toString()}`;
+  }
+
+  function renderCard(type, card) {
     const article = document.createElement("article");
     article.className = "docket-entry";
-    const titleUrl = safeExternalUrl(card.url);
+    const internalUrl = type === "district" ? districtCaseUrl(card) : null;
+    const externalUrl = safeExternalUrl(card.url);
+    const titleUrl = internalUrl || externalUrl;
     const title = titleUrl ? document.createElement("a") : document.createElement("span");
     title.className = "docket-entry__title";
     title.textContent = model.cleanCardName(card.name) || "Untitled matter";
     if (titleUrl) {
       title.href = titleUrl;
-      title.target = "_blank";
-      title.rel = "noopener noreferrer";
+      if (!internalUrl) {
+        title.target = "_blank";
+        title.rel = "noopener noreferrer";
+      }
     }
     article.append(title);
 
@@ -157,11 +168,11 @@
 
         const cases = document.createElement("div");
         cases.className = "judge-docket__cases";
-        group.cards.forEach((card) => cases.append(renderCard(card)));
+        group.cards.forEach((card) => cases.append(renderCard(type, card)));
         details.append(summary, cases);
         container.append(details);
       } else {
-        group.cards.forEach((card) => container.append(renderCard(card)));
+        group.cards.forEach((card) => container.append(renderCard(type, card)));
       }
     });
     setStatus(type, model.statusLabel(source));
