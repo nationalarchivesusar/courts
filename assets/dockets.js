@@ -10,7 +10,6 @@
     district: root.dataset.docketDistrict,
   };
   const fallbackUrl = root.dataset.fallbackUrl;
-  const casesPath = root.dataset.casesPath;
   const maxFallbackAge = 7 * 24 * 60 * 60 * 1000;
   const colorNames = new Set(["blue", "green", "orange", "red", "purple", "yellow", "black", "pink", "sky", "lime", "gray"]);
 
@@ -77,27 +76,17 @@
     return wrapper;
   }
 
-  function districtCaseUrl(card) {
-    const docketNumber = model.docketNumberFromCardName(card.name);
-    if (!docketNumber || !casesPath) return null;
-    return `${casesPath}?${new URLSearchParams({ docket: docketNumber }).toString()}`;
-  }
-
   function renderCard(type, card) {
     const article = document.createElement("article");
     article.className = "docket-entry";
-    const internalUrl = type === "district" ? districtCaseUrl(card) : null;
-    const externalUrl = safeExternalUrl(card.url);
-    const titleUrl = internalUrl || externalUrl;
-    const title = titleUrl ? document.createElement("a") : document.createElement("span");
+    const sourceUrl = safeExternalUrl(card.url);
+    const title = sourceUrl ? document.createElement("a") : document.createElement("span");
     title.className = "docket-entry__title";
     title.textContent = model.cleanCardName(card.name) || "Untitled matter";
-    if (titleUrl) {
-      title.href = titleUrl;
-      if (!internalUrl) {
-        title.target = "_blank";
-        title.rel = "noopener noreferrer";
-      }
+    if (sourceUrl) {
+      title.href = sourceUrl;
+      title.target = "_blank";
+      title.rel = "noopener noreferrer";
     }
     article.append(title);
 
@@ -206,9 +195,7 @@
     container.setAttribute("aria-busy", "false");
     if (error) {
       const message = error.querySelector("p");
-      if (message) {
-        message.textContent = model.unavailableMessage(type);
-      }
+      if (message) message.textContent = model.unavailableMessage(type);
       error.hidden = false;
     }
     setStatus(type, "Unavailable");
