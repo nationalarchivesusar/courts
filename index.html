@@ -15,7 +15,8 @@ show_breadcrumbs: false
 <section id="current-dockets" class="section-block docket-section" aria-labelledby="dockets-heading"
   data-docket-supreme="{{ site.dockets.supreme_court_board }}"
   data-docket-district="{{ site.dockets.district_court_board }}"
-  data-fallback-url="{{ '/assets/docket-fallback.json' | relative_url }}">
+  data-fallback-url="{{ '/assets/docket-fallback.json' | relative_url }}"
+  data-cases-path="{{ '/cases/' | relative_url }}">
   <header class="section-heading">
     <p class="eyebrow">Current proceedings</p>
     <h2 id="dockets-heading">Current Dockets</h2>
