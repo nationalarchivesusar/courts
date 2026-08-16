@@ -1,0 +1,80 @@
+/* Shared layout stability fixes for public data pages. */
+
+.page-docket .content-shell,
+.page-caselaw .content-shell,
+.page-judges .content-shell,
+.page-cases .content-shell,
+.page-case .content-shell {
+  padding: clamp(1.25rem, 4vw, 2.75rem);
+}
+
+.page-judges .page-heading,
+.page-cases .page-heading,
+.page-case .page-heading,
+.page-docket .page-heading,
+.page-caselaw .page-heading {
+  max-width: 58rem;
+}
+
+.case-subnav {
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+}
+
+.case-subnav a {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+@media (max-width: 960px) and (min-width: 721px) {
+  .primary-nav__inner {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
+  }
+
+  .primary-nav__inner > a,
+  .primary-nav__inner > .nav-menu {
+    flex: 0 0 auto;
+    border-bottom: 0;
+  }
+
+  .primary-nav a,
+  .nav-menu summary {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 760px) {
+  .page-docket .content-shell,
+  .page-caselaw .content-shell,
+  .page-judges .content-shell,
+  .page-cases .content-shell,
+  .page-case .content-shell {
+    padding: 1rem;
+  }
+
+  .case-subnav {
+    display: flex;
+    flex-wrap: nowrap;
+    margin-inline: -0.25rem;
+    padding-inline: 0.25rem;
+  }
+
+  .case-subnav a {
+    padding-right: 0.9rem;
+    margin-right: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-docket .content-shell,
+  .page-caselaw .content-shell,
+  .page-judges .content-shell,
+  .page-cases .content-shell,
+  .page-case .content-shell {
+    padding: 1rem;
+  }
+}
