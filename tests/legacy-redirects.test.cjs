@@ -2,11 +2,13 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 
-test("legacy case URLs redirect without reviving the old combined page", () => {
+test("case search is a first-class JIS page while the old case-law URL still redirects", () => {
   const cases = fs.readFileSync("cases.html", "utf8");
   const search = fs.readFileSync("case-search.html", "utf8");
-  assert.match(cases, /\/docket\//);
+  assert.match(cases, /permalink: \/cases\//);
+  assert.match(cases, /id="cases-experience"/);
+  assert.match(cases, /id="cases-search-form"/);
+  assert.doesNotMatch(cases, /window\.location\.replace\(target/);
   assert.match(search, /\/caselaw\//);
-  assert.doesNotMatch(cases, /id="cases-experience"/);
   assert.doesNotMatch(search, /id="case-search-form"/);
 });
