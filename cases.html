@@ -12,13 +12,15 @@ styles:
   - /assets/data-pages.css
   - /assets/cases.css
   - /assets/case-pages.css
+  - /assets/phase-k-records.css
 ---
 
 <div id="cases-experience"
   class="cases-experience"
   data-api-base="{{ site.jis.public_api_base_url }}"
   data-cases-path="{{ '/case/' | relative_url }}"
-  data-search-path="{{ '/cases/' | relative_url }}">
+  data-search-path="{{ '/cases/' | relative_url }}"
+  data-records-path="{{ '/records/' | relative_url }}">
 
   <header class="page-heading cases-page-heading">
     <p class="eyebrow">Public access to court electronic records</p>
@@ -93,3 +95,4 @@ styles:
 <noscript><p class="notice">JavaScript is required to search Judicial Information System case records.</p></noscript>
 <script src="{{ '/assets/cases-model.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/cases.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/case-record-links.js' | relative_url }}" defer></script>
