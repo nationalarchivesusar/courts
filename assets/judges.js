@@ -37,15 +37,17 @@
 
   function renderCase(row) {
     const item = document.createElement("li");
+    const docketNumber = row.docketNumber || "No docket number";
     const href = caseHref(row.docketNumber);
-    const identity = href ? document.createElement("a") : document.createElement("span");
-    identity.className = "judge-docket-list__case";
-    if (href) identity.href = href;
-    identity.append(
-      text("span", row.docketNumber || "No docket number", "judge-docket-list__number"),
-      text("span", row.caption || "Untitled matter", "judge-docket-list__caption"),
+    const caption = href ? document.createElement("a") : document.createElement("span");
+    caption.className = "judge-docket-list__caption judge-docket-list__case";
+    caption.textContent = row.caption || "Untitled matter";
+    if (href) caption.href = href;
+    item.append(
+      text("span", docketNumber, "judge-docket-list__number"),
+      caption,
+      text("span", statusLabel(row.status), "judge-docket-list__status"),
     );
-    item.append(identity, text("span", statusLabel(row.status), "judge-docket-list__status"));
     return item;
   }
 
