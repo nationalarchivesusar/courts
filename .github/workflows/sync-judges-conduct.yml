@@ -1,0 +1,38 @@
+name: Sync Judges conduct source
+
+on:
+  push:
+    branches:
+      - agent/add-codes-of-conduct
+    paths:
+      - scripts/sync_judges_conduct.py
+      - .github/workflows/sync-judges-conduct.yml
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check requests beautifulsoup4 markdownify
+      - run: python scripts/sync_judges_conduct.py
+      - name: Commit generated source
+        run: |
+          if git diff --quiet -- _conduct/judges; then
+            echo "No generated changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add _conduct/judges
+          git commit -m "chore: sync judges conduct source"
+          git push origin HEAD:${{ github.ref_name }}
