@@ -23,6 +23,12 @@ test("canonical docket page stays Trello-backed while linking into structured ca
   assert.doesNotMatch(page, /assets\/cases\.js/);
 });
 
+test("homepage docket uses the dedicated case route through Jekyll relative_url", () => {
+  const page = read("index.html");
+  assert.match(page, /data-case-path="\{\{ '\/case\/' \| relative_url \}\}"/);
+  assert.doesNotMatch(page, /data-cases-path=/);
+});
+
 test("case directory and individual case file are distinct JIS routes", () => {
   const directory = read("cases.html");
   const detail = read("case.html");
