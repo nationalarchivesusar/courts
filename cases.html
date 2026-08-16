@@ -3,7 +3,7 @@ layout: page
 title: Case Search
 title_short: Cases
 slug: cases
-description: Search public District Court case records by docket number, party, citation, or offense.
+description: Search public District Court and structured Supreme Court case records by docket number, party, citation, or offense.
 permalink: /cases/
 show_breadcrumbs: true
 breadcrumb_parent: Docket
@@ -24,13 +24,14 @@ styles:
 
   <header class="page-heading cases-page-heading">
     <p class="eyebrow">Public access to court electronic records</p>
-    <h1>District Court Case Search</h1>
-    <p>Search structured public case records from the United States District Court for the District of Columbia. Search by docket number, case caption, party, statute citation, or offense.</p>
+    <h1>Court Case Search</h1>
+    <p>Search structured public case records. Search by docket number, case caption, party, statute citation, or offense. Structured Supreme Court matters are included when entered into JIS.</p>
   </header>
 
   <nav class="case-subnav" aria-label="Case information">
     <a href="{{ '/docket/' | relative_url }}">Current Docket</a>
     <a href="{{ '/cases/' | relative_url }}" aria-current="page">Case Search</a>
+    <a href="{{ '/documents/search/' | relative_url }}">Document Search</a>
     <a href="{{ '/judges/' | relative_url }}">District Judges</a>
     <a href="{{ '/caselaw/' | relative_url }}">Case Law Research</a>
   </nav>
@@ -57,7 +58,7 @@ styles:
           <option value="">All case types</option>
           <option value="criminal">Criminal</option>
           <option value="civil">Civil</option>
-          <option value="other">Other</option>
+          <option value="other">Other / Supreme Court</option>
         </select>
       </div>
 
