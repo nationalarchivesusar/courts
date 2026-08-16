@@ -10,6 +10,7 @@
     district: root.dataset.docketDistrict,
   };
   const fallbackUrl = root.dataset.fallbackUrl;
+  const casePath = String(root.dataset.casePath || "/case/");
   const maxFallbackAge = 7 * 24 * 60 * 60 * 1000;
   const colorNames = new Set(["blue", "green", "orange", "red", "purple", "yellow", "black", "pink", "sky", "lime", "gray"]);
 
@@ -20,6 +21,18 @@
     } catch {
       return null;
     }
+  }
+
+  function districtDocketNumber(cardName) {
+    const normalized = String(cardName || "").replace(/[\u2010-\u2015\u2212]/g, "-").trim();
+    const match = normalized.match(/^((?:CR|CV)-[0-9]{6}-[0-9]{2,4})\s+-\s+/i);
+    return match ? match[1].toUpperCase() : null;
+  }
+
+  function caseRecordHref(docketNumber) {
+    if (!docketNumber) return null;
+    const separator = casePath.includes("?") ? "&" : "?";
+    return `${casePath}${separator}docket=${encodeURIComponent(docketNumber)}`;
   }
 
   function appendMarkdownLinks(parent, text) {
@@ -80,13 +93,18 @@
     const article = document.createElement("article");
     article.className = "docket-entry";
     const sourceUrl = safeExternalUrl(card.url);
-    const title = sourceUrl ? document.createElement("a") : document.createElement("span");
+    const docketNumber = type === "district" ? districtDocketNumber(card.name) : null;
+    const recordUrl = caseRecordHref(docketNumber);
+    const titleUrl = recordUrl || sourceUrl;
+    const title = titleUrl ? document.createElement("a") : document.createElement("span");
     title.className = "docket-entry__title";
     title.textContent = model.cleanCardName(card.name) || "Untitled matter";
-    if (sourceUrl) {
-      title.href = sourceUrl;
-      title.target = "_blank";
-      title.rel = "noopener noreferrer";
+    if (titleUrl) {
+      title.href = titleUrl;
+      if (!recordUrl) {
+        title.target = "_blank";
+        title.rel = "noopener noreferrer";
+      }
     }
     article.append(title);
 
@@ -101,6 +119,16 @@
         labels.append(item);
       });
       article.append(labels);
+    }
+
+    if (recordUrl && sourceUrl) {
+      const source = document.createElement("a");
+      source.className = "docket-entry__record-link";
+      source.href = sourceUrl;
+      source.target = "_blank";
+      source.rel = "noopener noreferrer";
+      source.textContent = "Source docket card ↗";
+      article.append(source);
     }
 
     const description = createDescription(descriptionLines(card.desc));
