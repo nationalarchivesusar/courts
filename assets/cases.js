@@ -6,7 +6,8 @@
   if (!root || !model) return;
 
   const apiBase = String(root.dataset.apiBase || "").trim();
-  const casesPath = String(root.dataset.casesPath || "/cases/");
+  const casesPath = String(root.dataset.casesPath || "/case/");
+  const searchPath = String(root.dataset.searchPath || "/cases/");
   const searchForm = document.getElementById("cases-search-form");
   const queryInput = document.getElementById("cases-query");
   const typeInput = document.getElementById("cases-type");
@@ -17,7 +18,6 @@
   const loadMore = document.getElementById("cases-load-more");
   const backButton = document.getElementById("case-back-to-search");
   let nextCursor = null;
-  let lastSearchState = null;
 
   function textElement(tag, className, text) {
     const element = document.createElement(tag);
@@ -35,7 +35,7 @@
     if (detail) detail.setAttribute("aria-busy", value ? "true" : "false");
   }
 
-  function showError(message) {
+  function showSearchError(message) {
     if (!results) return;
     results.replaceChildren();
     const notice = textElement("div", "case-system-notice case-system-notice--error", message);
@@ -71,9 +71,19 @@
     parent.append(item);
   }
 
+  function renderStatusPill(status) {
+    const normalized = String(status || "unknown").toLowerCase();
+    return textElement("span", `case-status-pill case-status-pill--${normalized}`, model.statusLabel(status));
+  }
+
   function renderCaseResult(record) {
     const article = document.createElement("article");
     article.className = "case-result";
+
+    const top = document.createElement("div");
+    top.className = "case-result__topline";
+    top.append(textElement("p", "case-result__docket", record.docketNumber));
+    top.append(renderStatusPill(record.status));
 
     const heading = textElement("h3", "case-result__caption", "");
     const link = document.createElement("a");
@@ -81,18 +91,16 @@
     link.textContent = record.caption || record.docketNumber;
     heading.append(link);
 
-    const docket = textElement("p", "case-result__docket", record.docketNumber);
     const meta = document.createElement("dl");
     meta.className = "case-result__meta case-meta";
     appendMeta(meta, "Court", record.court?.shortName || "Court not recorded");
     appendMeta(meta, "Case type", model.caseTypeLabel(record.caseType));
-    appendMeta(meta, "Status", model.statusLabel(record.status));
     appendMeta(meta, "Filed", model.formatDate(record.filedAt));
     if (Array.isArray(record.assignedJudges) && record.assignedJudges.length) {
       appendMeta(meta, "Assigned judge", record.assignedJudges.join(", "));
     }
 
-    article.append(docket, heading, meta);
+    article.append(top, heading, meta);
     return article;
   }
 
@@ -116,24 +124,42 @@
     };
   }
 
-  async function runSearch({ append = false } = {}) {
+  function writeSearchLocation(state) {
+    if (!searchForm) return;
+    const url = new URL(window.location.href);
+    url.searchParams.delete("docket");
+    const fields = [
+      ["q", state.q],
+      ["type", state.caseType],
+      ["status", state.status],
+    ];
+    fields.forEach(([key, value]) => {
+      const clean = String(value || "").trim();
+      if (clean) url.searchParams.set(key, clean);
+      else url.searchParams.delete(key);
+    });
+    window.history.replaceState({}, "", url);
+  }
+
+  async function runSearch({ append = false, updateLocation = true } = {}) {
     if (!apiBase) {
-      showError("The Judicial Information System API is not configured.");
+      showSearchError("The Judicial Information System API is not configured.");
       return;
     }
     const state = readSearchState(append ? nextCursor : null);
-    lastSearchState = { ...state, cursor: null };
+    if (!append && updateLocation) writeSearchLocation(state);
     setBusy(true);
-    setStatus("Searching public cases…");
+    setStatus(state.q ? "Searching public cases…" : "Loading recent public cases…");
     try {
       const payload = await fetchJson(model.buildSearchApiUrl(apiBase, state));
       const records = Array.isArray(payload?.data?.cases) ? payload.data.cases : [];
       renderSearchResults(records, append);
       nextCursor = payload?.meta?.pagination?.nextCursor || null;
       if (loadMore) loadMore.hidden = !nextCursor;
-      setStatus(`${records.length.toLocaleString()} ${records.length === 1 ? "case" : "cases"}${append ? " loaded" : " found"}.`);
+      const action = state.q ? "matched" : "loaded";
+      setStatus(`${records.length.toLocaleString()} ${records.length === 1 ? "case" : "cases"} ${action}${nextCursor ? " · more available" : ""}.`);
     } catch (error) {
-      showError(error.name === "AbortError" ? "The case search timed out. Try again." : error.message);
+      showSearchError(error.name === "AbortError" ? "The case search timed out. Try again." : error.message);
     } finally {
       setBusy(false);
     }
@@ -159,7 +185,9 @@
       item.className = "case-party";
       item.append(textElement("p", "case-party__role", model.titleCase(party.role)));
       item.append(textElement("p", "case-party__name", party.displayName));
-      if (!party.isGovernment) item.append(textElement("p", "case-party__identity", model.identityLabel(party.identity)));
+      if (!party.isGovernment) {
+        item.append(textElement("p", "case-party__identity", model.identityLabel(party.identity)));
+      }
       list.append(item);
     });
     wrapper.append(list);
@@ -182,7 +210,9 @@
       article.append(textElement("h3", "case-charge__heading", `Count ${charge.countNumber} — ${charge.offenseName}`));
       if (charge.displayCitation) article.append(textElement("p", "case-charge__citation", charge.displayCitation));
       const line = textElement("p", "case-charge__disposition", `Disposition: ${model.dispositionLabel(charge.disposition)}`);
-      if (charge.convictionStatus) line.append(document.createTextNode(` · Conviction status: ${model.titleCase(charge.convictionStatus)}`));
+      if (charge.convictionStatus) {
+        line.append(document.createTextNode(` · Conviction status: ${model.titleCase(charge.convictionStatus)}`));
+      }
       article.append(line);
       list.append(article);
     });
@@ -211,11 +241,8 @@
         title.rel = "noopener noreferrer";
       }
       item.append(title);
-      item.append(textElement(
-        "p",
-        "case-document__meta",
-        `${model.titleCase(documentRecord.documentType)} · ${model.formatDate(documentRecord.filedAt)}`,
-      ));
+      const date = documentRecord.filedAt ? model.formatDate(documentRecord.filedAt) : "Filing date not recorded";
+      item.append(textElement("p", "case-document__meta", `${model.titleCase(documentRecord.documentType)} · ${date}`));
       list.append(item);
     });
     wrapper.append(list);
@@ -223,11 +250,15 @@
   }
 
   function renderDocket(entries) {
-    const wrapper = section("Docket");
+    const wrapper = section("Docket entries");
     if (!Array.isArray(entries) || !entries.length) {
-      wrapper.append(textElement("p", "case-empty", "No public docket entries are available."));
+      wrapper.append(textElement("p", "case-empty", "No dated public docket entries are available."));
       return wrapper;
     }
+    const ordered = [...entries].sort((a, b) => {
+      const byDate = String(a.entryDate || "").localeCompare(String(b.entryDate || ""));
+      return byDate || Number(a.sequence) - Number(b.sequence);
+    });
     const tableWrap = document.createElement("div");
     tableWrap.className = "case-docket-wrap";
     const table = document.createElement("table");
@@ -237,7 +268,7 @@
     ["Date", "Entry", "Document"].forEach((label) => headRow.append(textElement("th", "", label)));
     head.append(headRow);
     const body = document.createElement("tbody");
-    entries.forEach((entry) => {
+    ordered.forEach((entry) => {
       const row = document.createElement("tr");
       row.append(textElement("td", "case-docket-table__date", model.formatDateTime(entry.entryDate)));
       const entryCell = document.createElement("td");
@@ -272,35 +303,43 @@
     const header = document.createElement("header");
     header.className = "case-file-heading";
     header.append(textElement("p", "eyebrow", summary.court?.name || "United States Courts"));
-    header.append(textElement("p", "case-file-heading__docket", summary.docketNumber));
+
+    const docketLine = document.createElement("div");
+    docketLine.className = "case-file-heading__topline";
+    docketLine.append(textElement("p", "case-file-heading__docket", summary.docketNumber));
+    docketLine.append(renderStatusPill(summary.status));
+    header.append(docketLine);
     header.append(textElement("h1", "", summary.caption));
 
     const meta = document.createElement("dl");
     meta.className = "case-file-meta case-meta";
     appendMeta(meta, "Case type", model.caseTypeLabel(summary.caseType));
-    appendMeta(meta, "Status", model.statusLabel(summary.status));
     appendMeta(meta, "Filed", model.formatDate(summary.filedAt));
     if (summary.closedAt) appendMeta(meta, "Closed", model.formatDate(summary.closedAt));
     appendMeta(meta, "Assigned judge", summary.assignedJudges?.length ? summary.assignedJudges.join(", ") : "Not recorded");
     header.append(meta);
 
+    const actions = document.createElement("div");
+    actions.className = "case-file-actions";
+    const searchLink = document.createElement("a");
+    searchLink.href = searchPath;
+    searchLink.textContent = "Search all cases";
+    actions.append(searchLink);
     const sourceUrl = model.safeExternalUrl(summary.sourceUrl);
     if (sourceUrl) {
-      const source = document.createElement("p");
-      source.className = "case-source-link";
-      const link = document.createElement("a");
-      link.href = sourceUrl;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      link.textContent = "View source docket card";
-      source.append(link);
-      header.append(source);
+      const source = document.createElement("a");
+      source.href = sourceUrl;
+      source.target = "_blank";
+      source.rel = "noopener noreferrer";
+      source.textContent = "View source docket card ↗";
+      actions.append(source);
     }
+    header.append(actions);
 
     detail.append(
       header,
       renderParties(record.parties),
-      renderCharges(record.charges),
+      summary.caseType === "criminal" ? renderCharges(record.charges) : document.createDocumentFragment(),
       renderDocket(record.docket),
       renderDocuments(documents),
     );
@@ -308,7 +347,8 @@
 
   async function loadCase(docketNumber) {
     if (!apiBase) {
-      showError("The Judicial Information System API is not configured.");
+      if (detail) detail.replaceChildren(textElement("div", "case-system-notice case-system-notice--error", "The Judicial Information System API is not configured."));
+      setStatus("Case information is unavailable.");
       return;
     }
     if (results) results.hidden = true;
@@ -325,7 +365,7 @@
       const documents = Array.isArray(documentPayload?.data?.documents) ? documentPayload.data.documents : [];
       renderDetail(casePayload.data, documents);
       document.title = `${casePayload.data.case.docketNumber} — ${casePayload.data.case.caption} | United States Courts`;
-      setStatus(`Case ${casePayload.data.case.docketNumber}.`);
+      setStatus(`Public case file ${casePayload.data.case.docketNumber}.`);
     } catch (error) {
       if (detail) {
         detail.replaceChildren(textElement(
@@ -340,7 +380,19 @@
     }
   }
 
+  function restoreSearchFromLocation() {
+    if (!searchForm) return;
+    const params = new URLSearchParams(window.location.search);
+    if (queryInput) queryInput.value = params.get("q") || "";
+    if (typeInput) typeInput.value = ["criminal", "civil", "other"].includes(params.get("type")) ? params.get("type") : "";
+    if (statusInput) statusInput.value = ["filed", "pending", "stayed", "closed", "archived"].includes(params.get("status")) ? params.get("status") : "";
+  }
+
   function showSearch({ pushHistory = true } = {}) {
+    if (!searchForm) {
+      window.location.assign(searchPath);
+      return;
+    }
     const url = new URL(window.location.href);
     url.searchParams.delete("docket");
     if (pushHistory) window.history.pushState({}, "", url);
@@ -350,36 +402,41 @@
     }
     if (results) results.hidden = false;
     if (backButton) backButton.hidden = true;
-    document.title = "Cases & Dockets | United States Courts";
-    if (lastSearchState) void runSearch();
-    else setStatus("Search public District Court cases below.");
+    document.title = "Case Search | United States Courts";
+    void runSearch({ updateLocation: false });
   }
 
   searchForm?.addEventListener("submit", (event) => {
     event.preventDefault();
-    const url = new URL(window.location.href);
-    url.searchParams.delete("docket");
-    window.history.replaceState({}, "", url);
     if (detail) detail.hidden = true;
     if (results) results.hidden = false;
     void runSearch();
   });
 
   loadMore?.addEventListener("click", () => {
-    if (nextCursor) void runSearch({ append: true });
+    if (nextCursor) void runSearch({ append: true, updateLocation: false });
   });
   backButton?.addEventListener("click", () => showSearch());
   window.addEventListener("popstate", () => {
     const docket = model.currentDocket(window.location.search);
     if (docket) void loadCase(docket);
-    else showSearch({ pushHistory: false });
+    else if (searchForm) {
+      restoreSearchFromLocation();
+      showSearch({ pushHistory: false });
+    }
   });
 
   const docket = model.currentDocket(window.location.search);
-  if (docket) void loadCase(docket);
-  else {
+  if (docket) {
+    void loadCase(docket);
+  } else if (searchForm) {
+    restoreSearchFromLocation();
     if (detail) detail.hidden = true;
     if (backButton) backButton.hidden = true;
-    setStatus("Search public District Court cases below.");
+    void runSearch({ updateLocation: false });
+  } else if (detail) {
+    detail.hidden = false;
+    detail.replaceChildren(textElement("div", "case-system-notice case-system-notice--error", "No docket number was supplied. Use Case Search to locate a public case file."));
+    setStatus("No case selected.");
   }
 })();
