@@ -43,7 +43,7 @@
           <a class="nav-menu__secondary" href="{{ '/frap/' | relative_url }}"{% if page.collection == 'frap' or page.url == '/frap/' %} aria-current="page"{% endif %}>Appellate Rules Reference</a>
         </div>
       </details>
-      <a href="{{ '/docs/' | relative_url }}"{% if page.url == '/docs/' %} aria-current="page"{% endif %}>Documents</a>
+      <a href="{{ '/docs/' | relative_url }}"{% if page.url == '/docs/' or page.url == '/documents/search/' %} aria-current="page"{% endif %}>Documents</a>
       <a class="primary-nav__related" href="{{ site.related_sites.us_code }}" aria-label="U.S. Code, related site">U.S. Code <span aria-hidden="true">↗</span></a>
     </div>
   </nav>
