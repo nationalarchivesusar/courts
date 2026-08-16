@@ -1,0 +1,23 @@
+---
+layout: rules-list
+title: "Code of Conduct for United States Judges"
+permalink: /conduct/judges/
+description: "Browse the Code of Conduct for United States Judges, its commentary, and compliance provisions."
+section_title: Codes of Conduct
+section_url: /conduct/
+code_key: judges
+code_title: "Code of Conduct for United States Judges"
+---
+
+<p><strong>Official source:</strong> <a href="https://www.uscourts.gov/file/25752/download">Guide to Judiciary Policy, Vol. 2A, Ch. 2</a> · March 12, 2019</p>
+
+<div class="resource-grid">
+  <div class="resource-column">
+    {% assign provisions = site.conduct | where: 'code_key', 'judges' | sort: 'order' %}
+    <ul>
+      {% for provision in provisions %}
+        <li><a href="{{ site.baseurl }}{{ provision.url }}">{{ provision.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>

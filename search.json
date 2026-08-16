@@ -21,7 +21,7 @@ permalink: /search.json
   {% assign parts = doc.url | downcase | split: '/' %}
   {% assign section = "" %}
   {% for p in parts %}
-    {% if p == "supct" or p == "frcp" or p == "frcmp" or p == "fre" or p == "frap" %}
+    {% if p == "supct" or p == "frcp" or p == "frcmp" or p == "fre" or p == "frap" or p == "conduct" %}
       {% assign section = p %}
     {% endif %}
   {% endfor %}
@@ -37,6 +37,8 @@ permalink: /search.json
       {% assign parent = "Federal Rules of Evidence" %}
     {% when "frap" %}
       {% assign parent = "Federal Rules of Appellate Procedure" %}
+    {% when "conduct" %}
+      {% assign parent = doc.code_title | default: "Codes of Conduct" %}
     {% else %}
       {% assign parent = "Other" %}
   {% endcase %}

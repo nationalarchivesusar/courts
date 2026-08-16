@@ -5,17 +5,20 @@
   <a class="skip-link" href="#main-content">Skip to main content</a>
   {% include header.html %}
 
+  {% assign section_title = page.section_title | default: 'Rules of Procedure' %}
+  {% assign section_url = page.section_url | default: '/#rules-procedure' %}
+
   <nav class="breadcrumbs" aria-label="Breadcrumb">
     <ol>
       <li><a href="{{ '/' | relative_url }}">United States Courts</a></li>
-      <li><a href="{{ '/#rules-procedure' | relative_url }}">Rules of Procedure</a></li>
+      <li><a href="{{ section_url | relative_url }}">{{ section_title }}</a></li>
       <li aria-current="page">{{ page.title }}</li>
     </ol>
   </nav>
 
   <main id="main-content" class="content-shell rules-index" tabindex="-1">
     <header class="page-heading">
-      <p class="eyebrow">Rules of Procedure</p>
+      <p class="eyebrow">{{ section_title }}</p>
       <h1>{{ page.title }}</h1>
       {% if page.description %}<p>{{ page.description }}</p>{% endif %}
     </header>

@@ -1,0 +1,23 @@
+---
+layout: rules-list
+title: "Code of Conduct for Federal Public Defender Employees"
+permalink: /conduct/federal-public-defenders/
+description: "Browse the Code of Conduct for Federal Public Defender Employees, including scope, guidance, and the seven canons."
+section_title: Codes of Conduct
+section_url: /conduct/
+code_key: federal-public-defenders
+code_title: "Code of Conduct for Federal Public Defender Employees"
+---
+
+<p><strong>Official source:</strong> <a href="https://www.uscourts.gov/file/27858/download">Guide to Judiciary Policy, Vol. 2A, Ch. 4</a> · May 6, 2024 technical revision; substantive revision March 15, 2024</p>
+
+<div class="resource-grid">
+  <div class="resource-column">
+    {% assign provisions = site.conduct | where: 'code_key', 'federal-public-defenders' | sort: 'order' %}
+    <ul>
+      {% for provision in provisions %}
+        <li><a href="{{ site.baseurl }}{{ provision.url }}">{{ provision.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>

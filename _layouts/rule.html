@@ -5,31 +5,51 @@
   <a class="skip-link" href="#main-content">Skip to main content</a>
   {% include header.html %}
 
+  {% assign is_conduct = false %}
   {% case page.collection %}
     {% when 'fre' %}{% assign rule_set_title = 'Federal Rules of Evidence' %}
     {% when 'supct' %}{% assign rule_set_title = 'Supreme Court Rules' %}
     {% when 'frap' %}{% assign rule_set_title = 'Federal Rules of Appellate Procedure' %}
     {% when 'frcmp' %}{% assign rule_set_title = 'Federal Rules of Criminal Procedure' %}
     {% when 'frcp' %}{% assign rule_set_title = 'Federal Rules of Civil Procedure' %}
+    {% when 'conduct' %}
+      {% assign is_conduct = true %}
+      {% assign rule_set_title = page.code_title %}
+      {% assign rule_set_url = page.code_url %}
   {% endcase %}
+  {% unless rule_set_url %}{% assign rule_set_url = page.collection | prepend: '/' | append: '/' %}{% endunless %}
+
+  {% if is_conduct %}
+    {% assign document_label = 'provision' %}
+    {% assign link_action = 'Copy page link' %}
+    {% assign print_action = 'Print provision' %}
+  {% else %}
+    {% assign document_label = 'rule' %}
+    {% assign link_action = 'Copy rule link' %}
+    {% assign print_action = 'Print rule' %}
+  {% endif %}
 
   <nav class="breadcrumbs" aria-label="Breadcrumb">
     <ol>
       <li><a href="{{ '/' | relative_url }}">United States Courts</a></li>
-      <li><a href="{{ page.collection | prepend: '/' | append: '/' | relative_url }}">{{ rule_set_title }}</a></li>
+      {% if is_conduct %}<li><a href="{{ '/conduct/' | relative_url }}">Codes of Conduct</a></li>{% endif %}
+      <li><a href="{{ rule_set_url | relative_url }}">{{ rule_set_title }}</a></li>
       <li aria-current="page">{{ page.title }}</li>
     </ol>
   </nav>
 
   <main id="main-content" class="content-shell rule-shell" data-rule-set="{{ page.collection }}" tabindex="-1">
-    <article class="legal-document">
+    <article class="legal-document"{% if page.citation %} data-citation="{{ page.citation | escape }}"{% endif %}>
       <header class="legal-document__heading">
         <p class="eyebrow">{{ rule_set_title }}</p>
         <h1>{{ page.title }}</h1>
-        <div class="rule-actions" aria-label="Rule tools">
-          <button type="button" data-copy-rule-link>Copy rule link</button>
+        {% if page.source_title %}
+        <p><strong>Official source:</strong> <a href="{{ page.source_url }}">{{ page.source_title }}</a>{% if page.revision %} · {{ page.revision }}{% endif %}</p>
+        {% endif %}
+        <div class="rule-actions" aria-label="{% if is_conduct %}Code{% else %}Rule{% endif %} tools">
+          <button type="button" data-copy-rule-link>{{ link_action }}</button>
           <button type="button" data-copy-citation>Copy citation</button>
-          <button type="button" data-print-rule>Print rule</button>
+          <button type="button" data-print-rule>{{ print_action }}</button>
         </div>
       </header>
 
@@ -53,7 +73,9 @@
       </section>
       {% endif %}
 
-      {% assign rules = site[page.collection] | sort: 'order' %}
+      {% assign rules = site[page.collection] %}
+      {% if is_conduct %}{% assign rules = rules | where: 'code_key', page.code_key %}{% endif %}
+      {% assign rules = rules | sort: 'order' %}
       {% for rule in rules %}
         {% if rule.url == page.url %}
           {% assign previous_index = forloop.index0 | minus: 1 %}
@@ -62,9 +84,9 @@
           {% if forloop.last == false %}{% assign next_rule = rules[next_index] %}{% endif %}
         {% endif %}
       {% endfor %}
-      <nav class="rule-pagination" aria-label="Adjacent rules">
-        {% if previous_rule %}<a rel="prev" href="{{ previous_rule.url | relative_url }}"><span>Previous rule</span>{{ previous_rule.title }}</a>{% endif %}
-        {% if next_rule %}<a rel="next" href="{{ next_rule.url | relative_url }}"><span>Next rule</span>{{ next_rule.title }}</a>{% endif %}
+      <nav class="rule-pagination" aria-label="Adjacent {{ document_label }}s">
+        {% if previous_rule %}<a rel="prev" href="{{ previous_rule.url | relative_url }}"><span>Previous {{ document_label }}</span>{{ previous_rule.title }}</a>{% endif %}
+        {% if next_rule %}<a rel="next" href="{{ next_rule.url | relative_url }}"><span>Next {{ document_label }}</span>{{ next_rule.title }}</a>{% endif %}
       </nav>
       <a class="back-to-top" href="#main-content">Back to top</a>
     </article>

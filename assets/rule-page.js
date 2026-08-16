@@ -4,6 +4,7 @@
   if (!article || !content) return;
 
   const set = document.querySelector(".rule-shell")?.dataset.ruleSet || "";
+  const isConduct = set === "conduct";
   const title = article.querySelector("h1")?.textContent.trim() || "Rule";
   const ruleNumber = title.match(/^Rule\s+([0-9]+(?:\.[0-9]+)?)/i)?.[1] || "";
   const citationPrefixes = {
@@ -13,7 +14,9 @@
     frcmp: "Fed. R. Crim. P.",
     supct: "Sup. Ct. R.",
   };
-  const citation = `${citationPrefixes[set] || "Rule"} ${ruleNumber}`.trim();
+  const citation =
+    article.dataset.citation?.trim() ||
+    `${citationPrefixes[set] || "Rule"} ${ruleNumber}`.trim();
   const usedIds = new Set(Array.from(document.querySelectorAll("[id]"), (node) => node.id));
   const provisions = [];
   let activeCitationSuffix = "";
@@ -73,9 +76,10 @@
   ruleLinkButton?.addEventListener("click", async () => {
     const url = new URL(window.location.href);
     url.hash = "";
+    const originalLabel = ruleLinkButton.textContent;
     try {
       await copyText(url.toString());
-      setButtonFeedback(ruleLinkButton, "Rule link copied", "Copy rule link");
+      setButtonFeedback(ruleLinkButton, "Link copied", originalLabel);
     } catch {
       showToast("Unable to copy link");
     }
@@ -130,9 +134,11 @@
     });
     const node = walker.nextNode();
     if (!node) return null;
-    const match = node.textContent.match(/^\s*(?:\(\s*([A-Za-z0-9]+)\s*\)|([0-9]+)\.)\s*/);
+    const match = node.textContent.match(
+      /^\s*(?:\(\s*([A-Za-z0-9]+)\s*\)|([0-9]+)\.|([A-Z]+)\.)\s*/,
+    );
     if (!match) return null;
-    return { node, token: match[1] || match[2], raw: match[0] };
+    return { node, token: match[1] || match[2] || match[3], raw: match[0] };
   }
 
   function stripMarker(match) {
@@ -155,6 +161,9 @@
     element.classList.add("rule-provision", `rule-provision--level-${Math.min(depth, 6)}`);
     element.dataset.citationSuffix = suffix;
     element.style.setProperty("--provision-depth", Math.min(depth, 6));
+    if (isConduct && element.tagName === "P" && depth > 1) {
+      element.style.marginLeft = `${Math.min(depth - 1, 5) * 1.05}rem`;
+    }
 
     const button = document.createElement("button");
     button.type = "button";
@@ -200,6 +209,48 @@
       }
       if (element.matches("ol, ul")) {
         processList(element, active, active ? 2 : 1);
+      }
+    });
+  }
+
+  function conductDepth(token, stack) {
+    if (/^[A-Z]+$/.test(token)) return 1;
+    if (/^\d+$/.test(token)) return stack[1] ? 2 : 1;
+    if (/^[a-z]+$/.test(token)) {
+      if (/^[ivxlcdm]+$/.test(token) && stack[3]) return 4;
+      if (stack[2]) return 3;
+      if (stack[1]) return 2;
+      return 1;
+    }
+    return 1;
+  }
+
+  function enhanceConductProvisions() {
+    const stack = [];
+    Array.from(content.children).forEach((element) => {
+      if (element.matches("h2, h3")) {
+        stack.length = 0;
+        return;
+      }
+      if (element.matches("p")) {
+        const explicit = firstMarkerMatch(element);
+        if (!explicit) return;
+        const depth = conductDepth(explicit.token, stack);
+        const parent = depth > 1 ? stack[depth - 1] || null : null;
+        const info = addProvision(
+          element,
+          explicit.token,
+          explicit.raw.trim(),
+          parent,
+          depth,
+          explicit,
+        );
+        stack[depth] = info;
+        stack.length = depth + 1;
+        return;
+      }
+      if (element.matches("ol, ul")) {
+        processList(element, null, 1);
       }
     });
   }
@@ -331,9 +382,13 @@
     });
   }
 
-  enhanceProvisions();
+  if (isConduct) {
+    enhanceConductProvisions();
+  } else {
+    enhanceProvisions();
+  }
   buildToc();
-  linkRuleCitations();
+  if (citationPrefixes[set]) linkRuleCitations();
   revealHashTarget();
   window.addEventListener("hashchange", () => revealHashTarget());
 })();
