@@ -1,0 +1,40 @@
+---
+layout: page
+title: Case File
+slug: case
+description: Public District Court case file.
+permalink: /case/
+show_breadcrumbs: true
+breadcrumb_parent: Case Search
+breadcrumb_parent_url: /cases/
+---
+
+<link rel="stylesheet" href="{{ '/assets/data-pages.css' | relative_url }}">
+<link rel="stylesheet" href="{{ '/assets/cases.css' | relative_url }}">
+
+<div id="cases-experience"
+  class="cases-experience cases-experience--detail"
+  data-api-base="{{ site.jis.public_api_base_url }}"
+  data-cases-path="{{ '/case/' | relative_url }}"
+  data-search-path="{{ '/cases/' | relative_url }}">
+
+  <nav class="case-subnav" aria-label="Case information">
+    <a href="{{ '/docket/' | relative_url }}">Current Docket</a>
+    <a href="{{ '/cases/' | relative_url }}">Case Search</a>
+    <a href="{{ '/judges/' | relative_url }}">District Judges</a>
+    <a href="{{ '/caselaw/' | relative_url }}">Case Law Research</a>
+  </nav>
+
+  <div class="cases-toolbar cases-toolbar--case-file">
+    <a class="case-back-link" href="{{ '/cases/' | relative_url }}">← Back to case search</a>
+    <p id="cases-status" class="cases-status" role="status" aria-live="polite">Loading public case file…</p>
+  </div>
+
+  <section id="case-detail" class="case-file" aria-busy="true">
+    <p class="case-placeholder">Loading case information…</p>
+  </section>
+</div>
+
+<noscript><p class="notice">JavaScript is required to load this Judicial Information System case file.</p></noscript>
+<script src="{{ '/assets/cases-model.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/cases.js' | relative_url }}" defer></script>
