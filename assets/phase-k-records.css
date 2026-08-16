@@ -1,0 +1,96 @@
+.case-document-index-note {
+  margin: 0 0 1rem;
+  padding: 0.75rem 0 0.75rem 1rem;
+  border-left: 3px solid var(--gold);
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.case-document--court-action {
+  margin-inline: -0.75rem;
+  padding-inline: 0.75rem;
+  border-left: 3px solid var(--navy-mid);
+  background: color-mix(in srgb, var(--surface-blue) 55%, transparent);
+}
+
+.case-document__eyebrow {
+  margin: 0 0 0.2rem;
+  color: var(--navy-mid);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.case-document__metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.8rem;
+  margin: 0.3rem 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.case-document__integrity {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+  overflow-wrap: anywhere;
+}
+
+.case-document__integrity code {
+  font-size: 0.72rem;
+}
+
+.case-party__record-link {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.records-related-cases {
+  margin-top: 1.7rem;
+}
+
+.records-related-cases__list {
+  border-top: 1px solid var(--border);
+}
+
+.records-related-case {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.records-related-case__docket {
+  margin: 0 0 0.2rem;
+  color: var(--navy-mid);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.records-related-case__caption {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.records-related-case__caption a {
+  color: var(--link);
+}
+
+.records-related-case__meta {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 580px) {
+  .case-document--court-action {
+    margin-inline: -0.4rem;
+    padding-inline: 0.4rem;
+  }
+}
