@@ -3,7 +3,7 @@ layout: page
 title: Case Search
 title_short: Cases
 slug: cases
-description: Search public District Court and structured Supreme Court case records by docket number, party, citation, or offense.
+description: Search public District Court and structured Supreme Court case records by docket, party, citation, offense, or indexed public filing text.
 permalink: /cases/
 show_breadcrumbs: true
 breadcrumb_parent: Docket
@@ -25,7 +25,7 @@ styles:
   <header class="page-heading cases-page-heading">
     <p class="eyebrow">Public access to court electronic records</p>
     <h1>Court Case Search</h1>
-    <p>Search structured public case records. Search by docket number, case caption, party, statute citation, or offense. Structured Supreme Court matters are included when entered into JIS.</p>
+    <p>Search structured public case records by docket number, caption, party, statute citation, offense, filing title, or available indexed filing text. Structured Supreme Court matters are included when entered into JIS.</p>
   </header>
 
   <nav class="case-subnav" aria-label="Case information">
@@ -37,7 +37,7 @@ styles:
   </nav>
 
   <aside class="cases-legal-notice">
-    <strong>Record status matters.</strong> A filed criminal charge is an allegation, not a conviction. Convictions are shown only where JIS contains a separately verified convicted disposition.
+    <strong>Record status matters.</strong> A filed criminal charge is an allegation, not a conviction. Convictions are shown only where JIS contains a separately verified convicted disposition. A document search match likewise does not establish a legal outcome.
   </aside>
 
   <section class="cases-search" aria-labelledby="cases-search-heading">
@@ -48,8 +48,8 @@ styles:
 
     <form id="cases-search-form" role="search">
       <div class="form-field form-field--wide">
-        <label for="cases-query">Docket, party, citation, or offense</label>
-        <input id="cases-query" name="q" type="search" autocomplete="off" placeholder="e.g. CR-072626-0066 or United States">
+        <label for="cases-query">Docket, party, citation, offense, or filing text</label>
+        <input id="cases-query" name="q" type="search" autocomplete="off" placeholder="e.g. CR-072626-0066, United States, or speedy trial">
       </div>
 
       <div class="form-field">
