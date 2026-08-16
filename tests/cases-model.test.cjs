@@ -3,10 +3,10 @@ const assert = require("node:assert/strict");
 
 const model = require("../assets/cases-model.js");
 
-test("builds shareable case links without exposing internal identifiers", () => {
+test("builds shareable dedicated case links without exposing internal identifiers", () => {
   assert.equal(
-    model.buildCaseHref("/courts/cases/", "CR-072626-0066"),
-    "/courts/cases/?docket=CR-072626-0066",
+    model.buildCaseHref("/courts/case/", "CR-072626-0066"),
+    "/courts/case/?docket=CR-072626-0066",
   );
 });
 

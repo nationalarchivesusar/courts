@@ -6,6 +6,8 @@ description: Public access to federal court cases, dockets, rules, opinions, and
 show_breadcrumbs: false
 ---
 
+<link rel="stylesheet" href="{{ '/assets/case-pages.css' | relative_url }}">
+
 <section class="institutional-intro" aria-labelledby="intro-heading">
   <p class="eyebrow">Federal Judiciary</p>
   <h1 id="intro-heading">United States Courts</h1>
@@ -16,7 +18,7 @@ show_breadcrumbs: false
   data-docket-supreme="{{ site.dockets.supreme_court_board }}"
   data-docket-district="{{ site.dockets.district_court_board }}"
   data-fallback-url="{{ '/assets/docket-fallback.json' | relative_url }}"
-  data-cases-path="{{ '/docket/' | relative_url }}">
+  data-case-path="{{ '/case/' | relative_url }}">
   <header class="section-heading">
     <p class="eyebrow">Current proceedings</p>
     <h2 id="dockets-heading">Current Dockets</h2>

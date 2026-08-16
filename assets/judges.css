@@ -1,0 +1,147 @@
+.judges-heading {
+  margin-bottom: 2rem;
+}
+
+.judges-experience {
+  margin-top: 1.5rem;
+}
+
+.judges-section-heading {
+  margin-bottom: 1rem;
+}
+
+.judges-status {
+  margin: 0.5rem 0 0;
+  color: var(--muted, #5c6875);
+}
+
+.judges-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.judges-placeholder,
+.judges-empty,
+.judges-error {
+  margin: 0;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid var(--border, #cbd2d9);
+  background: var(--surface, #fff);
+}
+
+.judge-record {
+  border: 1px solid var(--border, #cbd2d9);
+  background: var(--surface, #fff);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 8%);
+}
+
+.judge-record__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.25rem;
+  align-items: flex-start;
+  padding: 1.15rem 1.25rem;
+  border-bottom: 1px solid var(--border, #cbd2d9);
+}
+
+.judge-record__court {
+  margin: 0 0 0.25rem;
+  font: 700 0.72rem/1.2 system-ui, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted, #5c6875);
+}
+
+.judge-record h3 {
+  margin: 0;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+}
+
+.judge-record__title {
+  margin: 0.3rem 0 0;
+  color: var(--muted, #5c6875);
+}
+
+.judge-record__count {
+  flex: 0 0 auto;
+  min-width: 5.5rem;
+  padding: 0.55rem 0.7rem;
+  border-left: 3px solid var(--accent, #8f7440);
+  background: var(--surface-alt, #f3f5f7);
+  text-align: right;
+  font: 700 0.78rem/1.25 system-ui, sans-serif;
+}
+
+.judge-record__body {
+  padding: 1rem 1.25rem 1.2rem;
+}
+
+.judge-record__body h4 {
+  margin: 0 0 0.65rem;
+  font-size: 0.95rem;
+}
+
+.judge-record__empty {
+  margin: 0;
+  color: var(--muted, #5c6875);
+}
+
+.judge-docket-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--border, #cbd2d9);
+}
+
+.judge-docket-list li {
+  display: grid;
+  grid-template-columns: minmax(8.5rem, 0.35fr) minmax(0, 1fr) auto;
+  gap: 0.85rem;
+  align-items: baseline;
+  padding: 0.72rem 0;
+  border-bottom: 1px solid var(--border, #d7dde3);
+}
+
+.judge-docket-list li:last-child {
+  border-bottom: 0;
+}
+
+.judge-docket-list__number {
+  font: 700 0.8rem/1.3 system-ui, sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.judge-docket-list__caption {
+  min-width: 0;
+}
+
+.judge-docket-list__status {
+  font: 700 0.7rem/1.2 system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted, #5c6875);
+}
+
+.judges-note {
+  margin-top: 1.5rem;
+  padding: 1rem 1.1rem;
+  border-left: 4px solid var(--accent, #8f7440);
+  background: var(--surface-alt, #f3f5f7);
+}
+
+@media (max-width: 700px) {
+  .judge-record__header {
+    display: block;
+  }
+
+  .judge-record__count {
+    margin-top: 0.8rem;
+    text-align: left;
+    width: fit-content;
+  }
+
+  .judge-docket-list li {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+}

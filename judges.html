@@ -1,0 +1,53 @@
+---
+layout: page
+title: Judges
+slug: judges
+description: Active judges of the United States District Court and their current public dockets.
+permalink: /judges/
+show_breadcrumbs: true
+breadcrumb_parent: United States Courts
+breadcrumb_parent_url: /
+---
+
+<link rel="stylesheet" href="{{ '/assets/data-pages.css' | relative_url }}">
+<link rel="stylesheet" href="{{ '/assets/judges.css' | relative_url }}">
+<link rel="stylesheet" href="{{ '/assets/case-pages.css' | relative_url }}">
+
+<header class="page-heading judges-heading">
+  <p class="eyebrow">United States District Court</p>
+  <h1>Judges</h1>
+  <p>View the active District Court bench and current public matters assigned to each judge. The directory is generated from Judicial Information System court-assignment records rather than maintained as a separate roster.</p>
+</header>
+
+<nav class="case-subnav" aria-label="Case information">
+  <a href="{{ '/docket/' | relative_url }}">Current Docket</a>
+  <a href="{{ '/cases/' | relative_url }}">Case Search</a>
+  <a href="{{ '/judges/' | relative_url }}" aria-current="page">District Judges</a>
+  <a href="{{ '/caselaw/' | relative_url }}">Case Law Research</a>
+</nav>
+
+<section
+  id="judges-experience"
+  class="judges-experience"
+  data-api-base="{{ site.jis.public_api_base_url | escape }}"
+  data-case-path="{{ '/case/' | relative_url }}"
+  aria-labelledby="district-judges-heading"
+>
+  <header class="section-heading judges-section-heading">
+    <p class="eyebrow">District of Columbia</p>
+    <h2 id="district-judges-heading">United States District Court</h2>
+    <p id="judges-status" class="judges-status" role="status" aria-live="polite">Loading the District Court bench…</p>
+  </header>
+
+  <div id="judges-list" class="judges-list" aria-live="polite" aria-busy="true">
+    <p class="judges-placeholder">Loading judges…</p>
+  </div>
+</section>
+
+<aside class="judges-note" aria-label="Directory scope">
+  <strong>Directory scope.</strong>
+  This page is presently limited to District Court judges whose active assignments are maintained by JIS. Individual Supreme Court justice profiles are not manually maintained here.
+</aside>
+
+<noscript><p class="notice">JavaScript is required to load the Judicial Information System judge directory.</p></noscript>
+<script src="{{ '/assets/judges.js' | relative_url }}" defer></script>
