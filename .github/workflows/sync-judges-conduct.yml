@@ -23,7 +23,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m pip install --disable-pip-version-check requests beautifulsoup4 markdownify
+      - run: python -m pip install --disable-pip-version-check requests pypdf
       - run: python scripts/sync_judges_conduct.py
       - name: Commit generated source
         run: |
