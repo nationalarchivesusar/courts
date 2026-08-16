@@ -9,6 +9,7 @@ breadcrumb_parent: United States Courts
 breadcrumb_parent_url: /
 styles:
   - /assets/records-convictions.css
+  - /assets/phase-k-records.css
 ---
 
 <header class="page-heading records-heading">
@@ -38,6 +39,7 @@ styles:
   id="records-experience"
   data-api-base="{{ site.jis.public_api_base_url | escape }}"
   data-records-path="{{ '/records/' | relative_url }}"
+  data-case-path="{{ '/case/' | relative_url }}"
 >
   <p id="records-status" class="records-status" role="status" aria-live="polite">Enter a username or UserId above.</p>
   <div id="records-results" aria-live="polite" aria-busy="false"></div>
@@ -46,3 +48,4 @@ styles:
 <noscript><p class="notice">JavaScript is required to search the Judicial Information System.</p></noscript>
 <script src="{{ '/assets/records-model.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/records.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/records-case-links.js' | relative_url }}" defer></script>
