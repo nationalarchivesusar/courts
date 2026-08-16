@@ -6,13 +6,15 @@ const path = require("node:path");
 const root = path.resolve(__dirname, "..");
 const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 
-test("codes of conduct have their own navigation and collection", () => {
+test("codes of conduct remain reachable through the consolidated court navigation", () => {
   const header = read("_includes/header.html");
+  const overview = read("conduct.html");
   const config = read("_config.yml");
-  assert.match(header, /<summary>Codes of Conduct<\/summary>/);
-  assert.match(header, /\/conduct\/judges\//);
-  assert.match(header, /\/conduct\/judicial-employees\//);
-  assert.match(header, /\/conduct\/federal-public-defenders\//);
+  assert.match(header, /<summary>Rules &amp; Conduct<\/summary>/);
+  assert.match(header, /href="\{\{ '\/conduct\/' \| relative_url \}\}"[^>]*>Codes of Conduct<\/a>/);
+  assert.match(overview, /\/conduct\/judges\//);
+  assert.match(overview, /\/conduct\/judicial-employees\//);
+  assert.match(overview, /\/conduct\/federal-public-defenders\//);
   assert.match(config, /\n  conduct:\n    output: true\n    permalink: \/conduct\/:path\//);
 });
 
