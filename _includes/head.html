@@ -46,4 +46,9 @@
   <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/images/apple-touch-icon.png' | relative_url }}">
   <script src="{{ '/assets/theme-bootstrap.js' | relative_url }}"></script>
   <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
+  {% if page.styles %}
+    {% for stylesheet in page.styles %}
+  <link rel="stylesheet" href="{{ stylesheet | relative_url }}">
+    {% endfor %}
+  {% endif %}
 </head>
