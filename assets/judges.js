@@ -7,6 +7,7 @@
   if (!root || !list || !status) return;
 
   const apiBase = String(root.dataset.apiBase || "").replace(/\/$/, "");
+  const casePath = String(root.dataset.casePath || "/case/");
 
   function setStatus(message) {
     status.textContent = message;
@@ -27,13 +28,24 @@
     return String(value || "pending").replaceAll("_", " ");
   }
 
+  function caseHref(docketNumber) {
+    const docket = String(docketNumber || "").trim();
+    if (!docket) return null;
+    const separator = casePath.includes("?") ? "&" : "?";
+    return `${casePath}${separator}docket=${encodeURIComponent(docket)}`;
+  }
+
   function renderCase(row) {
     const item = document.createElement("li");
-    item.append(
+    const href = caseHref(row.docketNumber);
+    const identity = href ? document.createElement("a") : document.createElement("span");
+    identity.className = "judge-docket-list__case";
+    if (href) identity.href = href;
+    identity.append(
       text("span", row.docketNumber || "No docket number", "judge-docket-list__number"),
       text("span", row.caption || "Untitled matter", "judge-docket-list__caption"),
-      text("span", statusLabel(row.status), "judge-docket-list__status"),
     );
+    item.append(identity, text("span", statusLabel(row.status), "judge-docket-list__status"));
     return item;
   }
 
