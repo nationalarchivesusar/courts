@@ -28,7 +28,7 @@
   <nav class="primary-nav" aria-label="Primary navigation">
     <div class="primary-nav__inner">
       <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Home</a>
-      <a href="{{ '/docket/' | relative_url }}"{% if page.url == '/docket/' or page.url == '/cases/' %} aria-current="page"{% endif %}>Docket</a>
+      <a href="{{ '/docket/' | relative_url }}"{% if page.url == '/docket/' or page.url == '/cases/' or page.url == '/case/' %} aria-current="page"{% endif %}>Docket</a>
       <a href="{{ '/judges/' | relative_url }}"{% if page.url == '/judges/' %} aria-current="page"{% endif %}>Judges</a>
       <a href="{{ '/caselaw/' | relative_url }}"{% if page.url == '/caselaw/' or page.url == '/case-search.html' %} aria-current="page"{% endif %}>Case Law</a>
       <a href="{{ '/records/' | relative_url }}"{% if page.url == '/records/' %} aria-current="page"{% endif %}>Records</a>
