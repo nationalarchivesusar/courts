@@ -31,9 +31,7 @@ A. Law-related Activities.
 
 B. Civic and Charitable Activities. A judge may participate in and serve as an officer, director, trustee, or nonlegal advisor of a nonprofit civic, charitable, educational, religious, or social organization, subject to the following limitations:
 
-(1) A judge should not serve if it is likely that the organization will either be engaged in proceedings that would ordinarily come before the
-
-judge or be regularly engaged in adversary proceedings in any court.
+(1) A judge should not serve if it is likely that the organization will either be engaged in proceedings that would ordinarily come before the judge or be regularly engaged in adversary proceedings in any court.
 
 (2) A judge should not give investment advice to such an organization but may serve on its board of directors or trustees even though it has the responsibility for approving investment decisions.
 
@@ -47,9 +45,7 @@ D. Financial Activities.
 
 (3) As soon as the judge can do so without serious financial detriment, the judge should divest investments and other financial interests that might require frequent disqualification.
 
-(4) A judge should comply with the restrictions on acceptance of gifts and the prohibition on solicitation of gifts set forth in the Judicial Conference Gift Regulations. A judge should endeavor to prevent any member of the judge’s family residing in the household from soliciting or accepting a gift except to the extent that a judge would
-
-be permitted to do so by the Judicial Conference Gift Regulations. A “member of the judge’s family” means any relative of a judge by blood, adoption, or marriage, or any person treated by a judge as a member of the judge’s family.
+(4) A judge should comply with the restrictions on acceptance of gifts and the prohibition on solicitation of gifts set forth in the Judicial Conference Gift Regulations. A judge should endeavor to prevent any member of the judge’s family residing in the household from soliciting or accepting a gift except to the extent that a judge would be permitted to do so by the Judicial Conference Gift Regulations. A “member of the judge’s family” means any relative of a judge by blood, adoption, or marriage, or any person treated by a judge as a member of the judge’s family.
 
 (5) A judge should not disclose or use nonpublic information acquired in a judicial capacity for any purpose unrelated to the judge’s official duties.
 
@@ -101,9 +97,7 @@ The restriction on using nonpublic information is not intended to affect a judge
 
 ### Canon 4E.
 
-Mere residence in the judge’s household does not by itself make a person a member of the judge’s family for purposes of this Canon. The person must be treated by the judge as a member of the judge’s family.
-
-The Applicable Date of Compliance provision of this Code addresses continued service as a fiduciary. A judge’s obligation under this Code and the judge’s obligation as a fiduciary may come into conflict. For example, a judge should resign as a trustee if it would result in detriment to the trust to divest holdings whose retention would require frequent disqualification of the judge in violation of Canon 4D(3).
+Mere residence in the judge’s household does not by itself make a person a member of the judge’s family for purposes of this Canon. The person must be treated by the judge as a member of the judge’s family. The Applicable Date of Compliance provision of this Code addresses continued service as a fiduciary. A judge’s obligation under this Code and the judge’s obligation as a fiduciary may come into conflict. For example, a judge should resign as a trustee if it would result in detriment to the trust to divest holdings whose retention would require frequent disqualification of the judge in violation of Canon 4D(3).
 
 ### Canon 4F.
 
