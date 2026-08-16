@@ -1,0 +1,23 @@
+---
+layout: rules-list
+title: "Code of Conduct for Judicial Employees"
+permalink: /conduct/judicial-employees/
+description: "Browse the Code of Conduct for Judicial Employees, including scope, guidance, and the five canons."
+section_title: Codes of Conduct
+section_url: /conduct/
+code_key: judicial-employees
+code_title: "Code of Conduct for Judicial Employees"
+---
+
+<p><strong>Official source:</strong> <a href="https://www.uscourts.gov/sites/default/files/guide-vol02a-ch03-2.pdf">Guide to Judiciary Policy, Vol. 2A, Ch. 3</a> · May 2, 2024 technical revision; substantive revision March 21, 2022</p>
+
+<div class="resource-grid">
+  <div class="resource-column">
+    {% assign provisions = site.conduct | where: 'code_key', 'judicial-employees' | sort: 'order' %}
+    <ul>
+      {% for provision in provisions %}
+        <li><a href="{{ site.baseurl }}{{ provision.url }}">{{ provision.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
