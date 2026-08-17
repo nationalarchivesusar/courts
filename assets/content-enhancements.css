@@ -1,0 +1,433 @@
+/* Shared presentation for the court-content enhancement pass. */
+
+.content-tools,
+.archive-controls,
+.judge-controls {
+  display: grid;
+  gap: 0.85rem;
+  margin: 1.25rem 0 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+}
+
+.archive-controls,
+.judge-controls {
+  grid-template-columns: minmax(14rem, 2fr) repeat(2, minmax(9rem, 0.7fr));
+  align-items: end;
+}
+
+.archive-controls label,
+.judge-controls label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.archive-controls input,
+.archive-controls select,
+.judge-controls input,
+.judge-controls select {
+  width: 100%;
+}
+
+.archive-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 0 0 1.5rem;
+}
+
+.archive-summary__item {
+  padding: 0.85rem 1rem;
+  border-top: 3px solid var(--navy-mid);
+  background: var(--surface-alt);
+}
+
+.archive-summary__value {
+  display: block;
+  color: var(--navy-deep);
+  font-family: var(--serif);
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.archive-summary__label {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.opinions-list {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--border);
+}
+
+.opinion-record {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.6rem 1rem;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.opinion-record__topline,
+.opinion-record__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.8rem;
+  align-items: center;
+}
+
+.opinion-record__topline {
+  grid-column: 1 / -1;
+}
+
+.opinion-record__type,
+.opinion-record__year {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.45rem;
+  padding: 0.13rem 0.42rem;
+  border: 1px solid var(--border-strong);
+  color: var(--muted);
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.opinion-record h2 {
+  margin: 0;
+  font-size: 1.22rem;
+}
+
+.opinion-record h2 a {
+  color: var(--navy-deep);
+  text-decoration-thickness: 1px;
+}
+
+.opinion-record__meta {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.opinion-record__open {
+  align-self: center;
+  font-size: 0.82rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.opinions-empty {
+  margin: 0;
+  padding: 1.2rem 0;
+  color: var(--muted);
+}
+
+.document-controls--expanded {
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.7fr) minmax(10rem, 0.8fr) minmax(14rem, 2fr);
+  gap: 0.85rem;
+}
+
+.document-library-note {
+  margin: 1rem 0 1.4rem;
+  padding: 0.85rem 1rem;
+  border-left: 4px solid var(--navy-mid);
+  background: var(--surface-alt);
+  color: var(--muted);
+}
+
+.filing-template {
+  max-width: 54rem;
+}
+
+.filing-template__notice {
+  margin: 0 0 1.5rem;
+  padding: 0.9rem 1rem;
+  border-left: 4px solid var(--gold);
+  background: var(--surface-alt);
+}
+
+.filing-template__document {
+  padding: clamp(1.25rem, 4vw, 2.25rem);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.filing-template__caption {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.filing-template__caption p,
+.filing-template__caption h2 {
+  margin: 0.25rem 0;
+}
+
+.filing-template__field {
+  display: grid;
+  grid-template-columns: minmax(10rem, 0.35fr) minmax(0, 1fr);
+  gap: 0.8rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px dotted var(--border-strong);
+}
+
+.filing-template__field strong {
+  font-size: 0.82rem;
+}
+
+.filing-template__section {
+  margin-top: 1.5rem;
+}
+
+.filing-template__section h3 {
+  margin-bottom: 0.55rem;
+}
+
+.template-placeholder {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.judge-controls__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.judge-controls button {
+  min-height: 2.5rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--navy-deep);
+  background: var(--surface);
+  color: var(--navy-deep);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.judge-controls button:hover {
+  background: var(--navy-deep);
+  color: #fff;
+}
+
+.case-search-shortcuts,
+.rule-context-nav,
+.rules-quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1rem;
+  margin: 0.85rem 0 1.4rem;
+  padding: 0.75rem 0;
+  border-block: 1px solid var(--border);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.case-section-nav {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  display: flex;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  margin: 0.85rem 0 0;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.case-section-nav > strong {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.case-section-nav__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.9rem;
+}
+
+.case-section-nav a {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.case-section-nav a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.rules-directory__section + .rules-directory__section {
+  margin-top: 2.6rem;
+  padding-top: 2.2rem;
+  border-top: 2px solid var(--navy-deep);
+}
+
+.rules-directory__heading {
+  max-width: 52rem;
+}
+
+.rules-directory__heading h2 {
+  margin-bottom: 0.45rem;
+}
+
+.rules-directory__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.rules-directory__card {
+  display: grid;
+  gap: 0.4rem;
+  min-height: 8rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--navy-mid);
+  background: var(--surface);
+  color: inherit;
+  text-decoration: none;
+}
+
+.rules-directory__card:hover {
+  border-color: var(--navy-mid);
+  background: var(--surface-alt);
+}
+
+.rules-directory__card strong {
+  color: var(--navy-deep);
+  font-family: var(--serif);
+  font-size: 1.08rem;
+}
+
+.rules-directory__card span {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.rules-directory__count {
+  margin-top: auto;
+  color: var(--navy-mid) !important;
+  font-size: 0.74rem !important;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.rule-set-directory {
+  margin-top: 1.5rem;
+}
+
+.rule-set-directory__intro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.rule-set-directory__count {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.legal-document__context {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.rule-source-strip {
+  margin: 0.9rem 0 0;
+  padding: 0.7rem 0.8rem;
+  border-left: 3px solid var(--gold);
+  background: var(--surface-alt);
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+:root[data-theme="dark"] .archive-summary__value,
+:root[data-theme="dark"] .opinion-record h2 a,
+:root[data-theme="dark"] .rules-directory__card strong,
+:root[data-theme="dark"] .judge-controls button {
+  color: var(--ink);
+}
+
+@media (max-width: 760px) {
+  .archive-controls,
+  .judge-controls,
+  .document-controls--expanded {
+    grid-template-columns: 1fr;
+  }
+
+  .archive-summary,
+  .rules-directory__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .opinion-record {
+    grid-template-columns: 1fr;
+  }
+
+  .opinion-record__open {
+    justify-self: start;
+  }
+
+  .case-section-nav {
+    position: static;
+    display: block;
+  }
+
+  .case-section-nav__links {
+    margin-top: 0.45rem;
+  }
+
+  .filing-template__field {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+}
+
+@media print {
+  .filing-template__notice,
+  .site-header,
+  .site-footer,
+  .breadcrumbs,
+  .legal-document__context,
+  .rule-actions,
+  .case-section-nav {
+    display: none !important;
+  }
+
+  .filing-template__document {
+    border: 0;
+    padding: 0;
+  }
+}
