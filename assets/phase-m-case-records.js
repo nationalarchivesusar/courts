@@ -76,7 +76,21 @@
 
   function safeHtmlViewer(record) {
     if (!isHtmlDocument(record)) return "";
-    for (const candidate of [record?.viewerUrl, record?.sourceUrl]) {
+
+    const documentId = clean(record?.documentId);
+    const safeApiBase = safeHttps(apiBase);
+    if (record?.externalProvider === "google_drive" && documentId && safeApiBase) {
+      try {
+        return new URL(
+          `/api/v1/documents/${encodeURIComponent(documentId)}/html-preview`,
+          safeApiBase,
+        ).href;
+      } catch {
+        return "";
+      }
+    }
+
+    for (const candidate of [record?.sourceUrl, record?.viewerUrl]) {
       const safe = safeHttps(candidate);
       if (safe) return safe;
     }
@@ -137,7 +151,7 @@
     const wrapper = section("Documents");
     const notice = metaLine(
       "phase-m-provider-note",
-      "Public files remain hosted by their source provider. Google Drive and Google Docs files can be previewed here when the source permits embedding. Public HTML files can also be previewed in a restricted sandbox; the original source link remains authoritative.",
+      "Public files remain hosted by their source provider. Google Drive and Google Docs files can be previewed here when the source permits embedding. Public HTML files are rendered through a restricted JIS preview instead of the Drive source-code viewer; the original source link remains authoritative.",
     );
     wrapper.append(notice);
 
@@ -180,9 +194,11 @@
 
       const actions = document.createElement("div");
       actions.className = "phase-m-document__actions";
-      const googleViewerUrl = record.externalProvider === "google_drive" ? safeGoogleViewer(record.viewerUrl) : "";
-      const htmlViewerUrl = googleViewerUrl ? "" : safeHtmlViewer(record);
-      const viewerUrl = googleViewerUrl || htmlViewerUrl;
+      const htmlViewerUrl = safeHtmlViewer(record);
+      const googleViewerUrl = htmlViewerUrl
+        ? ""
+        : (record.externalProvider === "google_drive" ? safeGoogleViewer(record.viewerUrl) : "");
+      const viewerUrl = htmlViewerUrl || googleViewerUrl;
       if (viewerUrl) {
         const toggle = document.createElement("button");
         toggle.type = "button";
