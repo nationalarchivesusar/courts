@@ -23,7 +23,12 @@ test("document previews preserve the Google allowlist and route Drive HTML throu
   assert.match(caseEnhancement, /mimeType === "text\/html"/);
   assert.match(caseEnhancement, /mimeType === "application\/xhtml\+xml"/);
   assert.match(caseEnhancement, /sourceFilename/);
+  assert.match(caseEnhancement, /record\?\.title/);
+  assert.match(caseEnhancement, /isKnownNonHtmlDocument/);
+  assert.match(caseEnhancement, /application\/octet-stream/);
   assert.match(caseEnhancement, /safeHtmlViewer/);
+  assert.match(caseEnhancement, /jisHtmlPreviewUrl/);
+  assert.match(caseEnhancement, /!isKnownNonHtmlDocument\(record\) \|\| isHtmlDocument\(record\)/);
   assert.match(caseEnhancement, /\/api\/v1\/documents\/\$\{encodeURIComponent\(documentId\)\}\/html-preview/);
   assert.match(caseEnhancement, /const htmlViewerUrl = safeHtmlViewer\(record\);[\s\S]*const googleViewerUrl = htmlViewerUrl/);
   assert.match(caseEnhancement, /iframe\.setAttribute\("sandbox", ""\)/);
