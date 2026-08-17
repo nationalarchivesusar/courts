@@ -12,10 +12,10 @@ test("opinions archive is searchable and classifies preserved files without inve
   assert.match(page, /id="opinions-year"/);
   assert.match(page, /data-opinion-name=/);
   assert.match(page, /assets\/opinions\.js/);
+  assert.match(page, /does not infer/i);
   assert.match(script, /Order list/);
   assert.match(script, /Per curiam decision/);
   assert.match(script, /Slip opinion/);
-  assert.match(script, /does not infer/i);
 });
 
 test("forms library includes useful District Court starter templates and keeps filed documents separate", () => {
