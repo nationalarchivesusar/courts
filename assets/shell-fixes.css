@@ -4,13 +4,15 @@
 .page-caselaw .content-shell,
 .page-judges .content-shell,
 .page-cases .content-shell,
-.page-case .content-shell {
+.page-case .content-shell,
+.page-document-search .content-shell {
   padding: clamp(1.25rem, 4vw, 2.75rem);
 }
 
 .page-judges .page-heading,
 .page-cases .page-heading,
 .page-case .page-heading,
+.page-document-search .page-heading,
 .page-docket .page-heading,
 .page-caselaw .page-heading {
   max-width: 58rem;
@@ -52,7 +54,8 @@
   .page-caselaw .content-shell,
   .page-judges .content-shell,
   .page-cases .content-shell,
-  .page-case .content-shell {
+  .page-case .content-shell,
+  .page-document-search .content-shell {
     padding: 1rem;
   }
 
@@ -74,7 +77,8 @@
   .page-caselaw .content-shell,
   .page-judges .content-shell,
   .page-cases .content-shell,
-  .page-case .content-shell {
+  .page-case .content-shell,
+  .page-document-search .content-shell {
     padding: 1rem;
   }
 }
