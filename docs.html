@@ -39,7 +39,7 @@ breadcrumb_parent_url: /
 </section>
 
 <p id="document-count" class="result-count" role="status" aria-live="polite"></p>
-<div id="document-grid" class="document-grid"></div>
+<div id="document-grid" class="document-grid" data-site-base="{{ site.baseurl | escape }}"></div>
 
 <aside class="notice">
   <strong>Not looking for a blank form?</strong> Documents already filed in public cases are available through <a href="{{ '/documents/search/' | relative_url }}">Filed Document Search</a>.
