@@ -34,14 +34,17 @@ test("case enhancement obtains judgments and verified related proceedings from d
   assert.match(caseEnhancement, /Related proceedings/);
 });
 
-test("document search is a separate public filing search rather than replacing the template library", () => {
+test("document search stays separate from the reusable template library", () => {
   assert.match(searchPage, /permalink: \/documents\/search\//);
+  assert.match(searchPage, /breadcrumb_parent: Case Search/);
+  assert.match(searchPage, /breadcrumb_parent_url: \/cases\//);
   assert.match(searchPage, /Document text is not a disposition/);
   assert.match(searchPage, /assets\/document-search\.js/);
   assert.match(documentSearch, /\/api\/v1\/documents\/search/);
   assert.match(documentSearch, /casePath/);
-  assert.match(docsPage, /Public Court Document Search/);
+  assert.match(docsPage, /permalink: \/docs\//);
   assert.match(docsPage, /Search templates/);
+  assert.doesNotMatch(docsPage, /Public Court Document Search/);
 });
 
 test("document search receives the same stable content shell spacing as other public data pages", () => {
@@ -49,8 +52,10 @@ test("document search receives the same stable content shell spacing as other pu
   assert.match(shellFixes, /\.page-document-search \.page-heading/);
 });
 
-test("navigation remains compact while Documents owns the document-search route", () => {
+test("Docket owns filed-document search while Documents owns the template library", () => {
   const header = fs.readFileSync("_includes/header.html", "utf8");
-  assert.match(header, /page\.url == '\/docs\/' or page\.url == '\/documents\/search\/'/);
+  assert.ok(header.includes("page.url == '/docket/' or page.url == '/cases/' or page.url == '/case/' or page.url == '/documents/search/'"));
+  assert.ok(header.includes("href=\"{{ '/docs/' | relative_url }}\"{% if page.url == '/docs/' %} aria-current=\"page\"{% endif %}>Documents</a>"));
+  assert.doesNotMatch(header, /page\.url == '\/docs\/' or page\.url == '\/documents\/search\/'/);
   assert.doesNotMatch(header, />Document Search<\/a>\s*<a class="primary-nav/);
 });
