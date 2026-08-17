@@ -1,0 +1,135 @@
+.case-results-list {
+  display: grid;
+  gap: 0.75rem;
+  padding-block: 1rem;
+}
+
+.case-results-list .case-result {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--navy-mid);
+  background: var(--surface);
+}
+
+.case-results-list .case-result:first-child {
+  padding-top: 1rem;
+}
+
+.case-result__caption {
+  margin-bottom: 0.65rem;
+}
+
+.case-result__caption a {
+  text-decoration: none;
+}
+
+.case-result__caption a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.case-file-heading {
+  padding: 1.1rem 1.2rem 1.25rem;
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--navy-deep);
+  background: color-mix(in srgb, var(--surface) 96%, var(--surface-alt));
+}
+
+.case-file-heading h1 {
+  max-width: 56rem;
+}
+
+.case-file-meta {
+  margin-top: 0.2rem;
+}
+
+.case-detail-section {
+  margin-top: 1rem;
+  padding: 1.25rem 1.15rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  scroll-margin-top: 4.5rem;
+}
+
+.case-detail-section__heading {
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 2px solid var(--navy-mid);
+}
+
+.case-party,
+.case-charge {
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+}
+
+.case-parties,
+.case-charges {
+  gap: 0.65rem;
+}
+
+.case-charges {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+}
+
+.case-charge__heading {
+  margin-top: 0;
+}
+
+.case-charge__disposition {
+  margin-top: 0.5rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid var(--border);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.case-docket-wrap {
+  border: 1px solid var(--border);
+  border-top: 0;
+}
+
+.case-docket-table thead {
+  background: var(--surface-alt);
+}
+
+.case-docket-table tbody tr:hover {
+  background: color-mix(in srgb, var(--surface-alt) 68%, transparent);
+}
+
+.case-documents,
+.phase-m-document-list,
+.phase-m-judgment-list,
+.phase-m-relations-list {
+  display: grid;
+  gap: 0.65rem;
+  border-top: 0;
+}
+
+.case-document,
+.phase-m-document,
+.phase-m-judgment,
+.phase-m-relation {
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+}
+
+.cases-experience--detail .cases-toolbar {
+  border-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .case-file-heading,
+  .case-detail-section,
+  .case-results-list .case-result {
+    padding: 0.9rem;
+  }
+
+  .case-charges {
+    grid-template-columns: 1fr;
+  }
+}
