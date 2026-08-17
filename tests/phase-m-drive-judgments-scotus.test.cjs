@@ -17,12 +17,20 @@ test("case files load the Phase M enhancement after the stable base renderer", (
   assert.doesNotMatch(casesPage, /phase-m-case-records\.js/);
 });
 
-test("Drive preview embedding is allowlisted to Google provider hosts and keeps source links", () => {
+test("document previews preserve the Google allowlist and sandbox public HTML files", () => {
   assert.match(caseEnhancement, /url\.hostname !== "drive\.google\.com" && url\.hostname !== "docs\.google\.com"/);
   assert.match(caseEnhancement, /record\.externalProvider === "google_drive"/);
+  assert.match(caseEnhancement, /mimeType === "text\/html"/);
+  assert.match(caseEnhancement, /mimeType === "application\/xhtml\+xml"/);
+  assert.match(caseEnhancement, /sourceFilename/);
+  assert.match(caseEnhancement, /safeHtmlViewer/);
+  assert.match(caseEnhancement, /iframe\.setAttribute\("sandbox", ""\)/);
+  assert.doesNotMatch(caseEnhancement, /allow-scripts|allow-forms|allow-popups|allow-same-origin|allow-top-navigation/);
+  assert.match(caseEnhancement, /Sandboxed HTML preview/);
   assert.match(caseEnhancement, /Preview document/);
   assert.match(caseEnhancement, /Open source/);
   assert.match(caseEnhancement, /referrerPolicy = "no-referrer"/);
+  assert.match(css, /\.phase-m-viewer__security-note/);
   assert.match(css, /\.phase-m-viewer iframe/);
 });
 

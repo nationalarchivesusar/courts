@@ -56,6 +56,33 @@
     }
   }
 
+  function isHtmlDocument(record) {
+    const mimeType = clean(record?.mimeType).split(";", 1)[0].toLowerCase();
+    if (mimeType === "text/html" || mimeType === "application/xhtml+xml") return true;
+
+    const sourceFilename = clean(record?.sourceFilename).toLowerCase();
+    if (/\.(?:html?|xhtml)$/.test(sourceFilename)) return true;
+
+    return [record?.viewerUrl, record?.sourceUrl].some((value) => {
+      const safe = safeHttps(value);
+      if (!safe) return false;
+      try {
+        return /\.(?:html?|xhtml)$/.test(new URL(safe).pathname.toLowerCase());
+      } catch {
+        return false;
+      }
+    });
+  }
+
+  function safeHtmlViewer(record) {
+    if (!isHtmlDocument(record)) return "";
+    for (const candidate of [record?.viewerUrl, record?.sourceUrl]) {
+      const safe = safeHttps(candidate);
+      if (safe) return safe;
+    }
+    return "";
+  }
+
   async function fetchOptional(path) {
     const controller = new AbortController();
     const timeout = window.setTimeout(() => controller.abort(), 12000);
@@ -110,7 +137,7 @@
     const wrapper = section("Documents");
     const notice = metaLine(
       "phase-m-provider-note",
-      "Public files remain hosted by their source provider. Google Drive and Google Docs files can be previewed here when the source permits embedding; the original source link remains authoritative.",
+      "Public files remain hosted by their source provider. Google Drive and Google Docs files can be previewed here when the source permits embedding. Public HTML files can also be previewed in a restricted sandbox; the original source link remains authoritative.",
     );
     wrapper.append(notice);
 
@@ -153,7 +180,9 @@
 
       const actions = document.createElement("div");
       actions.className = "phase-m-document__actions";
-      const viewerUrl = record.externalProvider === "google_drive" ? safeGoogleViewer(record.viewerUrl) : "";
+      const googleViewerUrl = record.externalProvider === "google_drive" ? safeGoogleViewer(record.viewerUrl) : "";
+      const htmlViewerUrl = googleViewerUrl ? "" : safeHtmlViewer(record);
+      const viewerUrl = googleViewerUrl || htmlViewerUrl;
       if (viewerUrl) {
         const toggle = document.createElement("button");
         toggle.type = "button";
@@ -161,13 +190,21 @@
         toggle.setAttribute("aria-expanded", "false");
 
         const viewer = document.createElement("div");
-        viewer.className = "phase-m-viewer";
+        viewer.className = htmlViewerUrl ? "phase-m-viewer phase-m-viewer--html" : "phase-m-viewer";
         viewer.hidden = true;
+        if (htmlViewerUrl) {
+          viewer.append(metaLine(
+            "phase-m-viewer__security-note",
+            "Sandboxed HTML preview — scripts, forms, popups, same-origin privileges, and top-level navigation are disabled.",
+          ));
+        }
+
         const iframe = document.createElement("iframe");
         iframe.loading = "lazy";
         iframe.referrerPolicy = "no-referrer";
         iframe.title = `Document preview: ${record.title || "court filing"}`;
         iframe.dataset.src = viewerUrl;
+        if (htmlViewerUrl) iframe.setAttribute("sandbox", "");
         viewer.append(iframe);
 
         toggle.addEventListener("click", () => {
