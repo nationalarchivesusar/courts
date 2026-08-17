@@ -33,6 +33,14 @@ styles:
     <a href="{{ '/documents/search/' | relative_url }}">Search Filed Documents</a>
   </nav>
 
+  <nav class="case-search-shortcuts" aria-label="Case search shortcuts">
+    <strong>Browse:</strong>
+    <a href="{{ '/cases/?type=criminal' | relative_url }}">Criminal cases</a>
+    <a href="{{ '/cases/?type=civil' | relative_url }}">Civil cases</a>
+    <a href="{{ '/cases/?status=pending' | relative_url }}">Pending matters</a>
+    <a href="{{ '/cases/?status=closed' | relative_url }}">Closed matters</a>
+  </nav>
+
   <aside class="cases-legal-notice">
     <strong>Record status matters.</strong> A filed criminal charge is an allegation, not a conviction. Convictions are shown only where JIS contains a separately verified convicted disposition. A document search match likewise does not establish a legal outcome.
   </aside>
@@ -40,7 +48,7 @@ styles:
   <section class="cases-search" aria-labelledby="cases-search-heading">
     <header class="cases-search__heading">
       <h2 id="cases-search-heading">Search cases</h2>
-      <p>Leave the search box empty to browse recently filed public matters.</p>
+      <p>Leave the search box empty to browse recently filed public matters. Docket-number searches are usually the fastest way to reach a known case.</p>
     </header>
 
     <form id="cases-search-form" role="search">
