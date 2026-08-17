@@ -95,6 +95,15 @@
   display: none;
 }
 
+.phase-m-viewer__security-note {
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid #cbd2da;
+  background: #eef3f7;
+  color: #526170;
+  font: 700 0.76rem/1.4 system-ui, sans-serif;
+}
+
 .phase-m-viewer iframe {
   display: block;
   width: 100%;
