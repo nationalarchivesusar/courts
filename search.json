@@ -44,7 +44,7 @@ permalink: /search.json
     {% else %}
       {% assign parent = "Other" %}
       {% assign search_collection = "" %}
-      {% if doc.url == '/docs/' %}
+      {% if doc.url == '/docs/' or doc.url contains '/docs/templates/' %}
         {% assign parent = "Forms & Templates" %}
         {% assign search_collection = "forms" %}
       {% elsif doc.url == '/opinions/' %}
@@ -75,15 +75,17 @@ permalink: /search.json
 {% endfor %}
 
 {% for document in site.data.documents %}
-  {% unless first_item %},{% endunless %}
-  {
-    "title": {{ document.title | jsonify }},
-    "url": {{ document.url | jsonify }},
-    "content": {{ document.description | append: ' ' | append: document.tags | jsonify }},
-    "breadcrumb_parent": "Forms & Templates",
-    "collection": "forms"
-  }
-  {% assign first_item = false %}
+  {% unless document.internal_path %}
+    {% unless first_item %},{% endunless %}
+    {
+      "title": {{ document.title | jsonify }},
+      "url": {{ document.url | jsonify }},
+      "content": {{ document.description | append: ' ' | append: document.type | append: ' ' | append: document.tags | jsonify }},
+      "breadcrumb_parent": "Forms & Templates",
+      "collection": "forms"
+    }
+    {% assign first_item = false %}
+  {% endunless %}
 {% endfor %}
 
 {% assign ruling_files = site.static_files | sort: 'path' %}
@@ -94,7 +96,7 @@ permalink: /search.json
     {
       "title": {{ ruling_title | jsonify }},
       "url": {{ file.path | relative_url | jsonify }},
-      "content": "Archived USAR court opinion, slip opinion, or order list.",
+      "content": "Archived USAR court opinion, slip opinion, per curiam decision, order list, or historical court document.",
       "breadcrumb_parent": "USAR Opinions & Orders",
       "collection": "opinions"
     }

@@ -3,7 +3,7 @@ layout: page
 title: USAR Opinions & Orders
 slug: opinions
 permalink: /opinions/
-description: Browse locally archived USAR court opinions, slip opinions, and order lists.
+description: Search and browse locally archived USAR opinions, slip opinions, per curiam decisions, and order lists.
 show_breadcrumbs: true
 breadcrumb_parent: Case Law
 breadcrumb_parent_url: /caselaw/
@@ -12,22 +12,67 @@ breadcrumb_parent_url: /caselaw/
 <header class="page-heading">
   <p class="eyebrow">Local court archive</p>
   <h1>USAR Opinions &amp; Orders</h1>
-  <p>Browse historical opinions, slip opinions, and order lists preserved with the Courts website. For external Supreme Court case-law research, use the separate Case Law search.</p>
+  <p>Search locally preserved USAR opinions, slip opinions, per curiam decisions, order lists, and other historical court materials. Metadata shown here is derived conservatively from the archived filename unless the document itself supplies more information.</p>
 </header>
 
 <nav class="page-actions" aria-label="Case law resources">
-  <a href="{{ '/caselaw/' | relative_url }}">Search Case Law</a>
+  <a href="{{ '/caselaw/' | relative_url }}">Search External Case Law</a>
+  <a href="{{ '/cases/' | relative_url }}">Search USAR Cases</a>
 </nav>
+
+<section class="archive-controls" aria-label="Filter opinions and orders">
+  <div class="form-field">
+    <label for="opinions-query">Search archive</label>
+    <input id="opinions-query" type="search" autocomplete="off" placeholder="Case name, citation, docket, or year">
+  </div>
+  <div class="form-field">
+    <label for="opinions-type">Document type</label>
+    <select id="opinions-type">
+      <option value="">All document types</option>
+    </select>
+  </div>
+  <div class="form-field">
+    <label for="opinions-year">Year</label>
+    <select id="opinions-year">
+      <option value="">All years</option>
+    </select>
+  </div>
+</section>
+
+<div class="archive-summary" aria-label="Archive summary">
+  <div class="archive-summary__item"><span id="opinions-total" class="archive-summary__value">—</span><span class="archive-summary__label">Documents</span></div>
+  <div class="archive-summary__item"><span id="opinions-opinion-count" class="archive-summary__value">—</span><span class="archive-summary__label">Opinions &amp; decisions</span></div>
+  <div class="archive-summary__item"><span id="opinions-order-count" class="archive-summary__value">—</span><span class="archive-summary__label">Order lists</span></div>
+</div>
+
+<p id="opinions-status" class="result-count" role="status" aria-live="polite">Loading archive…</p>
 
 <section aria-labelledby="opinions-heading">
   <h2 id="opinions-heading">Archived court documents</h2>
-  <ul class="opinions-list">
+  <div id="opinions-list" class="opinions-list">
     {% assign ruling_files = site.static_files | sort: 'path' %}
     {% for file in ruling_files %}
       {% if file.path contains '/rulings/' %}
         {% assign display_name = file.name | replace: '_', ' ' | replace: '.pdf', '' | replace: '.PDF', '' %}
-        <li><a href="{{ file.path | relative_url }}">{{ display_name }}</a></li>
+        <article class="opinion-record" data-opinion-name="{{ file.name | escape }}">
+          <div class="opinion-record__topline">
+            <span class="opinion-record__type" data-opinion-type>Archived court document</span>
+            <span class="opinion-record__year" data-opinion-year hidden></span>
+          </div>
+          <div>
+            <h2><a href="{{ file.path | relative_url }}" data-opinion-title>{{ display_name }}</a></h2>
+            <p class="opinion-record__meta" data-opinion-meta>Local archive · Original file preserved</p>
+          </div>
+          <a class="opinion-record__open" href="{{ file.path | relative_url }}">Open document</a>
+        </article>
       {% endif %}
     {% endfor %}
-  </ul>
+  </div>
+  <p id="opinions-empty" class="opinions-empty" hidden>No archived documents match those filters.</p>
 </section>
+
+<aside class="notice">
+  <strong>Archive note.</strong> Some older files have incomplete or inconsistent filenames. The archive does not infer an author, holding, disposition, or precedential status from a filename alone.
+</aside>
+
+<script src="{{ '/assets/opinions.js' | relative_url }}" defer></script>

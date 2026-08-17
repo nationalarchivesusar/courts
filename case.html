@@ -13,6 +13,7 @@ styles:
   - /assets/case-pages.css
   - /assets/phase-k-records.css
   - /assets/phase-m-court-records.css
+  - /assets/case-polish.css
 ---
 
 <div id="cases-experience"
@@ -27,6 +28,11 @@ styles:
     <p id="cases-status" class="cases-status" role="status" aria-live="polite">Loading public case file…</p>
   </div>
 
+  <nav id="case-section-nav" class="case-section-nav" aria-label="On this case" hidden>
+    <strong>On this case</strong>
+    <div id="case-section-nav-links" class="case-section-nav__links"></div>
+  </nav>
+
   <section id="case-detail" class="case-file" aria-busy="true">
     <p class="case-placeholder">Loading case information…</p>
   </section>
@@ -37,3 +43,4 @@ styles:
 <script src="{{ '/assets/cases.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/case-record-links.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/phase-m-case-records.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/case-file-navigation.js' | relative_url }}" defer></script>

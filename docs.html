@@ -3,7 +3,7 @@ layout: page
 title: Forms & Templates
 slug: documents
 permalink: /docs/
-description: Browse reusable court forms, filing templates, briefs, petitions, and appendices used in the USAR judiciary.
+description: Browse reusable court forms, filing templates, briefs, motions, notices, proposed orders, petitions, and appendices used in the USAR judiciary.
 show_breadcrumbs: true
 breadcrumb_parent: United States Courts
 breadcrumb_parent_url: /
@@ -12,10 +12,12 @@ breadcrumb_parent_url: /
 <header class="page-heading">
   <p class="eyebrow">Filing resources</p>
   <h1>Forms &amp; Templates</h1>
-  <p>Browse reusable templates for petitions, briefs, appendices, and other court filings. This library contains blank or reusable filing resources—not documents filed in individual cases.</p>
+  <p>Browse reusable filing resources for the District Court and Supreme Court. This library contains blank or reusable templates—not documents filed in individual cases.</p>
 </header>
 
-<section class="document-controls" aria-label="Filter court forms and templates">
+<p class="document-library-note"><strong>Choose the right starting point.</strong> Supreme Court entries link to established document templates. District Court starter forms are maintained locally so they can be copied, adapted, printed, or saved into your preferred editor.</p>
+
+<section class="document-controls document-controls--expanded" aria-label="Filter court forms and templates">
   <div class="form-field">
     <label for="court-filter">Court</label>
     <select id="court-filter">
@@ -24,14 +26,24 @@ breadcrumb_parent_url: /
       <option value="District Court">District Court</option>
     </select>
   </div>
+  <div class="form-field">
+    <label for="document-type-filter">Document type</label>
+    <select id="document-type-filter">
+      <option value="All">All types</option>
+    </select>
+  </div>
   <div class="form-field form-field--wide">
     <label for="document-search">Search templates</label>
-    <input type="search" id="document-search" placeholder="Petition, brief, appendix…">
+    <input type="search" id="document-search" placeholder="Motion, petition, notice, order, brief…">
   </div>
 </section>
 
-<p id="document-count" class="result-count" role="status"></p>
-<div id="document-grid" class="document-grid"></div>
+<p id="document-count" class="result-count" role="status" aria-live="polite"></p>
+<div id="document-grid" class="document-grid" data-site-base="{{ site.baseurl | escape }}"></div>
+
+<aside class="notice">
+  <strong>Not looking for a blank form?</strong> Documents already filed in public cases are available through <a href="{{ '/documents/search/' | relative_url }}">Filed Document Search</a>.
+</aside>
 
 <script id="document-data" type="application/json">{{ site.data.documents | jsonify }}</script>
 <script src="{{ '/assets/document-library.js' | relative_url }}" defer></script>

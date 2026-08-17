@@ -25,7 +25,30 @@
       <h1>{{ page.title }}</h1>
       {% if page.description %}<p>{{ page.description }}</p>{% endif %}
     </header>
-    {{ content }}
+
+    <nav class="rule-context-nav" aria-label="Related court rules">
+      <a href="{{ '/rules/' | relative_url }}">All Court Rules</a>
+      {% if section_url == '/conduct/' %}
+        <a href="{{ '/conduct/' | relative_url }}">All Codes of Conduct</a>
+        <a href="{{ '/frcp/' | relative_url }}">Rules of Procedure</a>
+      {% else %}
+        <a href="{{ '/conduct/' | relative_url }}">Codes of Conduct</a>
+      {% endif %}
+    </nav>
+
+    <section class="rule-set-directory" aria-label="{{ page.title }} contents">
+      <div class="rule-set-directory__intro">
+        <strong>Browse this collection</strong>
+        {% if page.code_key %}
+          {% assign collection_items = site.conduct | where: 'code_key', page.code_key %}
+          <span class="rule-set-directory__count">{{ collection_items | size }} provisions</span>
+        {% elsif page.slug %}
+          {% assign collection_items = site[page.slug] %}
+          {% if collection_items %}<span class="rule-set-directory__count">{{ collection_items | size }} rules</span>{% endif %}
+        {% endif %}
+      </div>
+      {{ content }}
+    </section>
   </main>
 
   {% include footer.html %}
