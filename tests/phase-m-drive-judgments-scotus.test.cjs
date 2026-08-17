@@ -17,16 +17,19 @@ test("case files load the Phase M enhancement after the stable base renderer", (
   assert.doesNotMatch(casesPage, /phase-m-case-records\.js/);
 });
 
-test("document previews preserve the Google allowlist and sandbox public HTML files", () => {
+test("document previews preserve the Google allowlist and route Drive HTML through the sandboxed JIS renderer", () => {
   assert.match(caseEnhancement, /url\.hostname !== "drive\.google\.com" && url\.hostname !== "docs\.google\.com"/);
   assert.match(caseEnhancement, /record\.externalProvider === "google_drive"/);
   assert.match(caseEnhancement, /mimeType === "text\/html"/);
   assert.match(caseEnhancement, /mimeType === "application\/xhtml\+xml"/);
   assert.match(caseEnhancement, /sourceFilename/);
   assert.match(caseEnhancement, /safeHtmlViewer/);
+  assert.match(caseEnhancement, /\/api\/v1\/documents\/\$\{encodeURIComponent\(documentId\)\}\/html-preview/);
+  assert.match(caseEnhancement, /const htmlViewerUrl = safeHtmlViewer\(record\);[\s\S]*const googleViewerUrl = htmlViewerUrl/);
   assert.match(caseEnhancement, /iframe\.setAttribute\("sandbox", ""\)/);
   assert.doesNotMatch(caseEnhancement, /allow-scripts|allow-forms|allow-popups|allow-same-origin|allow-top-navigation/);
   assert.match(caseEnhancement, /Sandboxed HTML preview/);
+  assert.match(caseEnhancement, /instead of the Drive source-code viewer/);
   assert.match(caseEnhancement, /Preview document/);
   assert.match(caseEnhancement, /Open source/);
   assert.match(caseEnhancement, /referrerPolicy = "no-referrer"/);
