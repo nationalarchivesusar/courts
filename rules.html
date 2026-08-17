@@ -12,36 +12,48 @@ breadcrumb_parent_url: /
 <header class="page-heading">
   <p class="eyebrow">Rules and judiciary standards</p>
   <h1>Court Rules</h1>
-  <p>Find procedural rules governing federal court practice and, separately, the codes of conduct governing judges and judiciary employees.</p>
+  <p>Find procedural rules governing federal court practice and, separately, the codes of conduct governing judges and judiciary employees. Open a collection to browse every rule or canon with stable deep links and citation tools.</p>
 </header>
+
+<nav class="rules-quick-links" aria-label="Court rules quick links">
+  <strong>Jump to:</strong>
+  <a href="#procedure-heading">Rules of Procedure</a>
+  <a href="#conduct-heading">Codes of Conduct</a>
+  <a href="{{ '/search.html' | relative_url }}">Search this site</a>
+</nav>
 
 <div class="rules-directory">
   <section class="rules-directory__section" aria-labelledby="procedure-heading">
     <header class="rules-directory__heading">
       <p class="eyebrow">Court practice</p>
       <h2 id="procedure-heading">Rules of Procedure</h2>
-      <p>Rules governing civil and criminal proceedings, evidence, and practice before the Supreme Court.</p>
+      <p>Use these collections for questions about how a case proceeds, how evidence is handled, and how filings are made. These rules govern court practice; they are distinct from judiciary ethics rules.</p>
     </header>
     <div class="rules-directory__grid">
       <a class="rules-directory__card" href="{{ '/frcp/' | relative_url }}">
         <strong>Federal Rules of Civil Procedure</strong>
         <span>Procedure in federal civil actions and proceedings.</span>
+        <span class="rules-directory__count">{{ site.frcp | size }} rules · Browse collection →</span>
       </a>
       <a class="rules-directory__card" href="{{ '/frcmp/' | relative_url }}">
         <strong>Federal Rules of Criminal Procedure</strong>
         <span>Procedure in federal criminal prosecutions and related proceedings.</span>
+        <span class="rules-directory__count">{{ site.frcmp | size }} rules · Browse collection →</span>
       </a>
       <a class="rules-directory__card" href="{{ '/fre/' | relative_url }}">
         <strong>Federal Rules of Evidence</strong>
         <span>Rules governing the admission and treatment of evidence.</span>
+        <span class="rules-directory__count">{{ site.fre | size }} rules · Browse collection →</span>
       </a>
       <a class="rules-directory__card" href="{{ '/supct/' | relative_url }}">
         <strong>Supreme Court Rules</strong>
         <span>Rules governing filings and practice before the Supreme Court.</span>
+        <span class="rules-directory__count">{{ site.supct | size }} rules · Browse collection →</span>
       </a>
       <a class="rules-directory__card" href="{{ '/frap/' | relative_url }}">
         <strong>Appellate Rules Reference</strong>
         <span>Retained Federal Rules of Appellate Procedure reference material.</span>
+        <span class="rules-directory__count">{{ site.frap | size }} rules · Browse reference →</span>
       </a>
     </div>
   </section>
@@ -50,25 +62,36 @@ breadcrumb_parent_url: /
     <header class="rules-directory__heading">
       <p class="eyebrow">Judicial ethics</p>
       <h2 id="conduct-heading">Codes of Conduct</h2>
-      <p>Ethics and professional-conduct standards are maintained as a distinct collection from the procedural rules.</p>
+      <p>Use these collections for ethics and professional-conduct standards. They are maintained separately from procedural rules so a visitor can immediately tell whether a provision governs a case or the conduct of judiciary personnel.</p>
     </header>
     <div class="rules-directory__grid">
       <a class="rules-directory__card" href="{{ '/conduct/' | relative_url }}">
         <strong>Codes of Conduct Overview</strong>
         <span>Browse all locally hosted judiciary conduct codes and their provenance.</span>
+        <span class="rules-directory__count">All conduct codes →</span>
       </a>
+      {% assign judge_conduct = site.conduct | where: 'code_key', 'judges' %}
       <a class="rules-directory__card" href="{{ '/conduct/judges/' | relative_url }}">
         <strong>United States Judges</strong>
         <span>Code of Conduct for United States Judges.</span>
+        <span class="rules-directory__count">{{ judge_conduct | size }} provisions · Browse code →</span>
       </a>
+      {% assign employee_conduct = site.conduct | where: 'code_key', 'judicial-employees' %}
       <a class="rules-directory__card" href="{{ '/conduct/judicial-employees/' | relative_url }}">
         <strong>Judicial Employees</strong>
         <span>Code of Conduct for Judicial Employees.</span>
+        <span class="rules-directory__count">{{ employee_conduct | size }} provisions · Browse code →</span>
       </a>
+      {% assign defender_conduct = site.conduct | where: 'code_key', 'federal-public-defenders' %}
       <a class="rules-directory__card" href="{{ '/conduct/federal-public-defenders/' | relative_url }}">
         <strong>Federal Public Defender Employees</strong>
         <span>Code of Conduct for Federal Public Defender Employees.</span>
+        <span class="rules-directory__count">{{ defender_conduct | size }} provisions · Browse code →</span>
       </a>
     </div>
   </section>
 </div>
+
+<aside class="notice">
+  <strong>Need a pinpoint link?</strong> Individual rule and conduct pages support stable subsection links, copyable citations, printing, and previous/next navigation within the same collection.
+</aside>
