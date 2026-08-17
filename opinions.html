@@ -1,0 +1,33 @@
+---
+layout: page
+title: USAR Opinions & Orders
+slug: opinions
+permalink: /opinions/
+description: Browse locally archived USAR court opinions, slip opinions, and order lists.
+show_breadcrumbs: true
+breadcrumb_parent: Case Law
+breadcrumb_parent_url: /caselaw/
+---
+
+<header class="page-heading">
+  <p class="eyebrow">Local court archive</p>
+  <h1>USAR Opinions &amp; Orders</h1>
+  <p>Browse historical opinions, slip opinions, and order lists preserved with the Courts website. For external Supreme Court case-law research, use the separate Case Law search.</p>
+</header>
+
+<nav class="page-actions" aria-label="Case law resources">
+  <a href="{{ '/caselaw/' | relative_url }}">Search Case Law</a>
+</nav>
+
+<section aria-labelledby="opinions-heading">
+  <h2 id="opinions-heading">Archived court documents</h2>
+  <ul class="opinions-list">
+    {% assign ruling_files = site.static_files | sort: 'path' %}
+    {% for file in ruling_files %}
+      {% if file.path contains '/rulings/' %}
+        {% assign display_name = file.name | replace: '_', ' ' | replace: '.pdf', '' | replace: '.PDF', '' %}
+        <li><a href="{{ file.path | relative_url }}">{{ display_name }}</a></li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</section>

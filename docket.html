@@ -1,8 +1,8 @@
 ---
 layout: page
-title: Docket
+title: Current Dockets
 slug: docket
-description: Current Supreme Court and District Court dockets.
+description: Current Supreme Court and District Court proceedings.
 permalink: /docket/
 show_breadcrumbs: true
 breadcrumb_parent: United States Courts
@@ -15,15 +15,14 @@ styles:
 
 <header class="page-heading docket-page-heading">
   <p class="eyebrow">Current proceedings</p>
-  <h1>Docket</h1>
+  <h1>Current Dockets</h1>
   <p>View current Supreme Court and District Court matters. District Court matters with a structured JIS record open as a public case file; the original source docket remains available from each listing.</p>
 </header>
 
-<div class="docket-page-actions" aria-label="Case resources">
-  <a href="{{ '/cases/' | relative_url }}">Search District Court cases</a>
-  <a href="{{ '/judges/' | relative_url }}">Browse District Judges</a>
-  <a href="{{ '/caselaw/' | relative_url }}">Research Supreme Court case law</a>
-</div>
+<nav class="page-actions" aria-label="Related case resources">
+  <a href="{{ '/cases/' | relative_url }}">Search Cases</a>
+  <a href="{{ '/documents/search/' | relative_url }}">Search Filed Documents</a>
+</nav>
 
 <section id="current-dockets" class="docket-page-current" aria-labelledby="current-dockets-heading"
   data-docket-supreme="{{ site.dockets.supreme_court_board }}"

@@ -11,8 +11,8 @@
 
       <div class="masthead__tools">
         <form class="site-search" action="{{ '/search.html' | relative_url }}" method="get" role="search">
-          <label class="visually-hidden" for="site-search-query">Search court rules and resources</label>
-          <input id="site-search-query" type="search" name="q" placeholder="Search the Courts" required>
+          <label class="visually-hidden" for="site-search-query">Search this Courts website</label>
+          <input id="site-search-query" type="search" name="q" placeholder="Search this site" required>
           <button type="submit">Search</button>
         </form>
 
@@ -28,22 +28,74 @@
   <nav class="primary-nav" aria-label="Primary navigation">
     <div class="primary-nav__inner">
       <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Home</a>
-      <a href="{{ '/docket/' | relative_url }}"{% if page.url == '/docket/' or page.url == '/cases/' or page.url == '/case/' %} aria-current="page"{% endif %}>Docket</a>
-      <a href="{{ '/judges/' | relative_url }}"{% if page.url == '/judges/' %} aria-current="page"{% endif %}>Judges</a>
-      <a href="{{ '/caselaw/' | relative_url }}"{% if page.url == '/caselaw/' or page.url == '/case-search.html' %} aria-current="page"{% endif %}>Case Law</a>
-      <a href="{{ '/records/' | relative_url }}"{% if page.url == '/records/' %} aria-current="page"{% endif %}>Records</a>
-      <details class="nav-menu"{% if page.collection == 'frap' or page.collection == 'frcp' or page.collection == 'frcmp' or page.collection == 'fre' or page.collection == 'supct' or page.collection == 'conduct' or page.url == '/frap/' or page.url == '/frcp/' or page.url == '/frcmp/' or page.url == '/fre/' or page.url == '/supct/' or page.url contains '/conduct/' %} data-current="true"{% endif %}>
-        <summary>Rules &amp; Conduct</summary>
+
+      <details class="nav-menu nav-menu--cases"{% if page.url == '/docket/' or page.url == '/cases/' or page.url == '/case/' or page.url == '/documents/search/' %} data-current="true"{% endif %}>
+        <summary>Cases</summary>
         <div class="nav-menu__panel">
-          <a href="{{ '/frcp/' | relative_url }}"{% if page.collection == 'frcp' or page.url == '/frcp/' %} aria-current="page"{% endif %}>Civil Procedure</a>
-          <a href="{{ '/frcmp/' | relative_url }}"{% if page.collection == 'frcmp' or page.url == '/frcmp/' %} aria-current="page"{% endif %}>Criminal Procedure</a>
-          <a href="{{ '/fre/' | relative_url }}"{% if page.collection == 'fre' or page.url == '/fre/' %} aria-current="page"{% endif %}>Rules of Evidence</a>
-          <a href="{{ '/supct/' | relative_url }}"{% if page.collection == 'supct' or page.url == '/supct/' %} aria-current="page"{% endif %}>Supreme Court Rules</a>
-          <a class="nav-menu__secondary" href="{{ '/conduct/' | relative_url }}"{% if page.collection == 'conduct' or page.url contains '/conduct/' %} aria-current="page"{% endif %}>Codes of Conduct</a>
-          <a class="nav-menu__secondary" href="{{ '/frap/' | relative_url }}"{% if page.collection == 'frap' or page.url == '/frap/' %} aria-current="page"{% endif %}>Appellate Rules Reference</a>
+          <div class="nav-menu__layout">
+            <div class="nav-menu__intro">
+              <a class="nav-menu__overview" href="{{ '/cases/' | relative_url }}">
+                <span class="nav-menu__overview-title">Cases &amp; Dockets</span>
+                <span>Search public case records, follow current proceedings, and locate filed court documents.</span>
+                <span class="nav-menu__arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+            <div class="nav-menu__columns nav-menu__columns--three">
+              <a class="nav-menu__feature" href="{{ '/cases/' | relative_url }}"{% if page.url == '/cases/' or page.url == '/case/' %} aria-current="page"{% endif %}>
+                <strong>Search Cases</strong>
+                <span>Find structured public cases by docket, party, offense, citation, or status.</span>
+              </a>
+              <a class="nav-menu__feature" href="{{ '/docket/' | relative_url }}"{% if page.url == '/docket/' %} aria-current="page"{% endif %}>
+                <strong>Current Dockets</strong>
+                <span>See current Supreme Court and District Court proceedings.</span>
+              </a>
+              <a class="nav-menu__feature" href="{{ '/documents/search/' | relative_url }}"{% if page.url == '/documents/search/' %} aria-current="page"{% endif %}>
+                <strong>Filed Document Search</strong>
+                <span>Search public filings, titles, descriptions, and available extracted text.</span>
+              </a>
+            </div>
+          </div>
         </div>
       </details>
-      <a href="{{ '/docs/' | relative_url }}"{% if page.url == '/docs/' or page.url == '/documents/search/' %} aria-current="page"{% endif %}>Documents</a>
+
+      <a href="{{ '/judges/' | relative_url }}"{% if page.url == '/judges/' %} aria-current="page"{% endif %}>Judges</a>
+
+      <details class="nav-menu nav-menu--rules"{% if page.url == '/rules/' or page.collection == 'frap' or page.collection == 'frcp' or page.collection == 'frcmp' or page.collection == 'fre' or page.collection == 'supct' or page.collection == 'conduct' or page.url == '/frap/' or page.url == '/frcp/' or page.url == '/frcmp/' or page.url == '/fre/' or page.url == '/supct/' or page.url contains '/conduct/' %} data-current="true"{% endif %}>
+        <summary>Rules</summary>
+        <div class="nav-menu__panel">
+          <div class="nav-menu__layout">
+            <div class="nav-menu__intro">
+              <a class="nav-menu__overview" href="{{ '/rules/' | relative_url }}"{% if page.url == '/rules/' %} aria-current="page"{% endif %}>
+                <span class="nav-menu__overview-title">Court Rules</span>
+                <span>Browse procedural rules and judiciary codes of conduct from one organized directory.</span>
+                <span class="nav-menu__arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+            <div class="nav-menu__columns nav-menu__columns--two">
+              <section class="nav-menu__group" aria-labelledby="procedure-menu-heading">
+                <h2 id="procedure-menu-heading">Rules of Procedure</h2>
+                <a href="{{ '/frcp/' | relative_url }}"{% if page.collection == 'frcp' or page.url == '/frcp/' %} aria-current="page"{% endif %}><strong>Civil Procedure</strong><span>Federal Rules of Civil Procedure</span></a>
+                <a href="{{ '/frcmp/' | relative_url }}"{% if page.collection == 'frcmp' or page.url == '/frcmp/' %} aria-current="page"{% endif %}><strong>Criminal Procedure</strong><span>Federal Rules of Criminal Procedure</span></a>
+                <a href="{{ '/fre/' | relative_url }}"{% if page.collection == 'fre' or page.url == '/fre/' %} aria-current="page"{% endif %}><strong>Rules of Evidence</strong><span>Federal Rules of Evidence</span></a>
+                <a href="{{ '/supct/' | relative_url }}"{% if page.collection == 'supct' or page.url == '/supct/' %} aria-current="page"{% endif %}><strong>Supreme Court Rules</strong><span>Rules governing practice before the Supreme Court</span></a>
+                <a href="{{ '/frap/' | relative_url }}"{% if page.collection == 'frap' or page.url == '/frap/' %} aria-current="page"{% endif %}><strong>Appellate Rules Reference</strong><span>Retained Federal Rules of Appellate Procedure reference</span></a>
+              </section>
+
+              <section class="nav-menu__group" aria-labelledby="conduct-menu-heading">
+                <h2 id="conduct-menu-heading">Codes of Conduct</h2>
+                <a href="{{ '/conduct/' | relative_url }}"{% if page.url == '/conduct/' %} aria-current="page"{% endif %}><strong>Conduct Overview</strong><span>Browse all judiciary ethics codes</span></a>
+                <a href="{{ '/conduct/judges/' | relative_url }}"{% if page.url contains '/conduct/judges/' %} aria-current="page"{% endif %}><strong>United States Judges</strong><span>Code of Conduct for United States Judges</span></a>
+                <a href="{{ '/conduct/judicial-employees/' | relative_url }}"{% if page.url contains '/conduct/judicial-employees/' %} aria-current="page"{% endif %}><strong>Judicial Employees</strong><span>Code of Conduct for Judicial Employees</span></a>
+                <a href="{{ '/conduct/federal-public-defenders/' | relative_url }}"{% if page.url contains '/conduct/federal-public-defenders/' %} aria-current="page"{% endif %}><strong>Federal Public Defenders</strong><span>Code of Conduct for Federal Public Defender Employees</span></a>
+              </section>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <a href="{{ '/docs/' | relative_url }}"{% if page.url == '/docs/' %} aria-current="page"{% endif %}>Forms &amp; Templates</a>
+      <a href="{{ '/caselaw/' | relative_url }}"{% if page.url == '/caselaw/' or page.url == '/opinions/' or page.url == '/case-search.html' %} aria-current="page"{% endif %}>Case Law</a>
+      <a href="{{ '/records/' | relative_url }}"{% if page.url == '/records/' %} aria-current="page"{% endif %}>Records</a>
       <a class="primary-nav__related" href="{{ site.related_sites.us_code }}" aria-label="U.S. Code, related site">U.S. Code <span aria-hidden="true">↗</span></a>
     </div>
   </nav>

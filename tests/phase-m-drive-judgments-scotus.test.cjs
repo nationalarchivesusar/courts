@@ -14,7 +14,6 @@ const shellFixes = fs.readFileSync("assets/shell-fixes.css", "utf8");
 test("case files load the Phase M enhancement after the stable base renderer", () => {
   assert.match(casePage, /- \/assets\/phase-m-court-records\.css/);
   assert.match(casePage, /assets\/cases\.js[\s\S]*assets\/phase-m-case-records\.js/);
-  assert.match(casePage, /\/documents\/search\//);
   assert.doesNotMatch(casesPage, /phase-m-case-records\.js/);
 });
 
@@ -34,14 +33,19 @@ test("case enhancement obtains judgments and verified related proceedings from d
   assert.match(caseEnhancement, /Related proceedings/);
 });
 
-test("document search is a separate public filing search rather than replacing the template library", () => {
+test("document search stays separate from the reusable template library", () => {
   assert.match(searchPage, /permalink: \/documents\/search\//);
+  assert.match(searchPage, /title: Filed Document Search/);
+  assert.match(searchPage, /breadcrumb_parent: Case Search/);
+  assert.match(searchPage, /breadcrumb_parent_url: \/cases\//);
   assert.match(searchPage, /Document text is not a disposition/);
   assert.match(searchPage, /assets\/document-search\.js/);
   assert.match(documentSearch, /\/api\/v1\/documents\/search/);
   assert.match(documentSearch, /casePath/);
-  assert.match(docsPage, /Public Court Document Search/);
+  assert.match(docsPage, /permalink: \/docs\//);
+  assert.match(docsPage, /Forms & Templates/);
   assert.match(docsPage, /Search templates/);
+  assert.doesNotMatch(docsPage, /Public Court Document Search/);
 });
 
 test("document search receives the same stable content shell spacing as other public data pages", () => {
@@ -49,8 +53,10 @@ test("document search receives the same stable content shell spacing as other pu
   assert.match(shellFixes, /\.page-document-search \.page-heading/);
 });
 
-test("navigation remains compact while Documents owns the document-search route", () => {
+test("Cases owns filed-document search while Forms and Templates remains reusable-only", () => {
   const header = fs.readFileSync("_includes/header.html", "utf8");
-  assert.match(header, /page\.url == '\/docs\/' or page\.url == '\/documents\/search\/'/);
-  assert.doesNotMatch(header, />Document Search<\/a>\s*<a class="primary-nav/);
+  assert.match(header, /<summary>Cases<\/summary>/);
+  assert.match(header, /href="\{\{ '\/documents\/search\/' \| relative_url \}\}"[\s\S]*Filed Document Search/);
+  assert.match(header, /href="\{\{ '\/docs\/' \| relative_url \}\}"[^>]*>Forms &amp; Templates<\/a>/);
+  assert.doesNotMatch(header, /page\.url == '\/docs\/' or page\.url == '\/documents\/search\/'/);
 });

@@ -17,6 +17,7 @@ permalink: /search.json
   {% endfor %}
 {% endfor %}
 {% assign unique_docs = combined_docs | uniq %}
+{% assign first_item = true %}
 {% for doc in unique_docs %}
   {% assign parts = doc.url | downcase | split: '/' %}
   {% assign section = "" %}
@@ -26,6 +27,7 @@ permalink: /search.json
     {% endif %}
   {% endfor %}
 
+  {% assign search_collection = section %}
   {% case section %}
     {% when "supct" %}
       {% assign parent = "Supreme Court Rules" %}
@@ -41,14 +43,62 @@ permalink: /search.json
       {% assign parent = doc.code_title | default: "Codes of Conduct" %}
     {% else %}
       {% assign parent = "Other" %}
+      {% assign search_collection = "" %}
+      {% if doc.url == '/docs/' %}
+        {% assign parent = "Forms & Templates" %}
+        {% assign search_collection = "forms" %}
+      {% elsif doc.url == '/opinions/' %}
+        {% assign parent = "USAR Opinions & Orders" %}
+        {% assign search_collection = "opinions" %}
+      {% elsif doc.url == '/caselaw/' %}
+        {% assign parent = "Case Law" %}
+      {% elsif doc.url == '/docket/' or doc.url == '/cases/' or doc.url == '/case/' or doc.url == '/documents/search/' %}
+        {% assign parent = "Cases & Dockets" %}
+      {% elsif doc.url == '/judges/' %}
+        {% assign parent = "Judges" %}
+      {% elsif doc.url == '/records/' %}
+        {% assign parent = "Records" %}
+      {% elsif doc.url == '/rules/' %}
+        {% assign parent = "Court Rules" %}
+      {% endif %}
   {% endcase %}
 
+  {% unless first_item %},{% endunless %}
   {
     "title": {{ doc.title | jsonify }},
     "url": "{{ site.baseurl }}{{ doc.url }}",
     "content": {{ doc.content | strip_html | normalize_whitespace | jsonify }},
     "breadcrumb_parent": {{ parent | jsonify }},
-    "collection": {{ section | jsonify }}
-  }{% unless forloop.last %},{% endunless %}
+    "collection": {{ search_collection | jsonify }}
+  }
+  {% assign first_item = false %}
+{% endfor %}
+
+{% for document in site.data.documents %}
+  {% unless first_item %},{% endunless %}
+  {
+    "title": {{ document.title | jsonify }},
+    "url": {{ document.url | jsonify }},
+    "content": {{ document.description | append: ' ' | append: document.tags | jsonify }},
+    "breadcrumb_parent": "Forms & Templates",
+    "collection": "forms"
+  }
+  {% assign first_item = false %}
+{% endfor %}
+
+{% assign ruling_files = site.static_files | sort: 'path' %}
+{% for file in ruling_files %}
+  {% if file.path contains '/rulings/' %}
+    {% assign ruling_title = file.name | replace: '_', ' ' | replace: '.pdf', '' | replace: '.PDF', '' %}
+    {% unless first_item %},{% endunless %}
+    {
+      "title": {{ ruling_title | jsonify }},
+      "url": {{ file.path | relative_url | jsonify }},
+      "content": "Archived USAR court opinion, slip opinion, or order list.",
+      "breadcrumb_parent": "USAR Opinions & Orders",
+      "collection": "opinions"
+    }
+    {% assign first_item = false %}
+  {% endif %}
 {% endfor %}
 ]

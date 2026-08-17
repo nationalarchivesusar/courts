@@ -32,6 +32,7 @@
   <nav class="breadcrumbs" aria-label="Breadcrumb">
     <ol>
       <li><a href="{{ '/' | relative_url }}">United States Courts</a></li>
+      <li><a href="{{ '/rules/' | relative_url }}">Court Rules</a></li>
       {% if is_conduct %}<li><a href="{{ '/conduct/' | relative_url }}">Codes of Conduct</a></li>{% endif %}
       <li><a href="{{ rule_set_url | relative_url }}">{{ rule_set_title }}</a></li>
       <li aria-current="page">{{ page.title }}</li>

@@ -3,7 +3,7 @@ layout: page
 title: Help
 slug: help
 permalink: /help/
-description: Help using United States Courts rules, case search, dockets, and document resources.
+description: Help finding cases, dockets, rules, filings, forms, judges, opinions, and public records on the United States Courts website.
 show_breadcrumbs: true
 breadcrumb_parent: United States Courts
 breadcrumb_parent_url: /
@@ -12,18 +12,39 @@ breadcrumb_parent_url: /
 <article class="prose-page">
   <header class="page-heading">
     <p class="eyebrow">Visitor assistance</p>
-    <h1>Help using this site</h1>
+    <h1>Help Using This Site</h1>
+    <p>Use the dedicated court service for the kind of information you are trying to find.</p>
   </header>
+
   <dl class="faq-list">
+    <dt>How do I find a court case?</dt>
+    <dd>Use <a href="{{ '/cases/' | relative_url }}">Case Search</a> to search structured public JIS cases by docket number, party, offense, citation, filing text, case type, or status.</dd>
+
+    <dt>How do I see what is currently before the courts?</dt>
+    <dd>Use <a href="{{ '/docket/' | relative_url }}">Current Dockets</a> for the live Supreme Court and District Court proceeding lists.</dd>
+
+    <dt>How do I find a motion, order, judgment, or other filed document?</dt>
+    <dd>Use <a href="{{ '/documents/search/' | relative_url }}">Filed Document Search</a>. It searches available public filing metadata and extracted text and is separate from the reusable template library.</dd>
+
+    <dt>Where are blank filing forms and templates?</dt>
+    <dd>Visit <a href="{{ '/docs/' | relative_url }}">Forms &amp; Templates</a> for reusable petitions, briefs, appendices, and other filing resources.</dd>
+
     <dt>How do I find a court rule?</dt>
-    <dd>Open <strong>Rules of Procedure</strong> in the primary navigation, choose a rule set, or use the site search to search across all five collections.</dd>
-    <dt>What does Case Search include?</dt>
-    <dd>The current tool searches Supreme Court of the United States case law in CourtListener. It does not yet search every USAR court or public record.</dd>
-    <dt>Where are filing templates?</dt>
-    <dd>Visit the <a href="{{ '/docs/' | relative_url }}">Document Library</a> to filter and search the existing forms and templates.</dd>
+    <dd>Open <a href="{{ '/rules/' | relative_url }}">Court Rules</a>. Rules of Procedure and Codes of Conduct are organized as distinct sections, and the Rules menu in the primary navigation provides direct shortcuts to each ruleset or conduct code.</dd>
+
+    <dt>Where can I research case law?</dt>
+    <dd><a href="{{ '/caselaw/' | relative_url }}">Case Law</a> searches the CourtListener Supreme Court index. Locally preserved USAR decisions and order lists are available in <a href="{{ '/opinions/' | relative_url }}">USAR Opinions &amp; Orders</a>.</dd>
+
+    <dt>Where can I find judges or a person's public record?</dt>
+    <dd>Use <a href="{{ '/judges/' | relative_url }}">Judges</a> for the active District Court bench. Use <a href="{{ '/records/' | relative_url }}">Arrest &amp; Conviction Records</a> for public JIS person-record searches.</dd>
+
+    <dt>What does the search box at the top of the site search?</dt>
+    <dd>The site search finds Courts website pages, hosted rules and conduct provisions, reusable form entries, and locally archived opinion filenames. It does not search live JIS case, filed-document, or person records; use the dedicated tools above for those records.</dd>
+
     <dt>Who maintains this website?</dt>
     <dd>The <a href="{{ site.nara.url }}">National Archives and Records Administration</a> maintains the website for the United States Courts.</dd>
   </dl>
-  <h2>Report a site problem</h2>
+
+  <h2>Report a Site Problem</h2>
   <p>Contact the National Archives through the linked USAR community channel in the footer. Include the page address and a short description of the problem.</p>
 </article>
