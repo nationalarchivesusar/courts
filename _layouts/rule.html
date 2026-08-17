@@ -41,11 +41,17 @@
 
   <main id="main-content" class="content-shell rule-shell" data-rule-set="{{ page.collection }}" tabindex="-1">
     <article class="legal-document"{% if page.citation %} data-citation="{{ page.citation | escape }}"{% endif %}>
+      <nav class="legal-document__context" aria-label="Rule collection navigation">
+        <a href="{{ rule_set_url | relative_url }}">← {{ rule_set_title }}</a>
+        <a href="{{ '/rules/' | relative_url }}">All Court Rules</a>
+        {% if is_conduct %}<a href="{{ '/conduct/' | relative_url }}">All Codes of Conduct</a>{% endif %}
+      </nav>
+
       <header class="legal-document__heading">
         <p class="eyebrow">{{ rule_set_title }}</p>
         <h1>{{ page.title }}</h1>
         {% if page.source_title %}
-        <p><strong>Official source:</strong> <a href="{{ page.source_url }}">{{ page.source_title }}</a>{% if page.revision %} · {{ page.revision }}{% endif %}</p>
+        <p class="rule-source-strip"><strong>Official source:</strong> <a href="{{ page.source_url }}">{{ page.source_title }}</a>{% if page.revision %} · {{ page.revision }}{% endif %}</p>
         {% endif %}
         <div class="rule-actions" aria-label="{% if is_conduct %}Code{% else %}Rule{% endif %} tools">
           <button type="button" data-copy-rule-link>{{ link_action }}</button>
