@@ -44,7 +44,7 @@ permalink: /search.json
     {% else %}
       {% assign parent = "Other" %}
       {% assign search_collection = "" %}
-      {% if doc.url == '/docs/' %}
+      {% if doc.url == '/docs/' or doc.url contains '/docs/templates/' %}
         {% assign parent = "Forms & Templates" %}
         {% assign search_collection = "forms" %}
       {% elsif doc.url == '/opinions/' %}
@@ -78,8 +78,12 @@ permalink: /search.json
   {% unless first_item %},{% endunless %}
   {
     "title": {{ document.title | jsonify }},
+    {% if document.internal_path %}
+    "url": "{{ site.baseurl }}{{ document.internal_path }}",
+    {% else %}
     "url": {{ document.url | jsonify }},
-    "content": {{ document.description | append: ' ' | append: document.tags | jsonify }},
+    {% endif %}
+    "content": {{ document.description | append: ' ' | append: document.type | append: ' ' | append: document.tags | jsonify }},
     "breadcrumb_parent": "Forms & Templates",
     "collection": "forms"
   }
@@ -94,7 +98,7 @@ permalink: /search.json
     {
       "title": {{ ruling_title | jsonify }},
       "url": {{ file.path | relative_url | jsonify }},
-      "content": "Archived USAR court opinion, slip opinion, or order list.",
+      "content": "Archived USAR court opinion, slip opinion, per curiam decision, order list, or historical court document.",
       "breadcrumb_parent": "USAR Opinions & Orders",
       "collection": "opinions"
     }
