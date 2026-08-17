@@ -75,19 +75,17 @@ permalink: /search.json
 {% endfor %}
 
 {% for document in site.data.documents %}
-  {% unless first_item %},{% endunless %}
-  {
-    "title": {{ document.title | jsonify }},
-    {% if document.internal_path %}
-    "url": "{{ site.baseurl }}{{ document.internal_path }}",
-    {% else %}
-    "url": {{ document.url | jsonify }},
-    {% endif %}
-    "content": {{ document.description | append: ' ' | append: document.type | append: ' ' | append: document.tags | jsonify }},
-    "breadcrumb_parent": "Forms & Templates",
-    "collection": "forms"
-  }
-  {% assign first_item = false %}
+  {% unless document.internal_path %}
+    {% unless first_item %},{% endunless %}
+    {
+      "title": {{ document.title | jsonify }},
+      "url": {{ document.url | jsonify }},
+      "content": {{ document.description | append: ' ' | append: document.type | append: ' ' | append: document.tags | jsonify }},
+      "breadcrumb_parent": "Forms & Templates",
+      "collection": "forms"
+    }
+    {% assign first_item = false %}
+  {% endunless %}
 {% endfor %}
 
 {% assign ruling_files = site.static_files | sort: 'path' %}
