@@ -2,7 +2,7 @@
 layout: page
 title: Judges
 slug: judges
-description: Active judges of the United States District Court and their current public dockets.
+description: Search active judges of the United States District Court and browse their current public dockets.
 permalink: /judges/
 show_breadcrumbs: true
 breadcrumb_parent: United States Courts
@@ -16,8 +16,28 @@ styles:
 <header class="page-heading judges-heading">
   <p class="eyebrow">United States District Court</p>
   <h1>Judges</h1>
-  <p>View the active District Court bench and current public matters assigned to each judge. The directory is generated from Judicial Information System court-assignment records rather than maintained as a separate roster.</p>
+  <p>Search the active District Court bench and expand each judge to browse current public matters. The directory is generated from Judicial Information System court-assignment records rather than maintained as a separate roster.</p>
 </header>
+
+<div class="judge-controls" aria-label="Judge directory controls">
+  <div class="form-field">
+    <label for="judge-search">Judge, docket, or case</label>
+    <input id="judge-search" type="search" autocomplete="off" placeholder="Judge name, CR- docket, or caption">
+  </div>
+  <div class="form-field">
+    <label for="judge-case-status">Matter status</label>
+    <select id="judge-case-status">
+      <option value="">All current matters</option>
+      <option value="filed">Filed</option>
+      <option value="pending">Pending</option>
+      <option value="stayed">Stayed</option>
+    </select>
+  </div>
+  <div class="judge-controls__buttons" aria-label="Docket expansion controls">
+    <button id="judges-expand-all" type="button">Expand all</button>
+    <button id="judges-collapse-all" type="button">Collapse all</button>
+  </div>
+</div>
 
 <section
   id="judges-experience"
