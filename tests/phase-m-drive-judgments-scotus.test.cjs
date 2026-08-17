@@ -9,6 +9,7 @@ const searchPage = fs.readFileSync("document-search.html", "utf8");
 const caseEnhancement = fs.readFileSync("assets/phase-m-case-records.js", "utf8");
 const documentSearch = fs.readFileSync("assets/document-search.js", "utf8");
 const css = fs.readFileSync("assets/phase-m-court-records.css", "utf8");
+const shellFixes = fs.readFileSync("assets/shell-fixes.css", "utf8");
 
 test("case files load the Phase M enhancement after the stable base renderer", () => {
   assert.match(casePage, /- \/assets\/phase-m-court-records\.css/);
@@ -41,6 +42,11 @@ test("document search is a separate public filing search rather than replacing t
   assert.match(documentSearch, /casePath/);
   assert.match(docsPage, /Public Court Document Search/);
   assert.match(docsPage, /Search templates/);
+});
+
+test("document search receives the same stable content shell spacing as other public data pages", () => {
+  assert.match(shellFixes, /\.page-document-search \.content-shell/);
+  assert.match(shellFixes, /\.page-document-search \.page-heading/);
 });
 
 test("navigation remains compact while Documents owns the document-search route", () => {
