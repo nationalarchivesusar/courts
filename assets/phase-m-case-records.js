@@ -56,12 +56,20 @@
     }
   }
 
+  function normalizedMimeType(record) {
+    return clean(record?.mimeType).split(";", 1)[0].toLowerCase();
+  }
+
+  function hasExtension(value, pattern) {
+    return pattern.test(clean(value).toLowerCase());
+  }
+
   function isHtmlDocument(record) {
-    const mimeType = clean(record?.mimeType).split(";", 1)[0].toLowerCase();
+    const mimeType = normalizedMimeType(record);
     if (mimeType === "text/html" || mimeType === "application/xhtml+xml") return true;
 
-    const sourceFilename = clean(record?.sourceFilename).toLowerCase();
-    if (/\.(?:html?|xhtml)$/.test(sourceFilename)) return true;
+    if (hasExtension(record?.sourceFilename, /\.(?:html?|xhtml)$/)) return true;
+    if (hasExtension(record?.title, /\.(?:html?|xhtml)$/)) return true;
 
     return [record?.viewerUrl, record?.sourceUrl].some((value) => {
       const safe = safeHttps(value);
@@ -74,22 +82,51 @@
     });
   }
 
-  function safeHtmlViewer(record) {
-    if (!isHtmlDocument(record)) return "";
-
-    const documentId = clean(record?.documentId);
-    const safeApiBase = safeHttps(apiBase);
-    if (record?.externalProvider === "google_drive" && documentId && safeApiBase) {
-      try {
-        return new URL(
-          `/api/v1/documents/${encodeURIComponent(documentId)}/html-preview`,
-          safeApiBase,
-        ).href;
-      } catch {
-        return "";
-      }
+  function isKnownNonHtmlDocument(record) {
+    const mimeType = normalizedMimeType(record);
+    const genericMimeTypes = new Set(["", "application/octet-stream", "binary/octet-stream"]);
+    if (!genericMimeTypes.has(mimeType) && mimeType !== "text/html" && mimeType !== "application/xhtml+xml") {
+      return true;
     }
 
+    const nonHtmlExtension = /\.(?:pdf|docx?|rtf|txt|csv|xlsx?|pptx?|png|jpe?g|gif|webp|svg|zip|7z|rar)$/;
+    if (hasExtension(record?.sourceFilename, nonHtmlExtension)) return true;
+    if (hasExtension(record?.title, nonHtmlExtension)) return true;
+
+    return [record?.viewerUrl, record?.sourceUrl].some((value) => {
+      const safe = safeHttps(value);
+      if (!safe) return false;
+      try {
+        return nonHtmlExtension.test(new URL(safe).pathname.toLowerCase());
+      } catch {
+        return false;
+      }
+    });
+  }
+
+  function jisHtmlPreviewUrl(record) {
+    const documentId = clean(record?.documentId);
+    const safeApiBase = safeHttps(apiBase);
+    if (!documentId || !safeApiBase) return "";
+    try {
+      return new URL(
+        `/api/v1/documents/${encodeURIComponent(documentId)}/html-preview`,
+        safeApiBase,
+      ).href;
+    } catch {
+      return "";
+    }
+  }
+
+  function safeHtmlViewer(record) {
+    if (record?.externalProvider === "google_drive") {
+      if (!isKnownNonHtmlDocument(record) || isHtmlDocument(record)) {
+        return jisHtmlPreviewUrl(record);
+      }
+      return "";
+    }
+
+    if (!isHtmlDocument(record)) return "";
     for (const candidate of [record?.sourceUrl, record?.viewerUrl]) {
       const safe = safeHttps(candidate);
       if (safe) return safe;
