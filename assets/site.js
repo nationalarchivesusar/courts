@@ -42,26 +42,39 @@
   }
   applyTheme();
 
-  const navMenu = document.querySelector(".nav-menu");
-  if (navMenu) {
-    const summary = navMenu.querySelector("summary");
+  const navMenus = Array.from(document.querySelectorAll(".nav-menu"));
+  navMenus.forEach((navMenu) => {
+    const summary = navMenu.querySelector(":scope > summary");
     const syncMenuState = () => summary?.setAttribute("aria-expanded", String(navMenu.open));
+
     summary?.addEventListener("keydown", (event) => {
       if (event.key !== "Enter" && event.key !== " ") return;
       event.preventDefault();
       navMenu.open = !navMenu.open;
-      syncMenuState();
     });
-    navMenu.addEventListener("toggle", syncMenuState);
+
+    navMenu.addEventListener("toggle", () => {
+      syncMenuState();
+      if (!navMenu.open) return;
+      navMenus.forEach((otherMenu) => {
+        if (otherMenu !== navMenu) otherMenu.open = false;
+      });
+    });
     syncMenuState();
-    document.addEventListener("click", (event) => {
+  });
+
+  document.addEventListener("click", (event) => {
+    navMenus.forEach((navMenu) => {
       if (navMenu.open && !navMenu.contains(event.target)) navMenu.open = false;
     });
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && navMenu.open) {
-        navMenu.open = false;
-        summary?.focus();
-      }
-    });
-  }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const openMenu = navMenus.find((navMenu) => navMenu.open);
+    if (!openMenu) return;
+    const summary = openMenu.querySelector(":scope > summary");
+    openMenu.open = false;
+    summary?.focus();
+  });
 })();

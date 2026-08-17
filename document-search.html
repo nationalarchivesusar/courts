@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Court Document Search
-title_short: Document Search
+title: Filed Document Search
+title_short: Filed Documents
 slug: document-search
 description: Search public court filing metadata and available extracted text.
 permalink: /documents/search/
@@ -22,16 +22,13 @@ styles:
 
   <header class="page-heading cases-page-heading">
     <p class="eyebrow">Public access to court electronic records</p>
-    <h1>Court Document Search</h1>
+    <h1>Filed Document Search</h1>
     <p>Search public filing titles, descriptions, and extracted text where available. Court files remain hosted by their authoritative source provider, including Google Drive.</p>
   </header>
 
-  <nav class="case-subnav" aria-label="Case information">
-    <a href="{{ '/docket/' | relative_url }}">Current Docket</a>
-    <a href="{{ '/cases/' | relative_url }}">Case Search</a>
-    <a href="{{ '/documents/search/' | relative_url }}" aria-current="page">Document Search</a>
-    <a href="{{ '/judges/' | relative_url }}">District Judges</a>
-    <a href="{{ '/caselaw/' | relative_url }}">Case Law Research</a>
+  <nav class="page-actions" aria-label="Related case resources">
+    <a href="{{ '/cases/' | relative_url }}">Search Cases</a>
+    <a href="{{ '/docket/' | relative_url }}">Current Dockets</a>
   </nav>
 
   <aside class="cases-legal-notice">

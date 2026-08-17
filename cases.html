@@ -6,8 +6,8 @@ slug: cases
 description: Search public District Court and structured Supreme Court case records by docket, party, citation, offense, or indexed public filing text.
 permalink: /cases/
 show_breadcrumbs: true
-breadcrumb_parent: Docket
-breadcrumb_parent_url: /docket/
+breadcrumb_parent: United States Courts
+breadcrumb_parent_url: /
 styles:
   - /assets/data-pages.css
   - /assets/cases.css
@@ -24,16 +24,13 @@ styles:
 
   <header class="page-heading cases-page-heading">
     <p class="eyebrow">Public access to court electronic records</p>
-    <h1>Court Case Search</h1>
+    <h1>Case Search</h1>
     <p>Search structured public case records by docket number, caption, party, statute citation, offense, filing title, or available indexed filing text. Structured Supreme Court matters are included when entered into JIS.</p>
   </header>
 
-  <nav class="case-subnav" aria-label="Case information">
-    <a href="{{ '/docket/' | relative_url }}">Current Docket</a>
-    <a href="{{ '/cases/' | relative_url }}" aria-current="page">Case Search</a>
-    <a href="{{ '/documents/search/' | relative_url }}">Document Search</a>
-    <a href="{{ '/judges/' | relative_url }}">District Judges</a>
-    <a href="{{ '/caselaw/' | relative_url }}">Case Law Research</a>
+  <nav class="page-actions" aria-label="Related case resources">
+    <a href="{{ '/docket/' | relative_url }}">Current Dockets</a>
+    <a href="{{ '/documents/search/' | relative_url }}">Search Filed Documents</a>
   </nav>
 
   <aside class="cases-legal-notice">

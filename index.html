@@ -2,7 +2,7 @@
 layout: page
 title: Home
 slug: home
-description: Public access to federal court cases, dockets, rules, opinions, and judicial records.
+description: Public access to federal court cases, dockets, rules, opinions, forms, and judicial records.
 show_breadcrumbs: false
 ---
 
@@ -11,7 +11,7 @@ show_breadcrumbs: false
 <section class="institutional-intro" aria-labelledby="intro-heading">
   <p class="eyebrow">Federal Judiciary</p>
   <h1 id="intro-heading">United States Courts</h1>
-  <p class="intro-lede">Public access to federal court cases, dockets, rules, opinions, and judicial records.</p>
+  <p class="intro-lede">Public access to federal court cases, current proceedings, court rules, opinions, forms, and judicial records.</p>
 </section>
 
 <section id="current-dockets" class="section-block docket-section" aria-labelledby="dockets-heading"
@@ -19,9 +19,12 @@ show_breadcrumbs: false
   data-docket-district="{{ site.dockets.district_court_board }}"
   data-fallback-url="{{ '/assets/docket-fallback.json' | relative_url }}"
   data-case-path="{{ '/case/' | relative_url }}">
-  <header class="section-heading">
-    <p class="eyebrow">Current proceedings</p>
-    <h2 id="dockets-heading">Current Dockets</h2>
+  <header class="section-heading section-heading--with-action">
+    <div>
+      <p class="eyebrow">Current proceedings</p>
+      <h2 id="dockets-heading">Current Dockets</h2>
+    </div>
+    <a class="section-heading__action" href="{{ '/docket/' | relative_url }}">View full dockets →</a>
   </header>
 
   <div class="docket-columns">
@@ -64,50 +67,66 @@ show_breadcrumbs: false
 <section class="section-block court-resources" aria-labelledby="resources-heading">
   <header class="section-heading">
     <p class="eyebrow">Court information</p>
-    <h2 id="resources-heading">Court Resources</h2>
+    <h2 id="resources-heading">Find Court Information</h2>
+    <p>Go directly to the court service or legal resource you need.</p>
   </header>
 
-  <div class="court-resource-grid">
-    <a class="court-resource court-resource--link" href="{{ '/docket/' | relative_url }}">
-      <span class="court-resource__heading">Docket &amp; Case Records</span>
-      <span class="court-resource__description">View current court matters and search public District Court case records, filings, charges, and dispositions.</span>
-      <span class="court-resource__arrow" aria-hidden="true">→</span>
-    </a>
+  <div class="resource-cluster">
+    <header class="resource-cluster__heading">
+      <h3>Cases, people, and records</h3>
+      <p>Search court matters, filings, judges, and public arrest or conviction records.</p>
+    </header>
+    <div class="court-resource-grid">
+      <a class="court-resource court-resource--link" href="{{ '/cases/' | relative_url }}">
+        <span class="court-resource__heading">Search Cases</span>
+        <span class="court-resource__description">Find structured public cases by docket, party, offense, citation, case type, or status.</span>
+        <span class="court-resource__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="court-resource court-resource--link" href="{{ '/documents/search/' | relative_url }}">
+        <span class="court-resource__heading">Filed Document Search</span>
+        <span class="court-resource__description">Search public filing titles, descriptions, and available extracted document text.</span>
+        <span class="court-resource__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="court-resource court-resource--link" href="{{ '/judges/' | relative_url }}">
+        <span class="court-resource__heading">Judges</span>
+        <span class="court-resource__description">Browse the active District Court bench and current matters assigned to each judge.</span>
+        <span class="court-resource__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="court-resource court-resource--link" href="{{ '/records/' | relative_url }}">
+        <span class="court-resource__heading">Arrest &amp; Conviction Records</span>
+        <span class="court-resource__description">Search public JIS arrest and verified conviction history by Roblox username or UserId.</span>
+        <span class="court-resource__arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
 
-    <a class="court-resource court-resource--link" href="{{ '/caselaw/' | relative_url }}">
-      <span class="court-resource__heading">Case Law</span>
-      <span class="court-resource__description">Search published Supreme Court decisions through the CourtListener case-law index.</span>
-      <span class="court-resource__arrow" aria-hidden="true">→</span>
-    </a>
-
-    <section id="rules-procedure" class="court-resource">
-      <h3>Rules of Procedure</h3>
-      <p class="court-resource__description">Civil, criminal, evidence, and Supreme Court procedural rules.</p>
-      <p class="rule-links">
-        <a href="{{ '/frcp/' | relative_url }}">Civil Procedure</a>
-        <a href="{{ '/frcmp/' | relative_url }}">Criminal Procedure</a>
-        <a href="{{ '/fre/' | relative_url }}">Evidence</a>
-        <a href="{{ '/supct/' | relative_url }}">Supreme Court Rules</a>
-      </p>
-    </section>
-
-    <a class="court-resource court-resource--link" href="{{ '/conduct/' | relative_url }}">
-      <span class="court-resource__heading">Codes of Conduct</span>
-      <span class="court-resource__description">Browse ethics codes for United States judges, judicial employees, and federal public defender employees.</span>
-      <span class="court-resource__arrow" aria-hidden="true">→</span>
-    </a>
-
-    <a class="court-resource court-resource--link" href="{{ '/docs/' | relative_url }}">
-      <span class="court-resource__heading">Documents &amp; Forms</span>
-      <span class="court-resource__description">Court documents, templates, and filing resources.</span>
-      <span class="court-resource__arrow" aria-hidden="true">→</span>
-    </a>
-
-    <a class="court-resource court-resource--link" href="{{ site.related_sites.us_code }}">
-      <span class="court-resource__heading">United States Code</span>
-      <span class="court-resource__description">Browse and search federal statutory law.</span>
-      <span class="court-resource__arrow" aria-hidden="true">↗</span>
-    </a>
+  <div class="resource-cluster">
+    <header class="resource-cluster__heading">
+      <h3>Rules and legal resources</h3>
+      <p>Find procedural rules, conduct standards, reusable filing templates, decisions, and federal statutory law.</p>
+    </header>
+    <div class="court-resource-grid">
+      <a class="court-resource court-resource--link" href="{{ '/rules/' | relative_url }}">
+        <span class="court-resource__heading">Court Rules</span>
+        <span class="court-resource__description">Browse Rules of Procedure and the separately organized Codes of Conduct.</span>
+        <span class="court-resource__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="court-resource court-resource--link" href="{{ '/docs/' | relative_url }}">
+        <span class="court-resource__heading">Forms &amp; Templates</span>
+        <span class="court-resource__description">Reusable petitions, briefs, appendices, and other court filing templates.</span>
+        <span class="court-resource__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="court-resource court-resource--link" href="{{ '/caselaw/' | relative_url }}">
+        <span class="court-resource__heading">Case Law</span>
+        <span class="court-resource__description">Research Supreme Court case law and browse the locally archived USAR opinions and orders.</span>
+        <span class="court-resource__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="court-resource court-resource--link" href="{{ site.related_sites.us_code }}">
+        <span class="court-resource__heading">United States Code</span>
+        <span class="court-resource__description">Browse and search federal statutory law on the related U.S. Code website.</span>
+        <span class="court-resource__arrow" aria-hidden="true">↗</span>
+      </a>
+    </div>
   </div>
 </section>
 

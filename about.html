@@ -13,7 +13,7 @@ breadcrumb_parent_url: /
   <header class="page-heading about-heading">
     <p class="eyebrow">About the judiciary</p>
     <h1>United States Courts</h1>
-    <p>This is the public information and legal-resource website of the USAR federal judiciary. It provides access to current court dockets, Supreme Court case law, Rules of Procedure, documents and forms, and related federal legal information.</p>
+    <p>This is the public information and legal-resource website of the USAR federal judiciary. It provides access to current proceedings, structured case records, court rules, forms and templates, case law, locally archived opinions, and public judicial records.</p>
   </header>
 
   <section class="about-section" aria-labelledby="judiciary-heading">
@@ -29,7 +29,7 @@ breadcrumb_parent_url: /
       <section>
         <p class="eyebrow">Federal trial court</p>
         <h3>United States District Court</h3>
-        <p>The District Court hears federal criminal prosecutions, civil actions, and other matters within its jurisdiction. Its public docket is organized by the judges responsible for active matters.</p>
+        <p>The District Court hears federal criminal prosecutions, civil actions, and other matters within its jurisdiction. Current proceedings and structured public case records are available through separate docket and case-search services.</p>
       </section>
     </div>
   </section>
@@ -39,33 +39,45 @@ breadcrumb_parent_url: /
     <dl class="about-resources">
       <div>
         <dt>Cases &amp; Dockets</dt>
-        <dd>Current Supreme Court and District Court docket information and a Supreme Court case-law search.</dd>
+        <dd><a href="{{ '/docket/' | relative_url }}">Current Dockets</a> show active proceedings. <a href="{{ '/cases/' | relative_url }}">Case Search</a> provides structured public JIS case records, and <a href="{{ '/documents/search/' | relative_url }}">Filed Document Search</a> searches available public filings.</dd>
       </div>
       <div>
-        <dt>Rules of Procedure</dt>
-        <dd>Federal Rules of Civil Procedure, Federal Rules of Criminal Procedure, Federal Rules of Evidence, Supreme Court Rules, and retained procedural references.</dd>
+        <dt>Judges &amp; Records</dt>
+        <dd>The <a href="{{ '/judges/' | relative_url }}">Judges directory</a> shows the active District Court bench and current assignments. <a href="{{ '/records/' | relative_url }}">Arrest &amp; Conviction Records</a> provides the public JIS person-record search.</dd>
       </div>
       <div>
-        <dt>Documents &amp; Forms</dt>
-        <dd>Court filing resources, templates, opinions, orders, and other legal documents.</dd>
+        <dt>Court Rules</dt>
+        <dd>The <a href="{{ '/rules/' | relative_url }}">Court Rules directory</a> keeps Rules of Procedure and Codes of Conduct distinct while making both collections easy to browse.</dd>
       </div>
       <div>
-        <dt>Legal Information</dt>
-        <dd>Access to the related <a href="{{ site.related_sites.us_code }}">United States Code Library</a> and federal legal materials maintained through the NARA legal-information system.</dd>
+        <dt>Forms &amp; Templates</dt>
+        <dd>The <a href="{{ '/docs/' | relative_url }}">Forms &amp; Templates library</a> contains reusable filing resources. It is separate from documents actually filed in court cases.</dd>
+      </div>
+      <div>
+        <dt>Case Law &amp; Opinions</dt>
+        <dd><a href="{{ '/caselaw/' | relative_url }}">Case Law</a> searches the CourtListener Supreme Court index, while the <a href="{{ '/opinions/' | relative_url }}">USAR Opinions &amp; Orders archive</a> exposes locally preserved court decisions and order lists.</dd>
+      </div>
+      <div>
+        <dt>Federal Law</dt>
+        <dd>The related <a href="{{ site.related_sites.us_code }}">United States Code Library</a> provides searchable federal statutory law.</dd>
       </div>
     </dl>
   </section>
 
   <section class="about-section about-information" aria-labelledby="information-heading">
-    <h2 id="information-heading">Current Information Services</h2>
+    <h2 id="information-heading">How Court Information Is Published</h2>
     <div>
       <section>
-        <h3>Case Search Scope</h3>
-        <p>Case Search uses CourtListener’s public case-law index and is presently scoped to published and other available Supreme Court material. It does not search USAR District Court docket records or arrest records.</p>
+        <h3>Current Dockets</h3>
+        <p>Current Supreme Court and District Court docket displays are synchronized from the courts' public working records and remain separate from the structured JIS case database.</p>
       </section>
       <section>
-        <h3>Docket Data</h3>
-        <p>Current docket information is synchronized from the public working records maintained by the respective courts.</p>
+        <h3>Structured Case Records</h3>
+        <p>Case Search, Filed Document Search, Judges, and public arrest or conviction records use allowlisted public projections from the Judicial Information System. A charge, arrest, filing, and conviction are treated as distinct legal records.</p>
+      </section>
+      <section>
+        <h3>Site Search</h3>
+        <p>The masthead search finds pages, hosted rules and conduct provisions, reusable forms, and locally archived opinion filenames. It does not replace the dedicated JIS case, filing, or person-record search tools.</p>
       </section>
     </div>
   </section>

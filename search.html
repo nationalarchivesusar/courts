@@ -2,7 +2,7 @@
 layout: page
 title: Site Search
 slug: search
-description: Search United States Courts rules, pages, and legal resources.
+description: Search United States Courts pages, rules, conduct provisions, forms, and locally archived opinions.
 show_breadcrumbs: true
 breadcrumb_parent: United States Courts
 breadcrumb_parent_url: /
@@ -11,7 +11,8 @@ search_exclude: true
 
 <header class="page-heading">
   <p class="eyebrow">Site search</p>
-  <h1>Search court rules and resources</h1>
+  <h1>Search This Site</h1>
+  <p>Search Courts website pages, hosted rules and conduct provisions, reusable forms and templates, and locally archived opinion or order filenames.</p>
 </header>
 
 <form class="search-page-form" action="{{ '/search.html' | relative_url }}" method="get" role="search">
@@ -22,13 +23,22 @@ search_exclude: true
   </div>
 </form>
 
+<div class="search-destinations" aria-label="Dedicated court searches">
+  <a href="{{ '/cases/' | relative_url }}">Search Cases<span>Structured JIS court records</span></a>
+  <a href="{{ '/documents/search/' | relative_url }}">Search Filed Documents<span>Motions, orders, judgments, and filings</span></a>
+  <a href="{{ '/records/' | relative_url }}">Search Person Records<span>Public arrest and conviction records</span></a>
+</div>
+
 <fieldset id="search-filters" class="search-filters">
-  <legend>Filter rule sets</legend>
-  <label><input type="checkbox" value="supct" checked> Supreme Court</label>
+  <legend>Filter by resource</legend>
+  <label><input type="checkbox" value="supct" checked> Supreme Court Rules</label>
   <label><input type="checkbox" value="frcp" checked> Civil Procedure</label>
   <label><input type="checkbox" value="frcmp" checked> Criminal Procedure</label>
   <label><input type="checkbox" value="fre" checked> Evidence</label>
-  <label><input type="checkbox" value="frap" checked> Appellate Procedure</label>
+  <label><input type="checkbox" value="frap" checked> Appellate Reference</label>
+  <label><input type="checkbox" value="conduct" checked> Codes of Conduct</label>
+  <label><input type="checkbox" value="forms" checked> Forms &amp; Templates</label>
+  <label><input type="checkbox" value="opinions" checked> USAR Opinions &amp; Orders</label>
   <label><input type="checkbox" value="" checked> Other pages</label>
 </fieldset>
 

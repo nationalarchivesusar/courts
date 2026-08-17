@@ -17,6 +17,7 @@ test("page-specific styles are loaded from the document head", () => {
   const head = read("_includes/head.html");
   assert.match(head, /assets\/style\.css/);
   assert.match(head, /assets\/shell-fixes\.css/);
+  assert.match(head, /assets\/navigation\.css/);
   assert.match(head, /page\.styles/);
   assert.match(head, /for stylesheet in page\.styles/);
 });
@@ -36,13 +37,17 @@ test("new JIS pages receive the same padded court shell as established data page
   }
 });
 
-test("primary navigation stays focused on core court destinations", () => {
+test("responsive navigation uses task menus without horizontal-scroll dependence", () => {
   const header = read("_includes/header.html");
-  assert.match(header, />Docket<\/a>/);
-  assert.match(header, />Judges<\/a>/);
-  assert.match(header, />Case Law<\/a>/);
-  assert.match(header, />Records<\/a>/);
-  assert.match(header, /<summary>Rules &amp; Conduct<\/summary>/);
-  assert.match(header, />Codes of Conduct<\/a>/);
-  assert.doesNotMatch(header, /<summary>Codes of Conduct<\/summary>/);
+  const css = read("assets/navigation.css");
+  const script = read("assets/site.js");
+
+  assert.match(header, /<summary>Cases<\/summary>/);
+  assert.match(header, /<summary>Rules<\/summary>/);
+  assert.match(header, /Rules of Procedure/);
+  assert.match(header, /Codes of Conduct/);
+  assert.match(css, /grid-template-columns: repeat\(4, minmax\(0, 1fr\)\)/);
+  assert.match(css, /grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
+  assert.match(script, /querySelectorAll\("\.nav-menu"\)/);
+  assert.match(script, /otherMenu\.open = false/);
 });

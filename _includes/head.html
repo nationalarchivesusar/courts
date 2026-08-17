@@ -11,6 +11,7 @@
       {% when 'frap' %}{% assign meta_rule_set = 'Federal Rules of Appellate Procedure' %}
       {% when 'frcmp' %}{% assign meta_rule_set = 'Federal Rules of Criminal Procedure' %}
       {% when 'frcp' %}{% assign meta_rule_set = 'Federal Rules of Civil Procedure' %}
+      {% when 'conduct' %}{% assign meta_rule_set = page.code_title | default: 'Codes of Conduct' %}
     {% endcase %}
     {% assign meta_title = page.title | append: ' — ' | append: meta_rule_set %}
     {% unless page.description %}
@@ -47,6 +48,7 @@
   <script src="{{ '/assets/theme-bootstrap.js' | relative_url }}"></script>
   <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/shell-fixes.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/navigation.css' | relative_url }}">
   {% if page.styles %}
     {% for stylesheet in page.styles %}
   <link rel="stylesheet" href="{{ stylesheet | relative_url }}">
